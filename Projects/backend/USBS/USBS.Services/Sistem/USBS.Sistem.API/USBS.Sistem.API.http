@@ -1,0 +1,6 @@
+@USBS.Ortak.API_HostAddress = http://localhost:5166
+
+GET {{USBS.Ortak.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
