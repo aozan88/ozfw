@@ -1,5 +1,6 @@
 using Ortak.Data.Registration;
-using Ortak.API.Extensions;
+using USBS.Components.Logging;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,15 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSession();
+
+
+builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
+
+builder.Services.AddLogging();
+
 var app = builder.Build();
 
 // app.MapDefaultEndpoints();
@@ -24,6 +34,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseSession();
 
 app.UseAuthorization();
 

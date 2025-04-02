@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\USBS.Components\USBS.Components.Logging\USBS.Components.Logging.csproj" />
     <ProjectReference Include="..\USBS.Ortak.Data\USBS.Ortak.Data.csproj" />
   </ItemGroup>
 
