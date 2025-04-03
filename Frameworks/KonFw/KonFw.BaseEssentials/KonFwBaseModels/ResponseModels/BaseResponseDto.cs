@@ -11,7 +11,6 @@
         public int Size { get; set; } = 10;
         public long TotalRecordCount { get; set; }
         public Guid? ClientId { get; set; }
-
-        public T? ObjectValue;
+        public IEnumerable<T>? ObjectValue { get; set; }
     }
 }

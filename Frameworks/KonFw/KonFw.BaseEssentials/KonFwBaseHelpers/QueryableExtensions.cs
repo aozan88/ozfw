@@ -36,6 +36,7 @@ namespace KonFwBaseHelpers
                 return new BaseResponseDto<T>
                 {
                     Query = query,
+                    ObjectValue = query.ToList(),
                     IsSuccess = true,  // İşlem başarılı
                     PageNumber = filter.Page,
                     Size = filter.Size,
