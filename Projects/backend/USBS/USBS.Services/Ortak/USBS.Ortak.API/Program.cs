@@ -1,6 +1,6 @@
 using Ortak.Data.Registration;
 using USBS.Components.Logging;
-
+using USBS.Workers.SampleWorker;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,3 +42,18 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+//adding worker
+IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((context, config) =>
+    {
+        config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+    })
+    .ConfigureServices((context, services) =>
+    {
+        services.Configure<WorkerSettings>(context.Configuration.GetSection("WorkerConfig"));
+        services.AddHostedService<MyBackgroundWorker>();
+    })
+    .Build();
+
+await host.RunAsync();

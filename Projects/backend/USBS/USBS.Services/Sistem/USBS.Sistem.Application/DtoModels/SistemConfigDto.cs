@@ -1,4 +1,4 @@
-﻿using USBS.Common.Domain;
+﻿using USBS.Common.Dtos.BaseDtos;
 
 namespace Sistem.Application.DtoModels
 {

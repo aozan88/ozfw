@@ -1,8 +1,12 @@
-﻿using KonFw.BaseInfrastructure;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace USBS.Common.Domain
+namespace USBS.Common.Dtos.BaseDtos
 {
-    public class BaseEntity : IAuditableEntity
+    public class BaseDto : IAuditableDto
     {
         public Guid Id { get; set; }
         public string Olusturan { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

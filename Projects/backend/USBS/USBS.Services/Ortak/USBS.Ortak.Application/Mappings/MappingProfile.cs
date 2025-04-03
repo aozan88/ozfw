@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Ortak.Application.DtoModels;
+using USBS.Common.Dtos.OrtakDtos;
 using USBS.Common.Domain;
 
 namespace Ortak.Application.Mappings

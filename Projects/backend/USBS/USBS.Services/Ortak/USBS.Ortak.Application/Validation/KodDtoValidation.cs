@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Ortak.Application.DtoModels;
+using USBS.Common.Dtos.OrtakDtos;
 
 namespace Ortak.Application.Validations
 {

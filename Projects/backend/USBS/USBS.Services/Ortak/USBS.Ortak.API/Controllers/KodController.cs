@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Ortak.Application.Business;
-using Ortak.Application.DtoModels;
+using USBS.Common.Dtos.OrtakDtos;
 using FluentValidation;
 
 namespace Ortak.API.Controllers

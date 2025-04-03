@@ -2,7 +2,7 @@
 
 namespace USBS.Common.Domain
 {
-    public class BaseDto : IAuditableEntity
+    public class BaseEntity : IAuditableEntity
     {
         public Guid Id { get; set; }
         public string Olusturan { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

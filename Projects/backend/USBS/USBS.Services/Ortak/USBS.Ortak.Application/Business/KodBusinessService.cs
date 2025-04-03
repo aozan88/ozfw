@@ -1,7 +1,7 @@
 ﻿using Ortak.Application.Contract;
-using Ortak.Application.DtoModels;
 using AutoMapper;
 using USBS.Common.Domain;
+using USBS.Common.Dtos.OrtakDtos;
 
 namespace Ortak.Application.Business
 {
