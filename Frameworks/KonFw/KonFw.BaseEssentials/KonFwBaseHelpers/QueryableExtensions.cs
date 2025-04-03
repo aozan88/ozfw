@@ -1,5 +1,4 @@
 ﻿using KonFwBaseModels;
-using KonFwBaseModels.ResponseModels;
 using System.Globalization;
 using System.Linq.Dynamic.Core;
 
@@ -7,33 +6,54 @@ namespace KonFwBaseHelpers
 {
     public static class QueryableExtensions
     {
-        public static FilterResponse<T> ToFilterView<T>(
+        public static BaseResponseDto<T> ToFilterView<T>(
             this IQueryable<T> query, BaseRequestDto<T> filter)
         {
-            // filter
-            query = Filter(query, filter.Filter);
-            var count = query.Count();
-            var pageNumber = count / filter.Size;
-
-            if (filter.Size != 0)
+            try
             {
-                if (count % filter.Size != 0)
+                // Filtreleme uygulanmadan önceki toplam kayıt sayısı
+                var totalRecordCount = query.Count();
+
+                // Filtreyi uygula
+                query = Filter(query, filter.Filter);
+
+                // Filtrelenmiş veri sayısı
+                var count = query.Count();
+
+                // Sayfa numarasını hesapla
+                var pageNumber = (count + filter.Size - 1) / filter.Size;
+
+                // Sıralama uygula
+                if (filter.Sort != null)
                 {
-                    pageNumber++;
+                    query = Sort(query, filter.Sort);
                 }
-            }
 
-            //sort
-            if (filter.Sort != null)
+                // Sayfalama uygula
+                query = Limit(query, filter.Size, filter.Page);
+
+                // Başarı durumu başarılıysa, işlem başarılı kabul edilir
+                return new BaseResponseDto<T>
+                {
+                    Query = query,
+                    IsSuccess = true,  // İşlem başarılı
+                    PageNumber = filter.Page,
+                    Size = filter.Size,
+                    TotalRecordCount = totalRecordCount,  // Filtreleme uygulanmadan önceki kayıt sayısı
+                    Count = count,  // Filtre sonrası toplam kayıt
+                    ClientId = filter.ClientId
+                };
+            }
+            catch (Exception ex)
             {
-                query = Sort(query, filter.Sort);
+                // Eğer hata oluşursa, işlem başarısız olarak işaretlenir
+                return new BaseResponseDto<T>
+                {
+                    IsSuccess = false,  // İşlem başarısız
+                    Mesaj = ex.Message,  // Hata mesajını döndür
+                    ClientId = filter.ClientId
+                };
             }
-
-            query = Limit(query, filter.Size, filter.Page);
-
-            var PageNumberAndQueryList = new FilterResponse<T> { Query = query, PageNumber = pageNumber, Count = count };
-            // return the final query
-            return PageNumberAndQueryList;
         }
 
         private static IQueryable<T> Filter<T>(
