@@ -1,5 +1,6 @@
 ﻿namespace KonFwBaseModels
 {
+    // not used
     public class FilterDTO
     {
         public required IEnumerable<Sort> Sort { get; set; }

@@ -8,7 +8,7 @@ namespace KonFwBaseHelpers
     public static class QueryableExtensions
     {
         public static FilterResponse<T> ToFilterView<T>(
-            this IQueryable<T> query, FilterDTO filter)
+            this IQueryable<T> query, BaseRequestDto<T> filter)
         {
             // filter
             query = Filter(query, filter.Filter);
