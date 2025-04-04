@@ -3,15 +3,15 @@ using USBS.Common.Dtos.OrtakDtos;
 
 namespace Ortak.Application.Validations
 {
-    public class KodDtoValidation : AbstractValidator<KodDto>
+    public class SistemTanimDtoValidation : AbstractValidator<SistemTanimDto>
     {
-        public KodDtoValidation()
+        public SistemTanimDtoValidation()
         {
-            RuleFor(k => k.KodAdi)
+            RuleFor(k => k.TanimAdi)
                 .NotEmpty()
                 .Length(3, 100);
 
-            RuleFor(k => k.KodTipiId)
+            RuleFor(k => k.TanimTipiId)
                 .NotEmpty();
 
             RuleFor(k => k.Durum)

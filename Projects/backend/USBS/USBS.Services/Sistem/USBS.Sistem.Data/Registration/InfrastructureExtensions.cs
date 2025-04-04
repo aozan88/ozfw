@@ -19,7 +19,7 @@ namespace Sistem.Data.Registration
             });
 
             // Register repositories (specific to the API)
-            services.AddScoped<ISistemConfigRepository, SistemConfigRepository>();
+            services.AddScoped<ISistemParametreRepository, SistemParametreRepository>();
 
             return services;
         }

@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using USBS.Common.Domain;
 
 namespace KonFw.HttpContextAccessor
 {

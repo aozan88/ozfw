@@ -8,7 +8,7 @@ namespace Ortak.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Kod, KodDto>().ReverseMap();
+            CreateMap<SistemTanim, SistemTanimDto>().ReverseMap();
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Sistem.Application.DtoModels
 {
-    public class SistemConfigDto : BaseDto
+    public class SistemParametreDto : BaseDto
     {
-        public string SistemConfigAdi { get; set; }
-        public Guid SistemConfigTipiId { get; set; }
-        public Guid? UstSistemConfigId { get; set; }
+        public string SistemParametreAdi { get; set; }
+        public Guid SistemParametreTipiId { get; set; }
+        public Guid? UstSistemParametreId { get; set; }
         public string KisaAd { get; set; }
         public string Aciklama { get; set; }
         public int Durum{ get; set; }

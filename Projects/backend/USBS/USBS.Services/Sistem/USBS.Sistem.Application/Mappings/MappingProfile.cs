@@ -8,7 +8,7 @@ namespace Sistem.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<SistemConfig, SistemConfigDto>().ReverseMap();
+            CreateMap<SistemParametre, SistemParametreDto>().ReverseMap();
         }
     }
 }

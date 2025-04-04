@@ -6,18 +6,18 @@ using Ortak.Data.Persistence;
 
 namespace Ortak.Data.Repositories
 {
-    public class KodRepository : GenericRepository<Kod>, IKodRepository
+    public class SistemTanimRepository : GenericRepository<SistemTanim>, ISistemTanimRepository
     {
         private readonly OrtakDbContext _context;
 
-        public KodRepository(OrtakDbContext context) : base(context)
+        public SistemTanimRepository(OrtakDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Kod>> GetActiveKodsAsync()
+        public async Task<IEnumerable<SistemTanim>> GetAktifTanimListAsync()
         {
-            return await _context.Kods.Where(k => k.Durum == 1).ToListAsync();
+            return await _context.SistemTanims.Where(k => k.Durum == 1).ToListAsync();
         }
     }
 }

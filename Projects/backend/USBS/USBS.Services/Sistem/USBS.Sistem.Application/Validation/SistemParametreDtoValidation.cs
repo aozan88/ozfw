@@ -3,15 +3,15 @@ using Sistem.Application.DtoModels;
 
 namespace Sistem.Application.Validations
 {
-    public class SistemConfigDtoValidation : AbstractValidator<SistemConfigDto>
+    public class SistemParametreDtoValidation : AbstractValidator<SistemParametreDto>
     {
-        public SistemConfigDtoValidation()
+        public SistemParametreDtoValidation()
         {
-            RuleFor(k => k.SistemConfigAdi)
+            RuleFor(k => k.SistemParametreAdi)
                 .NotEmpty()
                 .Length(3, 100);
 
-            RuleFor(k => k.SistemConfigTipiId)
+            RuleFor(k => k.SistemParametreTipiId)
                 .NotEmpty();
 
             RuleFor(k => k.Durum)

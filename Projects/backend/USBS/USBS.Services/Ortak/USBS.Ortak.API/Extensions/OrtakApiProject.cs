@@ -8,6 +8,8 @@ namespace Ortak.API
     {
         public static void ConfigureOrtakApi(WebApplicationBuilder builder)
         {
+            builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddControllers();
 
             // Register Scalar Service (or other services)

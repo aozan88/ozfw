@@ -19,7 +19,8 @@ namespace Ortak.Data.Registration
             });
 
             // Register repositories (specific to the API)
-            services.AddScoped<IKodRepository, KodRepository>();
+            services.AddScoped<ISistemTanimRepository, SistemTanimRepository>();
+            services.AddScoped<ISistemTanimTipiRepository, SistemTanimTipiRepository>();
 
             return services;
         }

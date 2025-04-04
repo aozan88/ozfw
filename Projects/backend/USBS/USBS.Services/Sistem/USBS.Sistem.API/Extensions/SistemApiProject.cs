@@ -8,6 +8,8 @@ namespace Sistem.API
     {
         public static void ConfigureSistemApi(WebApplicationBuilder builder)
         {
+            builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddControllers();
 
             // Register Scalar Service (or other services)

@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace KonFw.BaseInfrastructure
 {
     public abstract class KonFwDbContext : DbContext
     {
-        public KonFwDbContext(DbContextOptions options) : base(options) { }
+        private readonly IHttpContextAccessor _context;
+        public KonFwDbContext(DbContextOptions options, IHttpContextAccessor context) : base(options) {
+            _context = context;
+        }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -26,9 +30,9 @@ namespace KonFw.BaseInfrastructure
                     entity.OlusturulmaTarihi = DateTime.UtcNow;
 
                 if (entry.State == EntityState.Deleted)
-                    entity.SilinmeTarihi= DateTime.UtcNow;
+                    entity.DegistirilmeTarihi = DateTime.UtcNow;
+                    //entity.SilinmeTarihi= DateTime.UtcNow;
 
-                entity.DegistirilmeTarihi = DateTime.UtcNow;
             }
         }
     }
