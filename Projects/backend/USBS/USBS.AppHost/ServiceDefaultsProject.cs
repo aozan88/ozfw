@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using USBS.ServiceDefaults.DBManagement;
 using USBS.ServiceDefaults;
+using Microsoft.Extensions.Configuration;
 
 public static class ServiceDefaultsProject
 {
@@ -12,12 +12,13 @@ public static class ServiceDefaultsProject
             var kafkaConfigSection = builder.Configuration.GetSection("KafkaEventBus");
             var rabbitConfigSection = builder.Configuration.GetSection("RabbitMqEventBus");
             var redisConfigSection = builder.Configuration.GetSection("RedisCache");
-            var postgreConfigSection = builder.Configuration.GetSection("PostgreDb");
+            var postgreConfigSection = builder.Configuration.GetSection("ConnectionStrings");
+            var dbConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
             // builder.Services.AddKafkaEventBusDefaults(config => kafkaConfigSection.Bind(config));
             var kafka = builder.Services.AddKafkaEventBusDefaults(builder.Configuration);
             var rabbit = builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
             var redis = builder.Services.AddRedisCacheDefaults(builder.Configuration);
-            var postgre = builder.Services.AddDatabaseDefaults(builder.Configuration);
+            //var postgre = builder.Services.AddDatabaseDefaults(postgreConfigSection);
             Console.WriteLine("[ServiceDefaults] Kafka Event Bus configured.");
 
         }

@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\USBS.Common.Dtos\USBS.Common.Dtos.csproj" />
     <ProjectReference Include="..\..\..\USBS.Components\USBS.Components.Logging\USBS.Components.Logging.csproj" />
+    <ProjectReference Include="..\..\..\USBS.ServiceDefaults\USBS.ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\..\USBS.Workers\USBS.Workers.csproj" />
     <ProjectReference Include="..\USBS.Ortak.Data\USBS.Ortak.Data.csproj" />
   </ItemGroup>

@@ -24,7 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Frameworks\KonFw\KonFw.EventManagement\KonFwEventBus\KonFwEventBus.csproj" />
     <ProjectReference Include="..\..\..\..\Frameworks\KonFw\KonFw.Logging\KonFwGraylog\KonFwGraylog.csproj" />
-    <ProjectReference Include="..\USBS.Common\USBS.Common.Infrastructure\USBS.Common.Infrastructure.csproj" />
     <ProjectReference Include="..\USBS.Components\USBS.Components.Caching\USBS.Components.Caching.csproj" />
     <ProjectReference Include="..\USBS.Components\USBS.Components.DBManagement\USBS.Components.DBManagement.csproj" />
     <ProjectReference Include="..\USBS.Components\USBS.Components.EventManagement\USBS.Components.EventManagement.csproj" />

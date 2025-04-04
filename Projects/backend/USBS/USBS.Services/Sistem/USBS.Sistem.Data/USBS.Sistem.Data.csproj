@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\USBS.Common\USBS.Common.Infrastructure\USBS.Common.Infrastructure.csproj" />
     <ProjectReference Include="..\USBS.Sistem.Application\USBS.Sistem.Application.csproj" />
   </ItemGroup>
 

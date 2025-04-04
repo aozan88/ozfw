@@ -34,7 +34,7 @@ namespace Ortak.Application.Business
             var Kod = await _repository.GetByIdAsync(id);
             if (Kod == null)
             {
-                return null;
+                return KodDto;
             }
 
             _mapper.Map(KodDto, Kod);

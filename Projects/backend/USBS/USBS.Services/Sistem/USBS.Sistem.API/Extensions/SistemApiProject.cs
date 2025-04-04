@@ -1,4 +1,8 @@
-﻿namespace Sistem.API
+﻿using Sistem.Data.Persistence;
+using Sistem.Data.Registration;
+using USBS.ServiceDefaults;
+
+namespace Sistem.API
 {
     public static class SistemApiProject
     {
@@ -6,8 +10,15 @@
         {
             builder.Services.AddControllers();
 
-            // Custom Scalar logic or services
-            builder.Services.AddSingleton<SistemScalarService>(); // Example Scalar integration service
+            // Register Scalar Service (or other services)
+            builder.Services.AddSingleton<SistemScalarService>();
+
+            // Register Database Defaults
+            builder.Services.AddDatabaseDefaults(builder.Configuration);
+
+            // Retrieve connection string and register Infrastructure services
+            var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddInfrastructureServices<SistemDbContext>(defaultConnectionString);
         }
     }
 

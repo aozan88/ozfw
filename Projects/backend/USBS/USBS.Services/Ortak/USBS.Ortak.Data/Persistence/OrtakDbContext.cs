@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using USBS.Common.DbContexts;
+﻿using KonFw.BaseInfrastructure;
+using Microsoft.EntityFrameworkCore;
 using USBS.Common.Domain;
 
 namespace Ortak.Data.Persistence
 {
-    public class OrtakDbContext : AppDbContext
+    public class OrtakDbContext : KonFwDbContext
     {
-        public OrtakDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public OrtakDbContext(DbContextOptions<OrtakDbContext> options) : base(options) { }
 
         public DbSet<Kod> Kods { get; set; }
     }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using KonFw.BaseInfrastructure;
-using USBS.Common.DbContexts;
 using USBS.Common.Domain;
 using Ortak.Application.Contract;
 using Ortak.Data.Persistence;

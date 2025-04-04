@@ -1,17 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Ortak.Application.Contract;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using global::Ortak.Application.Contract;
+using global::Ortak.Data.Repositories;
 using Ortak.Data.Persistence;
-using Ortak.Data.Repositories;
 
 namespace Ortak.Data.Registration
 {
+
     public static class InfrastructureExtensions
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AddInfrastructureServices<TContext>(this IServiceCollection services, string connectionString)
+            where TContext : DbContext
         {
-            services.AddDbContext<OrtakDbContext>(options => options.UseNpgsql(connectionString));
+            // Register the DbContext
+            services.AddDbContext<OrtakDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString);
+            });
+
+            // Register repositories (specific to the API)
             services.AddScoped<IKodRepository, KodRepository>();
+
             return services;
         }
     }

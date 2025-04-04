@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\USBS.Common\USBS.Common.Domain\USBS.Common.Domain.csproj" />
-    <ProjectReference Include="..\..\..\USBS.Common\USBS.Common.Infrastructure\USBS.Common.Infrastructure.csproj" />
     <ProjectReference Include="..\USBS.Ortak.Application\USBS.Ortak.Application.csproj" />
   </ItemGroup>
 

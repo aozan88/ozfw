@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using USBS.Components.Caching;
 using USBS.Components.EventManagement;
 
 namespace USBS.ServiceDefaults;
@@ -23,20 +24,22 @@ public static class EventManagementExtensions
 
     public static IServiceCollection AddRabbitMqEventBusDefaults(this IServiceCollection services, IConfiguration configuration)
     {
-        
+        /*
         var rabbitMqConfigSection = configuration.GetSection("RabbitMqEventBus");
         services.AddRabbitMqEventBusDefaults(rabbitMqConfigSection);
         return services;
-        
-        /*
-        var config = new RabbitMqConfiguration();
-        configure(config);
+        */
 
-        services.AddSingleton(config);
-        services.AddSingleton<IEventBus>(sp => new RabbitMqEventBusProvider(config));
+        var rabbitMqConfigSection = configuration.GetSection("RabbitMqEventBus");
+        services.AddRabbitMqEventBusProvider(config =>
+        {
+            rabbitMqConfigSection.Bind(config);
+        });
+        //services.AddSingleton(config);
+        //services.AddSingleton<IEventBus>(sp => new RabbitMqEventBusProvider(config));
 
         return services;
-        */
+        
 
     }
 }

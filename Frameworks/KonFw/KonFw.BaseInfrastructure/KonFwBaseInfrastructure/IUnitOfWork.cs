@@ -1,6 +1,4 @@
-﻿using KonFwBaseInfrastructure;
-
-namespace KonFw.BaseInfrastructure
+﻿namespace KonFw.BaseInfrastructure
 {
     public interface IUnitOfWork : IDisposable
     {

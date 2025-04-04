@@ -1,5 +1,4 @@
-﻿using KonFwBaseInfrastructure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace KonFw.BaseInfrastructure
 {

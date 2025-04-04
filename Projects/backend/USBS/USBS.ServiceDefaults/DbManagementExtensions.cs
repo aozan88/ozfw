@@ -1,23 +1,30 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using USBS.Common.DbContexts;
-using USBS.Components.DbManagement;
 
-namespace USBS.ServiceDefaults.DBManagement
+namespace USBS.ServiceDefaults
 {
-    public static class DbManagementExtensions
+
+    public static class DBManagementExtension
     {
         public static IServiceCollection AddDatabaseDefaults(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var defaultConnectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbManagement<AppDbContext>(options =>
-            {
-                options.UseNpgsql(connectionString);
-            });
+            // Register the configuration service
+            services.AddScoped<IDefaultDbContextConfiguration>(provider =>
+                new DefaultDbContextConfiguration(defaultConnectionString));
 
             return services;
+        }
+    }
+
+    public class DefaultDbContextConfiguration : IDefaultDbContextConfiguration
+    {
+        public string ConnectionString { get; }
+
+        public DefaultDbContextConfiguration(string connectionString)
+        {
+            ConnectionString = connectionString;
         }
     }
 }

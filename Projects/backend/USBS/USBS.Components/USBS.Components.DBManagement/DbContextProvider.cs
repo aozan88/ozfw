@@ -10,7 +10,7 @@ namespace USBS.Components.DbManagement
             where TContext : KonFwDbContext
         {
             services.AddDbContext<TContext>(configureDbContext);
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }

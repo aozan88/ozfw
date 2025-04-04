@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\USBS.ServiceDefaults\USBS.ServiceDefaults.csproj" />
     <ProjectReference Include="..\USBS.Sistem.Application\USBS.Sistem.Application.csproj" />
+    <ProjectReference Include="..\USBS.Sistem.Data\USBS.Sistem.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace KonFwBaseInfrastructure
+﻿namespace KonFw.BaseInfrastructure
 {
     public interface IRepository<T> where T : class
     {

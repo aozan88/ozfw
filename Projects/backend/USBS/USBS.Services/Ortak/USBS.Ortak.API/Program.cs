@@ -1,5 +1,6 @@
 using Ortak.Data.Registration;
 using USBS.Components.Logging;
+using USBS.ServiceDefaults;
 using USBS.Workers.SampleWorker;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.AddServiceDefaults();
 
 // Add services to the container.
-builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection"));
+/*
+builder.Services.AddDatabaseDefaults(builder.Configuration);
+var defaultDbConfig = builder.Services.BuildServiceProvider().GetRequiredService<IDefaultDbContextConfiguration>();
+builder.Services.AddInfrastructureServices(defaultDbConfig.ConnectionString);
+// builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection"));
+*/
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

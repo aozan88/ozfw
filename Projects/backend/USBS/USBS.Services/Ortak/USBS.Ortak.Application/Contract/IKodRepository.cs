@@ -1,4 +1,4 @@
-﻿using KonFwBaseInfrastructure;
+﻿using KonFw.BaseInfrastructure;
 using USBS.Common.Domain;
 
 namespace Ortak.Application.Contract

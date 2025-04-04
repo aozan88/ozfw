@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using KonFw.BaseInfrastructure;
-using USBS.Common.DbContexts;
 using USBS.Common.Domain;
 using Sistem.Application.Contract;
 using Sistem.Data.Persistence;
