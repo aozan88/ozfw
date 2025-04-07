@@ -10,10 +10,25 @@ namespace Ortak.API
         {
             builder.Services.AddHttpContextAccessor();
 
+            // Add in-memory cache as the distributed cache
+            builder.Services.AddDistributedMemoryCache();
+
+            // Register Swagger only for Ortak.API
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Ortak API",
+                    Version = "v1",
+                    Description = "API for Ortak data and configurations"
+                });
+            });
+
             builder.Services.AddControllers();
 
             // Register Scalar Service (or other services)
-            builder.Services.AddSingleton<ScalarService>();
+            //builder.Services.AddSingleton<ScalarService>();
 
             // Register Database Defaults
             builder.Services.AddDatabaseDefaults(builder.Configuration);

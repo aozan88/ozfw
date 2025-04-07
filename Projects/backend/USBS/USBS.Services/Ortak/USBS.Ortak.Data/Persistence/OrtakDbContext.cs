@@ -20,8 +20,8 @@ namespace Ortak.Data.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<SistemTanimTipi>().ToTable("Sistem_TanimTipi").HasMany(x => x.SistemTanims).WithOne(x => x.TanimTipi).HasForeignKey(x => x.TanimTipiId);
-            modelBuilder.Entity<SistemTanim>().ToTable("Sistem_Tanim");
+            modelBuilder.Entity<SistemTanimTipi>().ToTable("Sistem_TanimTipi");
+            modelBuilder.Entity<SistemTanim>().ToTable("Sistem_Tanim").HasOne<SistemTanimTipi>(x=>x.TanimTipi).WithMany(x=>x.SistemTanims).HasForeignKey(x => x.TanimTipiId);
         }
     }
 }

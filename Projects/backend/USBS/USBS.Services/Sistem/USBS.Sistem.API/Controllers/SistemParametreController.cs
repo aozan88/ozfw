@@ -9,10 +9,10 @@ namespace Sistem.API.Controllers
     [ApiController]
     public class SistemParametreController : ControllerBase
     {
-        private readonly SistemParametreServis _SistemParametreService;
+        private readonly ISistemParametreServis _SistemParametreService;
         private readonly IValidator<SistemParametreDto> _SistemParametreValidator;
 
-        public SistemParametreController(SistemParametreServis SistemParametreService, IValidator<SistemParametreDto> SistemParametreValidator)
+        public SistemParametreController(ISistemParametreServis SistemParametreService, IValidator<SistemParametreDto> SistemParametreValidator)
         {
             _SistemParametreService = SistemParametreService;
             _SistemParametreValidator = SistemParametreValidator;

@@ -3,7 +3,7 @@ using Ortak.API.ViewModels;
 
 namespace Ortak.API.Validations
 {
-    public class SistemTanimValidation : AbstractValidator<SistemTanimVM>
+    public class SistemTanimValidation : AbstractValidator<SistemTanimVM>, IValidator<SistemTanimVM>
     {
         public SistemTanimValidation()
         {

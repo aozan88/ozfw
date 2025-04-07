@@ -1,3 +1,9 @@
+using FluentValidation;
+using Sistem.API.Mappings;
+using Sistem.API.Validations;
+using Sistem.Application.Business;
+using Sistem.Application.Mappings;
+using Sistem.Data.Persistence;
 using Sistem.Data.Registration;
 using USBS.ServiceDefaults;
 
@@ -10,8 +16,47 @@ var defaultDbConfig = builder.Services.BuildServiceProvider().GetRequiredService
 builder.Services.AddInfrastructureServices(defaultDbConfig.ConnectionString);
 */
 
+builder.AddServiceDefaults();
+
+// Add in-memory cache as the distributed cache
+builder.Services.AddDistributedMemoryCache();
+
+// Register Database Defaults
+builder.Services.AddDatabaseDefaults(builder.Configuration);
+
+// Retrieve connection string and register Infrastructure services
+var defaultConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
+builder.Services.AddInfrastructureServices<SistemDbContext>(defaultConnectionString);
+
+
+// Register Swagger only for Ortak.API
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Sistem API",
+        Version = "v1",
+        Description = "API for Sistem data and configurations"
+    });
+});
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<ISistemParametreServis, SistemParametreServis>();
+
+builder.Services.AddValidatorsFromAssembly(typeof(SistemParametreValidation).Assembly);
+
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddOpenApi();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSession();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(DtoMappingProfile));
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -23,6 +68,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ortak API v1");
+    });
 }
 
 app.UseHttpsRedirection();

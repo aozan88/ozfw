@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Ortak.Application.Business;
 using USBS.Common.Dtos.OrtakDtos;
 using FluentValidation;
+using AutoMapper;
+using Ortak.API.ViewModels;
 
 namespace Ortak.API.Controllers
 {
@@ -9,13 +11,15 @@ namespace Ortak.API.Controllers
     [ApiController]
     public class SistemTanimController : ControllerBase
     {
-        private readonly SistemTanimServis _SistemTanimServis;
-        private readonly IValidator<SistemTanimDto> _SistemTanimValidator;
+        private readonly ISistemTanimServis _SistemTanimServis;
+        private readonly IValidator<SistemTanimVM> _SistemTanimValidator;
+        private readonly IMapper _mapper;
 
-        public SistemTanimController(SistemTanimServis SistemTanimService, IValidator<SistemTanimDto> SistemTanimValidator)
+        public SistemTanimController(ISistemTanimServis sistemTanimServis, IValidator<SistemTanimVM> sistemTanimValidator, IMapper mapper)
         {
-            _SistemTanimServis = SistemTanimService;
-            _SistemTanimValidator = SistemTanimValidator;
+            _SistemTanimServis = sistemTanimServis;
+            _SistemTanimValidator = sistemTanimValidator;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -38,35 +42,38 @@ namespace Ortak.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SistemTanimDto SistemTanimDto)
+        public async Task<IActionResult> Create([FromBody] SistemTanimVM sistemTanimVm)
         {
             // Validate the incoming DTO
-            var validationResult = await _SistemTanimValidator.ValidateAsync(SistemTanimDto);
+            var validationResult = await _SistemTanimValidator.ValidateAsync(sistemTanimVm);
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
             }
-
-            var createdSistemTanim = await _SistemTanimServis.AddSistemTanimAsync(SistemTanimDto);
+            SistemTanimDto sistemTanimDto = new SistemTanimDto();
+            _mapper.Map(sistemTanimVm, sistemTanimDto);
+            var createdSistemTanim = await _SistemTanimServis.AddSistemTanimAsync(sistemTanimDto);
             return CreatedAtAction(nameof(GetById), new { id = createdSistemTanim.TanimTipiId }, createdSistemTanim);
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] SistemTanimDto SistemTanimDto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] SistemTanimVM sistemTanimVm)
         {
-            if (id != SistemTanimDto.TanimTipiId)
+            if (id != sistemTanimVm.TanimTipiId)
             {
                 return BadRequest(new { Message = "ID mismatch between the route and the payload." });
             }
 
             // Validate the DTO
-            var validationResult = await _SistemTanimValidator.ValidateAsync(SistemTanimDto);
+            var validationResult = await _SistemTanimValidator.ValidateAsync(sistemTanimVm);
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
             }
 
-            var updatedSistemTanim = await _SistemTanimServis.UpdateSistemTanimAsync(id, SistemTanimDto);
+            SistemTanimDto sistemTanimDto = new SistemTanimDto();
+            _mapper.Map(sistemTanimVm, sistemTanimDto);
+            var updatedSistemTanim = await _SistemTanimServis.UpdateSistemTanimAsync(id, sistemTanimDto);
             if (updatedSistemTanim == null)
             {
                 return NotFound(new { Message = $"SistemTanim with ID {id} not found for update." });

@@ -4,9 +4,9 @@ using USBS.Common.Domain;
 
 namespace Sistem.Application.Mappings
 {
-    public class MappingProfile : Profile
+    public class DtoMappingProfile : Profile
     {
-        public MappingProfile()
+        public DtoMappingProfile()
         {
             CreateMap<SistemParametre, SistemParametreDto>().ReverseMap();
         }

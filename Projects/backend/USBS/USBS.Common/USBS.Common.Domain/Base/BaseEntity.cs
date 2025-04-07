@@ -5,12 +5,12 @@ namespace USBS.Common.Domain
     public class BaseEntity : IAuditableEntity
     {
         public Guid Id { get; set; }
-        public string OlusturanKisi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string DegistirenKisi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        //public string Silen { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime OlusturulmaTarihi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public DateTime DegistirilmeTarihi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        //public DateTime SilinmeTarihi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string OlusturanKisi { get; set; }
+        public string DegistirenKisi { get; set; }
+        //public string Silen { get; set; }
+        public DateTime OlusturulmaTarihi { get; set; }
+        public DateTime DegistirilmeTarihi { get; set; }
+        //public DateTime SilinmeTarihi { get; set; }
         public int Versiyon { get; set; }
         public int Durum { get; set; }
         public string LanguageTag { get; set; }

@@ -3,7 +3,7 @@ using Sistem.API.ViewModels;
 
 namespace Sistem.API.Validations
 {
-    public class SistemParametreValidation : AbstractValidator<SistemParametreVM>
+    public class SistemParametreValidation : AbstractValidator<SistemParametreVM>, IValidator<SistemParametreVM>
     {
         public SistemParametreValidation()
         {

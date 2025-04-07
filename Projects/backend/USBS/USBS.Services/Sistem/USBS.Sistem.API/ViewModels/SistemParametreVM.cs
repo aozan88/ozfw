@@ -1,6 +1,8 @@
-﻿namespace Sistem.API.ViewModels
+﻿using USBS.Common.Dtos.BaseDtos;
+
+namespace Sistem.API.ViewModels
 {
-    public class SistemParametreVM
+    public class SistemParametreVM : BaseVM
     {
         public string ParametreAdi { get; set; }
         public Guid UstParametreId { get; set; }

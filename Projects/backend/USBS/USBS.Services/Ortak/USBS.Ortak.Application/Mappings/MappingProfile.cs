@@ -4,11 +4,12 @@ using USBS.Common.Domain;
 
 namespace Ortak.Application.Mappings
 {
-    public class MappingProfile : Profile
+    public class DtoMappingProfile : Profile
     {
-        public MappingProfile()
+        public DtoMappingProfile()
         {
             CreateMap<SistemTanim, SistemTanimDto>().ReverseMap();
+            CreateMap<SistemTanimTipi, SistemTanimTipiDto>().ReverseMap();
         }
     }
 }

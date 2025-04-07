@@ -5,7 +5,7 @@ using USBS.Common.Domain;
 
 namespace Sistem.Application.Business
 {
-    public class SistemParametreServis
+    public class SistemParametreServis : ISistemParametreServis
     {
         private readonly ISistemParametreRepository _repository;
         private readonly IMapper _mapper;

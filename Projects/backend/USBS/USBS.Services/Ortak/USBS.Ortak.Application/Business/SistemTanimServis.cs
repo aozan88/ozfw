@@ -5,7 +5,7 @@ using USBS.Common.Dtos.OrtakDtos;
 
 namespace Ortak.Application.Business
 {
-    public class SistemTanimServis
+    public class SistemTanimServis : ISistemTanimServis
     {
         private readonly ISistemTanimRepository _repository;
         private readonly IMapper _mapper;
