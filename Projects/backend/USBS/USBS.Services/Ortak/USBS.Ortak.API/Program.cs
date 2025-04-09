@@ -8,6 +8,7 @@ using USBS.Workers.SampleWorker;
 using FluentValidation;
 using Ortak.Application.Mappings;
 using Ortak.API.Mappings;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API for Ortak data and configurations"
     });
 });
+
 
 builder.Services.AddControllers();
 

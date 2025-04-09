@@ -15,9 +15,11 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.BaseEssentials\KonFwBaseModels\KonFwBaseModels.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common.Dtos\USBS.Common.Dtos.csproj" />
     <ProjectReference Include="..\..\..\USBS.Components\USBS.Components.Caching\USBS.Components.Caching.csproj" />
     <ProjectReference Include="..\..\..\USBS.Components\USBS.Components.Logging\USBS.Components.Logging.csproj" />

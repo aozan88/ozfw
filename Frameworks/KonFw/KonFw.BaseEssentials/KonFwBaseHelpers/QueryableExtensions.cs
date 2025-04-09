@@ -6,7 +6,7 @@ namespace KonFwBaseHelpers
 {
     public static class QueryableExtensions
     {
-        public static BaseResponseDto<T> ToFilterView<T>(
+        public static async Task<BaseResponseDto<T>> ToFilterView<T>(
             this IQueryable<T> query, BaseRequestDto<T> filter)
         {
             try
@@ -35,7 +35,6 @@ namespace KonFwBaseHelpers
                 // Başarı durumu başarılıysa, işlem başarılı kabul edilir
                 return new BaseResponseDto<T>
                 {
-                    Query = query,
                     ObjectValue = query.ToList(),
                     IsSuccess = true,  // İşlem başarılı
                     PageNumber = filter.Page,

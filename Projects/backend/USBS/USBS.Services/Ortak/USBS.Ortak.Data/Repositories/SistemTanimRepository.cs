@@ -4,6 +4,7 @@ using USBS.Common.Domain;
 using Ortak.Application.Contract;
 using Ortak.Data.Persistence;
 
+
 namespace Ortak.Data.Repositories
 {
     public class SistemTanimRepository : GenericRepository<SistemTanim>, ISistemTanimRepository
@@ -17,7 +18,7 @@ namespace Ortak.Data.Repositories
 
         public async Task<IEnumerable<SistemTanim>> GetAktifTanimListAsync()
         {
-            return await _context.SistemTanims.Where(k => k.Durum == 1).ToListAsync();
+            return await _context.SistemTanims.Where(t => t.Durum == 1).ToListAsync();
         }
     }
 }
