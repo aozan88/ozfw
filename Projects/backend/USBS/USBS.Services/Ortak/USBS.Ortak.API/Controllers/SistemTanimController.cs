@@ -53,19 +53,19 @@ namespace Ortak.API.Controllers
         public async Task<IActionResult> Create([FromBody] BaseRequestDto<SistemTanimVM>? request)
         {
 
-            if (request?.SearchValue == null)
+            if (request?.Payload == null)
             {
                 return BadRequest("SearchValue is required.");
             }
 
-            var validationResult = await _SistemTanimValidator.ValidateAsync(request.SearchValue);
+            var validationResult = await _SistemTanimValidator.ValidateAsync(request.Payload);
             if (!validationResult.IsValid)
             {
                 var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
                 return BadRequest(errors);
             }
 
-            var dto = _mapper.Map<SistemTanimDto>(request.SearchValue);
+            var dto = _mapper.Map<SistemTanimDto>(request.Payload);
             var result = await _SistemTanimServis.AddSistemTanimAsync(dto);
 
             if (!result.IsSuccess || result.ObjectValue == null || !result.ObjectValue.Any())
@@ -81,20 +81,20 @@ namespace Ortak.API.Controllers
         public async Task<IActionResult> Update([FromBody] BaseRequestDto<SistemTanimVM> sistemTanimVm)
         {
 
-            if (sistemTanimVm?.SearchValue == null)
+            if (sistemTanimVm?.Payload == null)
             {
                 return BadRequest(sistemTanimVm);
             }
             
             // Validate the DTO
-            var validationResult = await _SistemTanimValidator.ValidateAsync(sistemTanimVm.SearchValue);
+            var validationResult = await _SistemTanimValidator.ValidateAsync(sistemTanimVm.Payload);
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
             }
 
             SistemTanimDto sistemTanimDto = new SistemTanimDto();
-            _mapper.Map(sistemTanimVm.SearchValue, sistemTanimDto);
+            _mapper.Map(sistemTanimVm.Payload, sistemTanimDto);
             var updatedSistemTanim = await _SistemTanimServis.UpdateSistemTanimAsync(sistemTanimDto);
 
             if (updatedSistemTanim == null)

@@ -52,19 +52,19 @@ namespace Ortak.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BaseRequestDto<SistemTanimTipiVM> request)
         {
-            if (request?.SearchValue == null)
+            if (request?.Payload == null)
             {
                 return BadRequest("SearchValue is required.");
             }
 
-            var validationResult = await _SistemTanimTipiValidator.ValidateAsync(request.SearchValue);
+            var validationResult = await _SistemTanimTipiValidator.ValidateAsync(request.Payload);
             if (!validationResult.IsValid)
             {
                 var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
                 return BadRequest(errors);
             }
 
-            var dto = _mapper.Map<SistemTanimTipiDto>(request.SearchValue);
+            var dto = _mapper.Map<SistemTanimTipiDto>(request.Payload);
             var result = await _SistemTanimTipiServis.AddSistemTanimTipiAsync(dto);
 
             if (!result.IsSuccess || result.ObjectValue == null || !result.ObjectValue.Any())
@@ -79,20 +79,20 @@ namespace Ortak.API.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update([FromBody] BaseRequestDto<SistemTanimTipiVM> request)
         {
-            if (request?.SearchValue == null)
+            if (request?.Payload == null)
             {
                 return BadRequest("SearchValue is required.");
             }
 
             // Validate the DTO
-            var validationResult = await _SistemTanimTipiValidator.ValidateAsync(request.SearchValue);
+            var validationResult = await _SistemTanimTipiValidator.ValidateAsync(request.Payload);
             if (!validationResult.IsValid)
             {
                 var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
                 return BadRequest(errors);
             }
 
-            var dto = _mapper.Map<SistemTanimTipiDto>(request.SearchValue);
+            var dto = _mapper.Map<SistemTanimTipiDto>(request.Payload);
 
             var result = await _SistemTanimTipiServis.UpdateSistemTanimTipiAsync(dto);
 
