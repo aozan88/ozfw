@@ -1,0 +1,134 @@
+using {{PrefferredNamespace}}.Contract;
+using AutoMapper;
+using USBS.Common.Domain;
+using USBS.Common.Dtos.OrtakDtos;
+using KonFwBaseModels;
+
+
+namespace {{PrefferredNamespace}}.Business
+{
+    public class {{ClassName}}Servis : I{{ClassName}}Servis
+    {
+        private readonly I{{ClassName}}Repository _repository;
+        private readonly IMapper _mapper;
+
+        public {{ClassName}}Servis(I{{ClassName}}Repository repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
+        }
+
+        public async Task<BaseResponseDto<{{ClassName}}Dto>> GetAllActive{{ClassName}}sAsync()
+        {
+            var entityList = await _repository.GetAktifTanimListAsync();
+
+            if (entityList == null)
+            {
+                return new BaseResponseDto<{{ClassName}}Dto>
+                {
+                    IsSuccess = false,
+                    Mesaj = "Hiçbir aktif sistem tanýmý bulunamadý."
+                };
+            }
+
+            var dtoList = _mapper.Map<IEnumerable<{{ClassName}}Dto>>(entityList);
+
+            return new BaseResponseDto<{{ClassName}}Dto>
+            {
+                ObjectValue = dtoList,
+                IsSuccess = true
+            };
+        }
+
+        public async Task<BaseResponseDto<{{ClassName}}Dto>> Add{{ClassName}}Async({{ClassName}}Dto {{ClassName}}Dto)
+        {
+            var entity = _mapper.Map<{{ClassName}}>({{ClassName}}Dto);
+
+            var addedEntity = await _repository.AddAsync(entity);
+            if (addedEntity == null)
+            {
+                return new BaseResponseDto<{{ClassName}}Dto>
+                {
+                    IsSuccess = false,
+                    Mesaj = "Veritabanýna kayýt eklenemedi."
+                };
+            }
+
+            var responseDto = _mapper.Map<{{ClassName}}Dto>(addedEntity);
+
+            return new BaseResponseDto<{{ClassName}}Dto>
+            {
+                ObjectValue = new List<{{ClassName}}Dto> { responseDto },
+                IsSuccess = true
+            };
+        }
+
+        public async Task<BaseResponseDto<{{ClassName}}Dto>> Update{{ClassName}}Async({{ClassName}}Dto {{ClassName}}Dto)
+        {
+            var entity = await _repository.GetByIdAsync({{ClassName}}Dto.Id);
+            if (entity == null)
+            {
+                return new BaseResponseDto<{{ClassName}}Dto>
+                {
+                    IsSuccess = false,
+                    Mesaj = $"Entity with ID {{{ClassName}}Dto.Id} not found."
+                };
+            }
+
+            _mapper.Map({{ClassName}}Dto, entity);
+            await _repository.UpdateAsync(entity);
+
+            var updatedDto = _mapper.Map<{{ClassName}}Dto>(entity);
+
+            return new BaseResponseDto<{{ClassName}}Dto>
+            {
+                ObjectValue = new[] { updatedDto },
+                IsSuccess = true
+            };
+        }
+
+        public async Task<BaseResponseDto<{{ClassName}}Dto>> Delete{{ClassName}}Async(Guid id)
+        {
+            var {{ClassName}} = await _repository.GetByIdAsync(id);
+
+            if ({{ClassName}} == null)
+            {
+                return new BaseResponseDto<{{ClassName}}Dto>
+                {
+                    IsSuccess = false,
+                    ObjectValue = null
+                };
+            }
+
+            {{ClassName}}.Durum = -1;
+            await _repository.UpdateAsync({{ClassName}});
+
+            return new BaseResponseDto<{{ClassName}}Dto>
+            {
+                IsSuccess = true,
+                ObjectValue = new List<{{ClassName}}Dto>() 
+            };
+        }
+
+        public async Task<BaseResponseDto<{{ClassName}}Dto>> GetByIdAsync(Guid id)
+        {
+            var {{ClassName}} = await _repository.GetByIdAsync(id);
+            var {{ClassName}}Dto = _mapper.Map<{{ClassName}}Dto>({{ClassName}});
+
+            if ({{ClassName}}Dto == null)
+            {
+                return new BaseResponseDto<{{ClassName}}Dto>
+                {
+                    IsSuccess = false,
+                    ObjectValue = new List<{{ClassName}}Dto>()
+                };
+            }
+
+            return new BaseResponseDto<{{ClassName}}Dto>
+            {
+                ObjectValue = new[] { {{ClassName}}Dto },
+                IsSuccess = true
+            };
+        }
+    }
+}

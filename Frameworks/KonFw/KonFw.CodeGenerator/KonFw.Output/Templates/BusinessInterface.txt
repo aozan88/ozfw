@@ -1,0 +1,15 @@
+using KonFwBaseModels;
+using USBS.Common.Domain;
+using USBS.Common.Dtos.OrtakDtos;
+
+namespace {{PrefferredNamespace}}.Business
+{
+    public interface I{{ClassName}}Servis
+    {
+        Task<BaseResponseDto<{{ClassName}}Dto>> Add{{ClassName}}Async({{ClassName}}Dto {{ClassName}}Dto);
+        Task<BaseResponseDto<{{ClassName}}Dto>> Delete{{ClassName}}Async(Guid id);
+        Task<BaseResponseDto<{{ClassName}}Dto>> GetAllActive{{ClassName}}sAsync();
+        Task<BaseResponseDto<{{ClassName}}Dto>> GetByIdAsync(Guid id);
+        Task<BaseResponseDto<{{ClassName}}Dto>> Update{{ClassName}}Async({{ClassName}}Dto {{ClassName}}Dto);
+    }
+}
