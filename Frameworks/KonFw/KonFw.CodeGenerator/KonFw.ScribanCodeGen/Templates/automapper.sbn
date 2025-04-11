@@ -1,0 +1,12 @@
+using AutoMapper;
+
+namespace {{ namespace }}
+{
+    public class {{ entity_name }}Profile : Profile
+    {
+        public {{ entity_name }}Profile()
+        {
+            CreateMap<{{ entity_name }}, {{ entity_name }}Dto>().ReverseMap();
+        }
+    }
+}
