@@ -1,85 +1,123 @@
 ﻿using KonFwEventBus;
+using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using System.Text;
 using System.Text.Json;
+
 
 namespace KonFwRabbitMq
 {
     public class RabbitMqEventBus : IEventBus
     {
         private readonly RabbitMqConfiguration _config;
-        private readonly Dictionary<Type, List<Type>> _handlers = new Dictionary<Type, List<Type>>();
+        private readonly IServiceProvider _serviceProvider;
 
-        public RabbitMqEventBus(RabbitMqConfiguration config)
+        public RabbitMqEventBus(RabbitMqConfiguration config, IServiceProvider serviceProvider)
         {
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
-        public async Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
+        public virtual async Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
         {
             if (!_config.IsEnabled) return;
 
-            string routingKey = GetRoutingKey<TEvent>();
-            string serializedEvent = JsonSerializer.Serialize(@event);
+            var factory = CreateConnectionFactory();
+           var connection = await factory.CreateConnectionAsync();  
+           var channel = await connection.CreateChannelAsync();
 
-            Console.WriteLine($"[RabbitMQ Publish] {_config.HostName}:{_config.Port} - " +
-                             $"Exchange: {_config.ExchangeName} - RoutingKey: {routingKey} - EventId: {@event.Id}");
+            await channel.ExchangeDeclareAsync(
+                exchange: _config.ExchangeName,
+                type: _config.ExchangeType,
+                durable: _config.Durable,
+                autoDelete: _config.AutoDelete);
 
-            // In a real implementation, we'd use RabbitMQ.Client to publish the event
+            var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event));
+
+            var properties = new BasicProperties
+            {
+                Persistent = _config.PersistentDelivery
+            };
+
+            await channel.BasicPublishAsync(
+                exchange: _config.ExchangeName,
+                routingKey: typeof(TEvent).Name,
+                mandatory: false, 
+                basicProperties: properties,
+                body: body);
+
+            Console.WriteLine($"[RabbitMQ Publish] Event published: {typeof(TEvent).Name}");
+            await Task.CompletedTask;
         }
 
-        public Task SubscribeAsync<TEvent, THandler>()
+        public virtual async Task SubscribeAsync<TEvent, THandler>()
             where TEvent : IEvent
             where THandler : IEventHandler<TEvent>
         {
-            if (!_config.IsEnabled) return Task.CompletedTask;
+            if (!_config.IsEnabled) return;
 
-            var eventType = typeof(TEvent);
-            var handlerType = typeof(THandler);
+            var factory = CreateConnectionFactory();
+            using var connection = await factory.CreateConnectionAsync();
+            using var channel = await connection.CreateChannelAsync();
 
-            if (!_handlers.ContainsKey(eventType))
+           await channel.ExchangeDeclareAsync(
+                exchange: _config.ExchangeName,
+                type: _config.ExchangeType,
+                durable: _config.Durable,
+                autoDelete: _config.AutoDelete);
+
+            var queueName = $"{_config.QueueName}_{typeof(TEvent).Name}";
+            await channel.QueueDeclareAsync(
+                queue: queueName,
+                durable: _config.Durable,
+                exclusive: false,
+                autoDelete: _config.AutoDelete);
+
+          await  channel.QueueBindAsync(
+                queue: queueName,
+                exchange: _config.ExchangeName,
+                routingKey: typeof(TEvent).Name);
+
+            var consumer = new AsyncEventingBasicConsumer(channel);
+            consumer.ReceivedAsync += async (model, ea) =>
             {
-                _handlers[eventType] = new List<Type>();
-            }
+                var body = ea.Body.ToArray();
+                var message = Encoding.UTF8.GetString(body);
+                var @event = JsonSerializer.Deserialize<TEvent>(message);
 
-            if (_handlers[eventType].Any(h => h == handlerType))
-            {
-                throw new ArgumentException($"Handler Type {handlerType.Name} already registered for '{eventType.Name}'");
-            }
+                if (@event != null)
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var handler = scope.ServiceProvider.GetRequiredService<THandler>();
 
-            _handlers[eventType].Add(handlerType);
+                    await handler.HandleAsync(@event);
+                }
+            };
 
-            string routingKey = GetRoutingKey<TEvent>();
-            Console.WriteLine($"[RabbitMQ Subscribe] {_config.HostName}:{_config.Port} - " +
-                             $"Exchange: {_config.ExchangeName} - RoutingKey: {routingKey} - Handler: {handlerType.Name}");
-
-            // In a real implementation, we'd use RabbitMQ.Client to bind to the queue
-
-            return Task.CompletedTask;
+            await channel.BasicConsumeAsync(queue: queueName, autoAck: true, consumer: consumer).ConfigureAwait(false);
+            Console.WriteLine($"[RabbitMQ Subscribe] Subscribed to event: {typeof(TEvent).Name}");
+            await Task.CompletedTask;
         }
-        public Task UnsubscribeAsync<TEvent, THandler>()
+
+        public virtual Task UnsubscribeAsync<TEvent, THandler>()
             where TEvent : IEvent
             where THandler : IEventHandler<TEvent>
         {
-            if (!_config.IsEnabled) return Task.CompletedTask;
-
-            var eventType = typeof(TEvent);
-            var handlerType = typeof(THandler);
-
-            if (!_handlers.ContainsKey(eventType))
-            {
-                return Task.CompletedTask;
-            }
-
-            _handlers[eventType].Remove(handlerType);
-
-            string routingKey = GetRoutingKey<TEvent>();
-            Console.WriteLine($"[RabbitMQ Unsubscribe] {_config.HostName}:{_config.Port} - " +
-                             $"Exchange: {_config.ExchangeName} - RoutingKey: {routingKey} - Handler: {handlerType.Name}");
+            Console.WriteLine($"[RabbitMQ Unsubscribe] Unsubscribed from event: {typeof(TEvent).Name}");
             return Task.CompletedTask;
         }
 
-        private string GetRoutingKey<TEvent>()
+        private ConnectionFactory CreateConnectionFactory()
         {
-            return $"{_config.ExchangeType}{typeof(TEvent).Name}";
+            return new ConnectionFactory
+            {
+                HostName = _config.HostName,
+                Port = _config.Port,
+                VirtualHost = _config.VirtualHost,
+                UserName = _config.Username,
+                Password = _config.Password
+            };
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using USBS.Common.Dtos.OrtakDtos;
 using Ortak.API.ViewModels;
+using KonFwBaseModels;
+using USBS.Common.Domain;
 
 namespace Ortak.API.Mappings
 {
@@ -9,7 +11,11 @@ namespace Ortak.API.Mappings
         public MappingProfile()
         {
             CreateMap<SistemTanimVM, SistemTanimDto>().ReverseMap();
+            CreateMap<SistemTanimDto, SistemTanim>().ReverseMap();
+
             CreateMap<SistemTanimTipiVM, SistemTanimTipiDto>().ReverseMap();
+            CreateMap<SistemTanimTipiDto, SistemTanimTipi>().ReverseMap();
+
         }
     }
 }

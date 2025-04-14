@@ -12,6 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.BaseEssentials\KonFwBaseModels\KonFwBaseModels.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.EventManagement\KonFwEventBus\KonFwEventBus.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common.Dtos\USBS.Common.Dtos.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common\USBS.Common.Domain\USBS.Common.Domain.csproj" />
   </ItemGroup>

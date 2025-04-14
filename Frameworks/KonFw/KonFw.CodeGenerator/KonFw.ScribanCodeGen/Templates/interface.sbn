@@ -1,0 +1,11 @@
+namespace {{ namespace }}
+{
+    public interface I{{ entity_name }}Service
+    {
+        Task<{{ entity_name }}> GetByIdAsync(int id);
+        Task<IEnumerable<{{ entity_name }}>> GetAllAsync();
+        Task<{{ entity_name }}> CreateAsync({{ entity_name }} entity);
+        Task<bool> UpdateAsync({{ entity_name }} entity);
+        Task<bool> DeleteAsync(int id);
+    }
+}

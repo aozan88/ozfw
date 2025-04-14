@@ -2,6 +2,9 @@
 using AutoMapper;
 using USBS.Common.Domain;
 using USBS.Common.Dtos.OrtakDtos;
+using KonFwBaseModels;
+using USBS.Ortak.API.Consumers;
+using KonFwEventBus;
 
 namespace Ortak.Application.Business
 {
@@ -9,59 +12,137 @@ namespace Ortak.Application.Business
     {
         private readonly ISistemTanimTipiRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IEventBus _eventBus;
 
-        public SistemTanimTipiServis(ISistemTanimTipiRepository repository, IMapper mapper)
+        public SistemTanimTipiServis(ISistemTanimTipiRepository repository, IMapper mapper, IEventBus eventBus)
         {
             _repository = repository;
             _mapper = mapper;
+            _eventBus = eventBus;
         }
 
-        public async Task<IEnumerable<SistemTanimTipiDto>> GetAllActiveSistemTanimTipisAsync()
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> GetAllActiveSistemTanimTipisAsync()
         {
-            var SistemTanimTipis = await _repository.GetAktifTanimTipiListAsync();
-            return _mapper.Map<IEnumerable<SistemTanimTipiDto>>(SistemTanimTipis);
+            var entityList = await _repository.GetAktifTanimTipiListAsync();
+
+            if (entityList == null)
+            {
+                return new BaseResponseDto<SistemTanimTipiDto>
+                {
+                    IsSuccess = false,
+                    Mesaj = "Hiçbir aktif sistem tanımı bulunamadı."
+                };
+            }
+
+            var dtoList = _mapper.Map<IEnumerable<SistemTanimTipiDto>>(entityList);
+
+            return new BaseResponseDto<SistemTanimTipiDto>
+            {
+                ObjectValue = dtoList,
+                IsSuccess = true
+            };
         }
 
-        public async Task<SistemTanimTipiDto> AddSistemTanimTipiAsync(SistemTanimTipiDto SistemTanimTipiDto)
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> AddSistemTanimTipiAsync(SistemTanimTipiDto SistemTanimTipiDto)
         {
-            try
+
+            var entity = _mapper.Map<SistemTanimTipi>(SistemTanimTipiDto);
+
+            var addedEntity = await _repository.AddAsync(entity);
+            if (addedEntity == null)
             {
-                var SistemTanimTipi = _mapper.Map<SistemTanimTipi>(SistemTanimTipiDto);
-                await _repository.AddAsync(SistemTanimTipi);
+                return new BaseResponseDto<SistemTanimTipiDto>
+                {
+                    IsSuccess = false,
+                    Mesaj = "Veritabanına kayıt eklenemedi."
+                };
             }
-            catch (Exception ex)
+
+            var responseDto = _mapper.Map<SistemTanimTipiDto>(addedEntity);
+
+            return new BaseResponseDto<SistemTanimTipiDto>
             {
-                throw;
-            }
-            return SistemTanimTipiDto;
+                ObjectValue = new List<SistemTanimTipiDto> { responseDto },
+                IsSuccess = true
+            };
         }
 
-        public async Task<SistemTanimTipiDto> UpdateSistemTanimTipiAsync(Guid id, SistemTanimTipiDto SistemTanimTipiDto)
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> UpdateSistemTanimTipiAsync(SistemTanimTipiDto SistemTanimTipiDto)
+        {
+            var entity = await _repository.GetByIdAsync(SistemTanimTipiDto.Id);
+            if (entity == null)
+            {
+                return new BaseResponseDto<SistemTanimTipiDto>
+                {
+                    IsSuccess = false,
+                    Mesaj = $"Entity with ID {SistemTanimTipiDto.Id} not found."
+                };
+            }
+
+            _mapper.Map(SistemTanimTipiDto, entity);
+             await _repository.UpdateAsync(entity);
+
+            var updatedDto = _mapper.Map<SistemTanimTipiDto>(entity);
+
+            return new BaseResponseDto<SistemTanimTipiDto>
+            {
+                ObjectValue = new[] { updatedDto },
+                IsSuccess = true
+            };
+        }
+
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> DeleteSistemTanimTipiAsync(Guid id)
         {
             var SistemTanimTipi = await _repository.GetByIdAsync(id);
+
             if (SistemTanimTipi == null)
             {
-                return SistemTanimTipiDto;
+                return new BaseResponseDto<SistemTanimTipiDto>
+                {
+                    IsSuccess = false,
+                    ObjectValue = null
+                };
             }
 
-            _mapper.Map(SistemTanimTipiDto, SistemTanimTipi);
-            await _repository.UpdateAsync(SistemTanimTipi);
-            return SistemTanimTipiDto;
-        }
-
-        public async Task<bool> DeleteSistemTanimTipiAsync(Guid id)
-        {
-            var SistemTanimTipi = await _repository.GetByIdAsync(id);
-            if (SistemTanimTipi == null) return false;
             SistemTanimTipi.Durum = -1;
             await _repository.UpdateAsync(SistemTanimTipi);
-            return true;
+
+            
+
+            var @event = new SistemTanimTipiSilindiEvent
+            {
+                SistemTanimTipiId = SistemTanimTipi.Id,
+                YeniDurum = SistemTanimTipi.Durum
+            };
+
+            await _eventBus.PublishAsync(@event);
+
+            return new BaseResponseDto<SistemTanimTipiDto>
+            {
+                IsSuccess = true,
+                ObjectValue = new List<SistemTanimTipiDto>()
+            };
         }
 
-        public async Task<SistemTanimTipiDto> GetByIdAsync(Guid id)
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> GetByIdAsync(Guid id)
         {
             var SistemTanimTipi = await _repository.GetByIdAsync(id);
-            return _mapper.Map<SistemTanimTipiDto>(SistemTanimTipi);
+            var SistemTanimTipiDto = _mapper.Map<SistemTanimTipiDto>(SistemTanimTipi);
+
+            if (SistemTanimTipiDto == null)
+            {
+                return new BaseResponseDto<SistemTanimTipiDto>
+                {
+                    IsSuccess = false,
+                    ObjectValue = new List<SistemTanimTipiDto>()
+                };
+            }
+
+            return new BaseResponseDto<SistemTanimTipiDto>
+            {
+                ObjectValue = new[] { SistemTanimTipiDto },
+                IsSuccess = true
+            };
         }
     }
 }

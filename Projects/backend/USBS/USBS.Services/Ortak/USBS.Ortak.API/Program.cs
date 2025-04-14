@@ -8,12 +8,11 @@ using USBS.Workers.SampleWorker;
 using FluentValidation;
 using Ortak.Application.Mappings;
 using Ortak.API.Mappings;
-using Common.Logging;
-using Serilog;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseSerilog(SeriLogger.Configure);
+
 builder.AddServiceDefaults();
 
 builder.Services.AddDistributedMemoryCache();
@@ -36,6 +35,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "API for Ortak data and configurations"
     });
 });
+
 
 builder.Services.AddControllers();
 
@@ -62,12 +62,17 @@ builder.Services.AddDatabaseDefaults(builder.Configuration);
 var defaultConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
 builder.Services.AddInfrastructureServices<OrtakDbContext>(defaultConnectionString);
 
-//builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
-builder.Services.AddTransient<LoggingDelegatingHandler>();
+builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
 
-//builder.Services.AddLogging();
+builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
+
+
+
+builder.Services.AddLogging();
 
 var app = builder.Build();
+
+
 
 // app.MapDefaultEndpoints();
 
@@ -89,6 +94,8 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapControllers();
+
+await app.UseEventBusSubscriptions();
 
 app.Run();
 

@@ -4,6 +4,8 @@ using USBS.Common.Dtos.OrtakDtos;
 using FluentValidation;
 using Ortak.API.ViewModels;
 using AutoMapper;
+using KonFwBaseModels;
+
 
 namespace Ortak.API.Controllers
 {
@@ -25,8 +27,14 @@ namespace Ortak.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var SistemTanimTipis = await _SistemTanimTipiServis.GetAllActiveSistemTanimTipisAsync();
-            return Ok(SistemTanimTipis);
+            var result = await _SistemTanimTipiServis.GetAllActiveSistemTanimTipisAsync();
+
+            if (!result.IsSuccess || result.ObjectValue == null)
+            {
+                return NotFound(new { Message = "Aktif sistem tanýmlarý bulunamadý." });
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("{id:guid}")]
@@ -42,50 +50,65 @@ namespace Ortak.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] SistemTanimTipiVM sistemTanimTipiVm)
+        public async Task<IActionResult> Create([FromBody] BaseRequestDto<SistemTanimTipiVM> request)
         {
-            // Validate the incoming DTO
-            var validationResult = await _SistemTanimTipiValidator.ValidateAsync(sistemTanimTipiVm);
+            if (request?.Payload == null)
+            {
+                return BadRequest("SearchValue is required.");
+            }
+
+            var validationResult = await _SistemTanimTipiValidator.ValidateAsync(request.Payload);
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
+                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                return BadRequest(errors);
             }
-            SistemTanimTipiDto sistemTanimTipiDto = new SistemTanimTipiDto();
-            _mapper.Map(sistemTanimTipiVm, sistemTanimTipiDto);
-            var createdSistemTanimTipi = await _SistemTanimTipiServis.AddSistemTanimTipiAsync(sistemTanimTipiDto);
-            return CreatedAtAction(nameof(GetById), new { id = createdSistemTanimTipi.Id }, createdSistemTanimTipi);
+
+            var dto = _mapper.Map<SistemTanimTipiDto>(request.Payload);
+            var result = await _SistemTanimTipiServis.AddSistemTanimTipiAsync(dto);
+
+            if (!result.IsSuccess || result.ObjectValue == null || !result.ObjectValue.Any())
+            {
+                return StatusCode(500, "Kayýt oluþturulamadý."); // Daha net bir hata mesajý
+            }
+
+            var createdId = result.ObjectValue.First().Id;
+            return CreatedAtAction(nameof(GetById), new { id = createdId }, result);
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] SistemTanimTipiVM sistemTanimTipiVm)
+        public async Task<IActionResult> Update([FromBody] BaseRequestDto<SistemTanimTipiVM> request)
         {
-            if (id != sistemTanimTipiVm.Id)
+            if (request?.Payload == null)
             {
-                return BadRequest(new { Message = "ID mismatch between the route and the payload." });
+                return BadRequest("SearchValue is required.");
             }
 
             // Validate the DTO
-            var validationResult = await _SistemTanimTipiValidator.ValidateAsync(sistemTanimTipiVm);
+            var validationResult = await _SistemTanimTipiValidator.ValidateAsync(request.Payload);
             if (!validationResult.IsValid)
             {
-                return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
-            }
-            SistemTanimTipiDto sistemTanimTipiDto = new SistemTanimTipiDto();
-            _mapper.Map(sistemTanimTipiVm, sistemTanimTipiDto);
-            var updatedSistemTanimTipi = await _SistemTanimTipiServis.UpdateSistemTanimTipiAsync(id, sistemTanimTipiDto);
-            if (updatedSistemTanimTipi == null)
-            {
-                return NotFound(new { Message = $"SistemTanimTipi with ID {id} not found for update." });
+                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
+                return BadRequest(errors);
             }
 
-            return Ok(updatedSistemTanimTipi);
+            var dto = _mapper.Map<SistemTanimTipiDto>(request.Payload);
+
+            var result = await _SistemTanimTipiServis.UpdateSistemTanimTipiAsync(dto);
+
+            if (!result.IsSuccess || result.ObjectValue == null)
+            {
+                return NotFound(new { Message = $"SistemTanimTipi with ID  not found or update failed." });
+            }
+
+            return Ok(result);
         }
 
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await _SistemTanimTipiServis.DeleteSistemTanimTipiAsync(id);
-            if (!success)
+            var result = await _SistemTanimTipiServis.DeleteSistemTanimTipiAsync(id);
+            if (!result.IsSuccess)
             {
                 return NotFound(new { Message = $"SistemTanimTipi with ID {id} not found for deletion." });
             }

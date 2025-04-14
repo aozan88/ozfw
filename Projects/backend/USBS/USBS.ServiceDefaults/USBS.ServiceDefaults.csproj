@@ -28,6 +28,8 @@
     <ProjectReference Include="..\USBS.Components\USBS.Components.DBManagement\USBS.Components.DBManagement.csproj" />
     <ProjectReference Include="..\USBS.Components\USBS.Components.EventManagement\USBS.Components.EventManagement.csproj" />
     <ProjectReference Include="..\USBS.Components\USBS.Components.Logging\USBS.Components.Logging.csproj" />
+    <ProjectReference Include="..\USBS.Services\Ortak\USBS.Ortak.Application\USBS.Ortak.Application.csproj" />
+    <ProjectReference Include="..\USBS.Services\Ortak\USBS.Ortak.Data\USBS.Ortak.Data.csproj" />
   </ItemGroup>
 
 </Project>

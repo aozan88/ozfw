@@ -1,0 +1,11 @@
+namespace {{ namespace }}
+{
+    public class {{ entity_name }}Service : I{{ entity_name }}Service
+    {
+        public Task<{{ entity_name }}> GetByIdAsync(int id) => throw new NotImplementedException();
+        public Task<IEnumerable<{{ entity_name }}>> GetAllAsync() => throw new NotImplementedException();
+        public Task<{{ entity_name }}> CreateAsync({{ entity_name }} entity) => throw new NotImplementedException();
+        public Task<bool> UpdateAsync({{ entity_name }} entity) => throw new NotImplementedException();
+        public Task<bool> DeleteAsync(int id) => throw new NotImplementedException();
+    }
+}

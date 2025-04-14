@@ -1,13 +1,14 @@
-﻿using USBS.Common.Dtos.OrtakDtos;
+﻿using KonFwBaseModels;
+using USBS.Common.Dtos.OrtakDtos;
 
 namespace Ortak.Application.Business
 {
     public interface ISistemTanimTipiServis
     {
-        Task<SistemTanimTipiDto> AddSistemTanimTipiAsync(SistemTanimTipiDto SistemTanimTipiDto);
-        Task<bool> DeleteSistemTanimTipiAsync(Guid id);
-        Task<IEnumerable<SistemTanimTipiDto>> GetAllActiveSistemTanimTipisAsync();
-        Task<SistemTanimTipiDto> GetByIdAsync(Guid id);
-        Task<SistemTanimTipiDto> UpdateSistemTanimTipiAsync(Guid id, SistemTanimTipiDto SistemTanimTipiDto);
+        Task<BaseResponseDto<SistemTanimTipiDto>> AddSistemTanimTipiAsync(SistemTanimTipiDto SistemTanimTipiDto);
+        Task<BaseResponseDto<SistemTanimTipiDto>> DeleteSistemTanimTipiAsync(Guid id);
+        Task<BaseResponseDto<SistemTanimTipiDto>> GetAllActiveSistemTanimTipisAsync();
+        Task<BaseResponseDto<SistemTanimTipiDto>> GetByIdAsync(Guid id);
+        Task<BaseResponseDto<SistemTanimTipiDto>> UpdateSistemTanimTipiAsync(SistemTanimTipiDto SistemTanimTipiDto);
     }
 }

@@ -23,6 +23,7 @@ namespace Ortak.API
                     Version = "v1",
                     Description = "API for Ortak data and configurations"
                 });
+
             });
 
             builder.Services.AddControllers();
