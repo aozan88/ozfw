@@ -40,16 +40,11 @@ public static class EventManagementExtensions
         {
             rabbitMqConfigSection.Bind(config);
         });
-        //services.AddSingleton(config);
-        //services.AddSingleton<IEventBus>(sp => new RabbitMqEventBusProvider(config));
-        //services.AddTransient<ISistemTanimRepository, SistemTanimRepository>();
 
        
         services.AddScoped<IEventHandler<SistemTanimTipiSilindiEvent>, SistemTanimTipiSilindiEventHandler>();
         services.AddScoped<ISistemTanimRepository, SistemTanimRepository>();
-      //  services.AddScoped<RabbitMqEventBusStarter>();
-
-      
+        services.AddScoped<SistemTanimTipiSilindiEventHandler>();
 
         return services;
     }
