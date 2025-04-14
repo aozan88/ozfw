@@ -1,7 +1,12 @@
+using KonFwEventBus;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ortak.Application.Contract;
+using Ortak.Data.Repositories;
 using USBS.Components.Caching;
 using USBS.Components.EventManagement;
+using USBS.Ortak.API.Consumers;
 
 namespace USBS.ServiceDefaults;
 
@@ -37,9 +42,27 @@ public static class EventManagementExtensions
         });
         //services.AddSingleton(config);
         //services.AddSingleton<IEventBus>(sp => new RabbitMqEventBusProvider(config));
+        //services.AddTransient<ISistemTanimRepository, SistemTanimRepository>();
+
+       
+        services.AddScoped<IEventHandler<SistemTanimTipiSilindiEvent>, SistemTanimTipiSilindiEventHandler>();
+        services.AddScoped<ISistemTanimRepository, SistemTanimRepository>();
+      //  services.AddScoped<RabbitMqEventBusStarter>();
+
+      
 
         return services;
-        
+    }
 
+    public static async Task UseEventBusSubscriptions(this IApplicationBuilder app)
+    {
+        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+        await eventBus.SubscribeAsync<SistemTanimTipiSilindiEvent, SistemTanimTipiSilindiEventHandler>();
+
+        //using (var scope = app.ApplicationServices.CreateScope())
+        //{
+        //    var eventBusStarter = scope.ServiceProvider.GetRequiredService<RabbitMqEventBusStarter>();
+        //    await eventBusStarter.StartAsync();
+        //}
     }
 }

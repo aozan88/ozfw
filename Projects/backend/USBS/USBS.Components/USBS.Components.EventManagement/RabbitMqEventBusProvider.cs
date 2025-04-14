@@ -1,35 +1,30 @@
-﻿using KonFwEventBus;
-using KonFwRabbitMq;
+﻿using KonFwRabbitMq;
 
 namespace USBS.Components.EventManagement
 {
     public class RabbitMqEventBusProvider : RabbitMqEventBus
     {
-        private readonly RabbitMqConfiguration _config;
-
-        public RabbitMqEventBusProvider(RabbitMqConfiguration config) : base(config)
+        public RabbitMqEventBusProvider(RabbitMqConfiguration config, IServiceProvider serviceProvider)
+            : base(config, serviceProvider)
         {
-            _config = config;
         }
 
-        public Task PublishAsync<TEvent>(TEvent @event) where TEvent : IEvent
+        public override async Task PublishAsync<TEvent>(TEvent @event)
         {
-            Console.WriteLine($"Published to RabbitMq: {typeof(TEvent).Name} with config {_config.QueueName}");
-            return Task.CompletedTask; // Mocked
+            Console.WriteLine($"[RabbitMqEventBusProvider] Publishing event: {typeof(TEvent).Name}");
+            await base.PublishAsync(@event);
         }
 
-        public Task SubscribeAsync<TEvent, THandler>()
-            where TEvent : IEvent where THandler : IEventHandler<TEvent>
+        public override async Task SubscribeAsync<TEvent, THandler>()
         {
-            Console.WriteLine($"Subscribed to RabbitMq: {typeof(TEvent).Name}");
-            return Task.CompletedTask; // Mocked
+            Console.WriteLine($"[RabbitMqEventBusProvider] Subscribing to event: {typeof(TEvent).Name}");
+            await base.SubscribeAsync<TEvent, THandler>();
         }
 
-        public Task UnsubscribeAsync<TEvent, THandler>()
-            where TEvent : IEvent where THandler : IEventHandler<TEvent>
+        public override Task UnsubscribeAsync<TEvent, THandler>()
         {
-            Console.WriteLine($"Unsubscribed from RabbitMq: {typeof(TEvent).Name}");
-            return Task.CompletedTask; // Mocked
+            Console.WriteLine($"[RabbitMqEventBusProvider] Unsubscribing from event: {typeof(TEvent).Name}");
+            return base.UnsubscribeAsync<TEvent, THandler>();
         }
     }
 }

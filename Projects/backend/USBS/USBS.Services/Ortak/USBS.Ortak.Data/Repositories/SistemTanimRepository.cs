@@ -20,5 +20,10 @@ namespace Ortak.Data.Repositories
         {
             return await _context.SistemTanims.Where(t => t.Durum == 1).ToListAsync();
         }
+
+        public async Task<IEnumerable<SistemTanim>> GetAktifTanimByTanimTipiIdAsync(Guid tanimTipiId)
+        {
+            return await _context.SistemTanims.Where(t => t.Durum == 1 && t.TanimTipiId == tanimTipiId).ToListAsync();
+        }
     }
 }

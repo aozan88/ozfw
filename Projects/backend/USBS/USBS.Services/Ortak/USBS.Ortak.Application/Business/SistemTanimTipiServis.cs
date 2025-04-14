@@ -3,6 +3,8 @@ using AutoMapper;
 using USBS.Common.Domain;
 using USBS.Common.Dtos.OrtakDtos;
 using KonFwBaseModels;
+using USBS.Ortak.API.Consumers;
+using KonFwEventBus;
 
 namespace Ortak.Application.Business
 {
@@ -10,11 +12,13 @@ namespace Ortak.Application.Business
     {
         private readonly ISistemTanimTipiRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IEventBus _eventBus;
 
-        public SistemTanimTipiServis(ISistemTanimTipiRepository repository, IMapper mapper)
+        public SistemTanimTipiServis(ISistemTanimTipiRepository repository, IMapper mapper, IEventBus eventBus)
         {
             _repository = repository;
             _mapper = mapper;
+            _eventBus = eventBus;
         }
 
         public async Task<BaseResponseDto<SistemTanimTipiDto>> GetAllActiveSistemTanimTipisAsync()
@@ -102,6 +106,16 @@ namespace Ortak.Application.Business
 
             SistemTanimTipi.Durum = -1;
             await _repository.UpdateAsync(SistemTanimTipi);
+
+            
+
+            var @event = new SistemTanimTipiSilindiEvent
+            {
+                SistemTanimTipiId = SistemTanimTipi.Id,
+                YeniDurum = SistemTanimTipi.Durum
+            };
+
+            await _eventBus.PublishAsync(@event);
 
             return new BaseResponseDto<SistemTanimTipiDto>
             {

@@ -37,6 +37,17 @@ namespace KonFw.BaseInfrastructure
             await _context.SaveChangesAsync();
         }
 
+        public async Task BulkUpdateAsync(IEnumerable<T> entities)
+        {
+            foreach (var entity in entities)
+            {
+                _dbSet.Attach(entity);
+                _context.Entry(entity).State = EntityState.Modified;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(T entity)
         {
             _dbSet.Remove(entity);

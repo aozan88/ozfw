@@ -8,7 +8,7 @@ using USBS.Workers.SampleWorker;
 using FluentValidation;
 using Ortak.Application.Mappings;
 using Ortak.API.Mappings;
-using Swashbuckle.AspNetCore.Filters;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,9 +64,15 @@ builder.Services.AddInfrastructureServices<OrtakDbContext>(defaultConnectionStri
 
 builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
 
+builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
+
+
+
 builder.Services.AddLogging();
 
 var app = builder.Build();
+
+
 
 // app.MapDefaultEndpoints();
 
@@ -88,6 +94,8 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapControllers();
+
+await app.UseEventBusSubscriptions();
 
 app.Run();
 
