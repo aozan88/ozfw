@@ -37,7 +37,7 @@ namespace KonFw.BaseInfrastructure
             await _context.SaveChangesAsync();
         }
 
-        public async Task BulkUpdateAsync(IEnumerable<T> entities)
+        public async Task UpdateManyAsync(IEnumerable<T> entities)
         {
             foreach (var entity in entities)
             {

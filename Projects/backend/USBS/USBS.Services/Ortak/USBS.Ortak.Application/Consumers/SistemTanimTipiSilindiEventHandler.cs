@@ -24,7 +24,7 @@ namespace USBS.Ortak.API.Consumers
                     tanim.Durum = @event.YeniDurum;
                 }
 
-                await _repository.BulkUpdateAsync(tanimlar.Result);
+                await _repository.UpdateManyAsync(tanimlar.Result);
 
                 Console.WriteLine($"[EventHandler] SistemTanim güncellendi. TanimTipiId: {@event.SistemTanimTipiId}, YeniDurum: {@event.YeniDurum}");
 
