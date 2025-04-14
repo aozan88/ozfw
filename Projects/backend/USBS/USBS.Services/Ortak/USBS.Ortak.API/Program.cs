@@ -8,10 +8,12 @@ using USBS.Workers.SampleWorker;
 using FluentValidation;
 using Ortak.Application.Mappings;
 using Ortak.API.Mappings;
+using Common.Logging;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.AddServiceDefaults();
 
@@ -61,8 +63,8 @@ builder.Services.AddDatabaseDefaults(builder.Configuration);
 // Retrieve connection string and register Infrastructure services
 var defaultConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
 builder.Services.AddInfrastructureServices<OrtakDbContext>(defaultConnectionString);
-
-builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
+builder.Services.AddTransient<LoggingDelegatingHandler>();
+// builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
 
 builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
 
