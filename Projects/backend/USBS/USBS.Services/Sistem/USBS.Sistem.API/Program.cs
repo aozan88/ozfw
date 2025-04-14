@@ -1,10 +1,13 @@
+using Common.Logging;
 using FluentValidation;
+using Serilog;
 using Sistem.API.Mappings;
 using Sistem.API.Validations;
 using Sistem.Application.Business;
 using Sistem.Application.Mappings;
 using Sistem.Data.Persistence;
 using Sistem.Data.Registration;
+using USBS.Components.Logging;
 using USBS.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,7 @@ builder.Services.AddDatabaseDefaults(builder.Configuration);
 var defaultDbConfig = builder.Services.BuildServiceProvider().GetRequiredService<IDefaultDbContextConfiguration>();
 builder.Services.AddInfrastructureServices(defaultDbConfig.ConnectionString);
 */
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.AddServiceDefaults();
 
@@ -28,7 +32,7 @@ builder.Services.AddDatabaseDefaults(builder.Configuration);
 var defaultConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
 builder.Services.AddInfrastructureServices<SistemDbContext>(defaultConnectionString);
 
-
+builder.Services.AddTransient<LoggingDelegatingHandler>();
 // Register Swagger only for Ortak.API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
