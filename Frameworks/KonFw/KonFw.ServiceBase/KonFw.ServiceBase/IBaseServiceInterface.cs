@@ -13,11 +13,11 @@ namespace KonFw.ServiceBase
 
         // Create Operations
         Task<BaseResponseDto<ResponseDtoType>> CreateAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
-        Task<HashSet<DtoType>> CreateAsync(HashSet<DtoType> dtoList);
+        Task<HashSet<DtoType>> CreateManyAsync(HashSet<DtoType> dtoList);
 
         // Update Operations
         Task<BaseResponseDto<ResponseDtoType>> UpdateAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
-        Task<HashSet<DtoType>> UpdateAsync(HashSet<DtoType> dtoList);
+        Task<HashSet<DtoType>> UpdateManyAsync(HashSet<DtoType> dtoList);
 
         // Delete Operations
         Task DeleteAsync(Guid uid);

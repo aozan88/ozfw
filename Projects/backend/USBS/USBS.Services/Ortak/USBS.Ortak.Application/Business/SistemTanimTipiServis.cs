@@ -21,19 +21,60 @@ namespace Ortak.Application.Business
             _eventBus = eventBus;
         }
 
-        public async Task<BaseResponseDto<SistemTanimTipiDto>> GetAllActiveSistemTanimTipisAsync()
+        public async Task<SistemTanimTipiDto> GetByIdAsync(Guid id)
         {
-            var entityList = await _repository.GetAktifTanimTipiListAsync();
+            var SistemTanimTipi = await _repository.GetByIdAsync(id);
+            var SistemTanimTipiDto = _mapper.Map<SistemTanimTipiDto>(SistemTanimTipi);
 
-            if (entityList == null)
+            return SistemTanimTipiDto;
+        }
+
+        public async Task<HashSet<SistemTanimTipiDto>> UpdateManyAsync(HashSet<SistemTanimTipiDto> dtoList)
+        {
+            var resultSet = new HashSet<SistemTanimTipiDto>();
+
+            foreach (var dto in dtoList)
             {
+                var entity = await _repository.GetByIdAsync(dto.Id);
+                if (entity != null)
+                {
+                    _mapper.Map(dto, entity);
+                    await _repository.UpdateAsync(entity);
+                    resultSet.Add(_mapper.Map<SistemTanimTipiDto>(entity));
+                }
+            }
+
+            return resultSet;
+        }
+
+
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> DeleteByFilterAsync(BaseRequestDto<SistemTanimTipiDto> baseRequestDto)
+        {
+            // Filtreye göre silme işlemi burada örnek olarak sadece ID alındı
+            var dto = baseRequestDto.Payload;
+            var entity = await _repository.GetByIdAsync(dto.Id);
+            if (entity != null)
+            {
+                entity.Durum = -1;
+                await _repository.UpdateAsync(entity);
+
                 return new BaseResponseDto<SistemTanimTipiDto>
                 {
-                    IsSuccess = false,
-                    Mesaj = "Hiçbir aktif sistem tanımı bulunamadı."
+                    IsSuccess = true,
+                    ObjectValue = new[] { _mapper.Map<SistemTanimTipiDto>(entity) }
                 };
             }
 
+            return new BaseResponseDto<SistemTanimTipiDto>
+            {
+                IsSuccess = false
+            };
+        }
+
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> GetByFilterAsync(BaseRequestDto<SistemTanimTipiDto> baseRequestDto)
+        {
+
+            var entityList = await _repository.GetAktifTanimTipiListAsync();
             var dtoList = _mapper.Map<IEnumerable<SistemTanimTipiDto>>(entityList);
 
             return new BaseResponseDto<SistemTanimTipiDto>
@@ -43,47 +84,69 @@ namespace Ortak.Application.Business
             };
         }
 
-        public async Task<BaseResponseDto<SistemTanimTipiDto>> AddSistemTanimTipiAsync(SistemTanimTipiDto SistemTanimTipiDto)
+        public async Task<BaseResponseDto<List<SistemTanimTipiDto>>> GetAllAsync(BaseRequestDto<SistemTanimTipiDto> baseRequestDto)
         {
+            var allEntities = await _repository.GetAllAsync();
+            var dtoList = _mapper.Map<List<SistemTanimTipiDto>>(allEntities);
 
-            var entity = _mapper.Map<SistemTanimTipi>(SistemTanimTipiDto);
-
-            var addedEntity = await _repository.AddAsync(entity);
-            if (addedEntity == null)
+            return new BaseResponseDto<List<SistemTanimTipiDto>>
             {
-                return new BaseResponseDto<SistemTanimTipiDto>
-                {
-                    IsSuccess = false,
-                    Mesaj = "Veritabanına kayıt eklenemedi."
-                };
-            }
+                ObjectValue = new[] { dtoList },
+                IsSuccess = true
+            };
+        }
+        public async Task<List<SistemTanimTipiDto>> GetAllAsync()
+        {
+            var allEntities = await _repository.GetAllAsync();
+            return _mapper.Map<List<SistemTanimTipiDto>>(allEntities);
+        }
+
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> CreateAsync(BaseRequestDto<SistemTanimTipiDto> baseRequestDto)
+        {
+            var entity = _mapper.Map<SistemTanimTipi>(baseRequestDto.Payload);
+            var addedEntity = await _repository.AddAsync(entity);
 
             var responseDto = _mapper.Map<SistemTanimTipiDto>(addedEntity);
 
             return new BaseResponseDto<SistemTanimTipiDto>
             {
-                ObjectValue = new List<SistemTanimTipiDto> { responseDto },
+                ObjectValue = new[] { responseDto },
                 IsSuccess = true
             };
         }
 
-        public async Task<BaseResponseDto<SistemTanimTipiDto>> UpdateSistemTanimTipiAsync(SistemTanimTipiDto SistemTanimTipiDto)
+        public async Task<HashSet<SistemTanimTipiDto>> CreateManyAsync(HashSet<SistemTanimTipiDto> dtoList)
         {
-            var entity = await _repository.GetByIdAsync(SistemTanimTipiDto.Id);
+            var entityList = _mapper.Map<List<SistemTanimTipi>>(dtoList);
+            var resultSet = new HashSet<SistemTanimTipiDto>();
+
+            foreach (var entity in entityList)
+            {
+                var addedEntity = await _repository.AddAsync(entity);
+                resultSet.Add(_mapper.Map<SistemTanimTipiDto>(addedEntity));
+            }
+
+            return resultSet;
+        }
+
+        public async Task<BaseResponseDto<SistemTanimTipiDto>> UpdateAsync(BaseRequestDto<SistemTanimTipiDto> baseRequestDto)
+        {
+            var dto = baseRequestDto.Payload;
+            var entity = await _repository.GetByIdAsync(dto.Id);
+
             if (entity == null)
             {
                 return new BaseResponseDto<SistemTanimTipiDto>
                 {
                     IsSuccess = false,
-                    Mesaj = $"Entity with ID {SistemTanimTipiDto.Id} not found."
+                    Mesaj = "Güncellenecek kayıt bulunamadı."
                 };
             }
 
-            _mapper.Map(SistemTanimTipiDto, entity);
-             await _repository.UpdateAsync(entity);
+            _mapper.Map(dto, entity);
+            await _repository.UpdateAsync(entity);
 
             var updatedDto = _mapper.Map<SistemTanimTipiDto>(entity);
-
             return new BaseResponseDto<SistemTanimTipiDto>
             {
                 ObjectValue = new[] { updatedDto },
@@ -91,58 +154,41 @@ namespace Ortak.Application.Business
             };
         }
 
-        public async Task<BaseResponseDto<SistemTanimTipiDto>> DeleteSistemTanimTipiAsync(Guid id)
+        public async Task<HashSet<SistemTanimTipiDto>> UpdateAsync(HashSet<SistemTanimTipiDto> dtoList)
         {
-            var SistemTanimTipi = await _repository.GetByIdAsync(id);
+            var resultSet = new HashSet<SistemTanimTipiDto>();
 
-            if (SistemTanimTipi == null)
+            foreach (var dto in dtoList)
             {
-                return new BaseResponseDto<SistemTanimTipiDto>
+                var entity = await _repository.GetByIdAsync(dto.Id);
+                if (entity != null)
                 {
-                    IsSuccess = false,
-                    ObjectValue = null
-                };
+                    _mapper.Map(dto, entity);
+                    await _repository.UpdateAsync(entity);
+                    resultSet.Add(_mapper.Map<SistemTanimTipiDto>(entity));
+                }
             }
 
-            SistemTanimTipi.Durum = -1;
-            await _repository.UpdateAsync(SistemTanimTipi);
-
-            
-
-            var @event = new SistemTanimTipiSilindiEvent
-            {
-                SistemTanimTipiId = SistemTanimTipi.Id,
-                YeniDurum = SistemTanimTipi.Durum
-            };
-
-            await _eventBus.PublishAsync(@event);
-
-            return new BaseResponseDto<SistemTanimTipiDto>
-            {
-                IsSuccess = true,
-                ObjectValue = new List<SistemTanimTipiDto>()
-            };
+            return resultSet;
         }
 
-        public async Task<BaseResponseDto<SistemTanimTipiDto>> GetByIdAsync(Guid id)
+        public async Task DeleteAsync(Guid uid)
         {
-            var SistemTanimTipi = await _repository.GetByIdAsync(id);
-            var SistemTanimTipiDto = _mapper.Map<SistemTanimTipiDto>(SistemTanimTipi);
-
-            if (SistemTanimTipiDto == null)
+            var entity = await _repository.GetByIdAsync(uid);
+            if (entity != null)
             {
-                return new BaseResponseDto<SistemTanimTipiDto>
+                entity.Durum = -1;
+
+                await _repository.UpdateAsync(entity);
+
+                var @event = new SistemTanimTipiSilindiEvent
                 {
-                    IsSuccess = false,
-                    ObjectValue = new List<SistemTanimTipiDto>()
+                    SistemTanimTipiId = entity.Id,
+                    YeniDurum = entity.Durum
                 };
-            }
 
-            return new BaseResponseDto<SistemTanimTipiDto>
-            {
-                ObjectValue = new[] { SistemTanimTipiDto },
-                IsSuccess = true
-            };
+                await _eventBus.PublishAsync(@event);
+            }
         }
     }
 }
