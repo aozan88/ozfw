@@ -9,7 +9,6 @@
         public string ParametreKodu { get; set; }
         public string ParametreDeger { get; set; }
         public string Aciklama{ get; set; }
-        public int Durum { get; set; }
         public bool? BagimlilikVarMi { get; set; }
     }
 }

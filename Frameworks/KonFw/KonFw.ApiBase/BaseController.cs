@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KonFw.ApiBase
 {
     [Route("api/[controller]")]
+    [ApiController]
     public abstract class BaseController<TDto, TRequestDto, TResponseDto> : ControllerBase,
         IBaseControllerInterface<TDto, TRequestDto, TResponseDto>
         where TDto : BaseDto
@@ -26,13 +27,13 @@ namespace KonFw.ApiBase
 
         // Get Operations
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<TDto>> GetByIdAsync(Guid uid)
+        public async Task<ActionResult<TDto>> GetByIdAsync(Guid id)
         {
             try
             {
-                var result = await _service.GetByIdAsync(uid);
+                var result = await _service.GetByIdAsync(id);
                 if (result == null)
-                    return NotFound($"Entity with ID {uid} not found.");
+                    return NotFound($"Entity with ID {id} not found.");
 
                 return Ok(result);
             }
@@ -162,9 +163,9 @@ namespace KonFw.ApiBase
 
         // Delete Operations
         [HttpDelete("{id:guid}")]
-        public  async Task<ActionResult> DeleteAsync(Guid uid)
+        public  async Task<ActionResult> DeleteAsync(Guid id)
         {
-            await _service.DeleteAsync(uid);
+            await _service.DeleteAsync(id);
 
             return NoContent();
 

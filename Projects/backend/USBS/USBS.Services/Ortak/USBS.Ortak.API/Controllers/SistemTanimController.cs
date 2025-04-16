@@ -9,8 +9,7 @@ using KonFw.ApiBase;
 
 namespace Ortak.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+  
     public class SistemTanimController : BaseController<SistemTanimDto, SistemTanimDto, SistemTanimDto>
     {
         private readonly ISistemTanimServis _SistemTanimServis;

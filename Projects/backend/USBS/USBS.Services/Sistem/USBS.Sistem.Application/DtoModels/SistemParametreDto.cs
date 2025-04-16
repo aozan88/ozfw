@@ -1,4 +1,4 @@
-﻿using USBS.Common.Dtos.BaseDtos;
+﻿using KonFwBaseModels;
 
 namespace Sistem.Application.DtoModels
 {
@@ -9,6 +9,5 @@ namespace Sistem.Application.DtoModels
         public Guid? UstSistemParametreId { get; set; }
         public string KisaAd { get; set; }
         public string Aciklama { get; set; }
-        public int Durum{ get; set; }
     }
 }
