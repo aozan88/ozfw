@@ -1,6 +1,6 @@
 ﻿using Sistem.Application.Contract;
 using Sistem.Application.DtoModels;
-using AutoMapper;
+using Mapster;
 using USBS.Common.Domain;
 
 namespace Sistem.Application.Business
@@ -8,23 +8,21 @@ namespace Sistem.Application.Business
     public class SistemParametreServis : ISistemParametreServis
     {
         private readonly ISistemParametreRepository _repository;
-        private readonly IMapper _mapper;
 
-        public SistemParametreServis(ISistemParametreRepository repository, IMapper mapper)
+        public SistemParametreServis(ISistemParametreRepository repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<IEnumerable<SistemParametreDto>> GetAllActiveSistemParametresAsync()
         {
             var SistemParametres = await _repository.GetActiveSistemParametresAsync();
-            return _mapper.Map<IEnumerable<SistemParametreDto>>(SistemParametres);
+            return SistemParametres.Adapt<IEnumerable<SistemParametreDto>>();
         }
 
         public async Task<SistemParametreDto> AddSistemParametreAsync(SistemParametreDto SistemParametreDto)
         {
-            var SistemParametre = _mapper.Map<SistemParametre>(SistemParametreDto);
+            var SistemParametre = SistemParametreDto.Adapt<SistemParametre>();
             await _repository.AddAsync(SistemParametre);
             return SistemParametreDto;
         }
@@ -37,7 +35,7 @@ namespace Sistem.Application.Business
                 return null;
             }
 
-            _mapper.Map(SistemParametreDto, SistemParametre);
+            SistemParametreDto.Adapt(SistemParametre);
             await _repository.UpdateAsync(SistemParametre);
             return SistemParametreDto;
         }
@@ -54,7 +52,7 @@ namespace Sistem.Application.Business
         public async Task<SistemParametreDto> GetByIdAsync(Guid id)
         {
             var SistemParametre = await _repository.GetByIdAsync(id);
-            return _mapper.Map<SistemParametreDto>(SistemParametre);
+            return SistemParametre.Adapt<SistemParametreDto>();
         }
     }
 }

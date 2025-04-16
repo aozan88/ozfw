@@ -29,4 +29,8 @@
     <ProjectReference Include="..\USBS.Ortak.Data\USBS.Ortak.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappings\" />
+  </ItemGroup>
+
 </Project>

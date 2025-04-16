@@ -1,13 +1,12 @@
 using Common.Logging;
 using FluentValidation;
 using Serilog;
-using Sistem.API.Mappings;
 using Sistem.API.Validations;
 using Sistem.Application.Business;
-using Sistem.Application.Mappings;
 using Sistem.Data.Persistence;
 using Sistem.Data.Registration;
 using USBS.Components.Logging;
+using USBS.Ortak.Application.Mappings;
 using USBS.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,9 +56,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSession();
-builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddAutoMapper(typeof(DtoMappingProfile));
+
+MapsterConfig.RegisterMappings(); // Application içinden çaðrýlýr
+
+//builder.Services.AddAutoMapper(typeof(Program));
+//builder.Services.AddAutoMapper(typeof(MappingProfile));
+//builder.Services.AddAutoMapper(typeof(DtoMappingProfile));
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

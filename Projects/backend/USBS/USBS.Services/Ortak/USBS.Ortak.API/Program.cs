@@ -6,10 +6,9 @@ using USBS.Components.Logging;
 using USBS.ServiceDefaults;
 using USBS.Workers.SampleWorker;
 using FluentValidation;
-using Ortak.Application.Mappings;
-using Ortak.API.Mappings;
 using Common.Logging;
 using Serilog;
+using USBS.Ortak.Application.Mappings;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,9 +52,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSession();
-builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddAutoMapper(typeof(DtoMappingProfile));
+
+MapsterConfig.RegisterMappings(); // Application içinden çaðrýlýr
+
+//builder.Services.AddAutoMapper(typeof(Program));
+//builder.Services.AddAutoMapper(typeof(MappingProfile));
+//builder.Services.AddAutoMapper(typeof(DtoMappingProfile));
 
 // Register Database Defaults
 builder.Services.AddDatabaseDefaults(builder.Configuration);

@@ -1,5 +1,5 @@
 ﻿using Ortak.Application.Contract;
-using AutoMapper;
+using Mapster;
 using USBS.Common.Domain;
 using USBS.Common.Dtos.OrtakDtos;
 using KonFwBaseModels;
@@ -11,19 +11,17 @@ namespace Ortak.Application.Business
     public class SistemTanimServis : ISistemTanimServis
     {
         private readonly ISistemTanimRepository _repository;
-        private readonly IMapper _mapper;
 
-       
-        public SistemTanimServis(ISistemTanimRepository repository, IMapper mapper)
+
+        public SistemTanimServis(ISistemTanimRepository repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<SistemTanimDto> GetByIdAsync(Guid id)
         {
             var SistemTanim = await _repository.GetByIdAsync(id);
-            var SistemTanimDto = _mapper.Map<SistemTanimDto>(SistemTanim);
+            var SistemTanimDto = SistemTanim.Adapt<SistemTanimDto>();
 
             return SistemTanimDto;
         }
@@ -41,7 +39,7 @@ namespace Ortak.Application.Business
                 return new BaseResponseDto<SistemTanimDto>
                 {
                     IsSuccess = true,
-                    ObjectValue = new[] { _mapper.Map<SistemTanimDto>(entity) }
+                    ObjectValue = new[] { entity.Adapt<SistemTanimDto>() }
                 };
             }
 
@@ -55,7 +53,7 @@ namespace Ortak.Application.Business
         {
 
             var entityList = await _repository.GetAktifTanimListAsync();
-            var dtoList = _mapper.Map<IEnumerable<SistemTanimDto>>(entityList);
+            var dtoList = entityList.Adapt<IEnumerable<SistemTanimDto>>();
 
             return new BaseResponseDto<SistemTanimDto>
             {
@@ -67,11 +65,11 @@ namespace Ortak.Application.Business
         public async Task<BaseResponseDto<List<SistemTanimDto>>> GetAllAsync(BaseRequestDto<SistemTanimDto> baseRequestDto)
         {
             var allEntities = await _repository.GetAllAsync();
-            var dtoList = _mapper.Map<List<SistemTanimDto>>(allEntities);
+            var dtoList = allEntities.Adapt<List<SistemTanimDto>>();
 
             return new BaseResponseDto<List<SistemTanimDto>>
             {
-                ObjectValue = new []{ dtoList },
+                ObjectValue = new[] { dtoList },
                 IsSuccess = true
             };
         }
@@ -79,15 +77,15 @@ namespace Ortak.Application.Business
         public async Task<List<SistemTanimDto>> GetAllAsync()
         {
             var allEntities = await _repository.GetAllAsync();
-            return _mapper.Map<List<SistemTanimDto>>(allEntities);
+            return allEntities.Adapt<List<SistemTanimDto>>();
         }
 
         public async Task<BaseResponseDto<SistemTanimDto>> CreateAsync(BaseRequestDto<SistemTanimDto> baseRequestDto)
         {
-            var entity = _mapper.Map<SistemTanim>(baseRequestDto.Payload);
+            var entity = baseRequestDto.Payload.Adapt<SistemTanim>();
             var addedEntity = await _repository.AddAsync(entity);
 
-            var responseDto = _mapper.Map<SistemTanimDto>(addedEntity);
+            var responseDto = addedEntity.Adapt<SistemTanimDto>();
 
             return new BaseResponseDto<SistemTanimDto>
             {
@@ -98,13 +96,13 @@ namespace Ortak.Application.Business
 
         public async Task<HashSet<SistemTanimDto>> CreateManyAsync(HashSet<SistemTanimDto> dtoList)
         {
-            var entityList = _mapper.Map<List<SistemTanim>>(dtoList);
+            var entityList = dtoList.Adapt<List<SistemTanim>>();
             var resultSet = new HashSet<SistemTanimDto>();
 
             foreach (var entity in entityList)
             {
                 var addedEntity = await _repository.AddAsync(entity);
-                resultSet.Add(_mapper.Map<SistemTanimDto>(addedEntity));
+                resultSet.Add(addedEntity.Adapt<SistemTanimDto>());
             }
 
             return resultSet;
@@ -124,10 +122,10 @@ namespace Ortak.Application.Business
                 };
             }
 
-            _mapper.Map(dto, entity);
+            dto.Adapt(entity);
             await _repository.UpdateAsync(entity);
 
-            var updatedDto = _mapper.Map<SistemTanimDto>(entity);
+            var updatedDto = entity.Adapt<SistemTanimDto>();
             return new BaseResponseDto<SistemTanimDto>
             {
                 ObjectValue = new[] { updatedDto },
@@ -144,9 +142,9 @@ namespace Ortak.Application.Business
                 var entity = await _repository.GetByIdAsync(dto.Id);
                 if (entity != null)
                 {
-                    _mapper.Map(dto, entity);
+                    dto.Adapt(entity);
                     await _repository.UpdateAsync(entity);
-                    resultSet.Add(_mapper.Map<SistemTanimDto>(entity));
+                    resultSet.Add(entity.Adapt<SistemTanimDto>());
                 }
             }
 
