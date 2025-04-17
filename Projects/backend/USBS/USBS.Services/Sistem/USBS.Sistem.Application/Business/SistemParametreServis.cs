@@ -18,12 +18,10 @@ namespace Sistem.Application.Business
 
         public async Task<SistemParametreDto> GetByIdAsync(Guid id)
         {
-            var SistemParametres = await _repository.GetActiveSistemParametresAsync();
-            return SistemParametres.Adapt<IEnumerable<SistemParametreDto>>();
             var SistemParametre = await _repository.GetByIdAsync(id);
-            var SistemParametreDto = _mapper.Map<SistemParametreDto>(SistemParametre);
+            var sistemParametreDto = SistemParametre.Adapt<SistemParametreDto>();
 
-            return SistemParametreDto;
+            return sistemParametreDto;
         }
 
 
@@ -40,7 +38,7 @@ namespace Sistem.Application.Business
                 return new BaseResponseDto<SistemParametreDto>
                 {
                     IsSuccess = true,
-                    ObjectValue = new[] { _mapper.Map<SistemParametreDto>(entity) }
+                    ObjectValue = new[] { entity.Adapt<SistemParametreDto>() }
                 };
             }
 
@@ -54,7 +52,7 @@ namespace Sistem.Application.Business
         {
 
             var entityList = await _repository.GetActiveSistemParametresAsync();
-            var dtoList = _mapper.Map<IEnumerable<SistemParametreDto>>(entityList);
+            var dtoList = entityList.Adapt<IEnumerable<SistemParametreDto>>();
 
             return new BaseResponseDto<SistemParametreDto>
             {
@@ -66,7 +64,7 @@ namespace Sistem.Application.Business
         public async Task<BaseResponseDto<List<SistemParametreDto>>> GetAllAsync(BaseRequestDto<SistemParametreDto> baseRequestDto)
         {
             var allEntities = await _repository.GetAllAsync();
-            var dtoList = _mapper.Map<List<SistemParametreDto>>(allEntities);
+            var dtoList = allEntities.Adapt<List<SistemParametreDto>>();
 
             return new BaseResponseDto<List<SistemParametreDto>>
             {
@@ -77,16 +75,16 @@ namespace Sistem.Application.Business
 
         public async Task<List<SistemParametreDto>> GetAllAsync()
         {
-            var allEntities = await _repository.GetAllAsync();
-            return _mapper.Map<List<SistemParametreDto>>(allEntities);
+            var allEntities = await _repository.GetAllAsync(); 
+
+            return allEntities.Adapt<List<SistemParametreDto>>();
         }
 
         public async Task<BaseResponseDto<SistemParametreDto>> CreateAsync(BaseRequestDto<SistemParametreDto> baseRequestDto)
         {
-            var entity = _mapper.Map<SistemParametre>(baseRequestDto.Payload);
+            var entity = baseRequestDto.Payload.Adapt<SistemParametre>();
             var addedEntity = await _repository.AddAsync(entity);
-
-            var responseDto = _mapper.Map<SistemParametreDto>(addedEntity);
+            var responseDto = addedEntity.Adapt<SistemParametreDto>();
 
             return new BaseResponseDto<SistemParametreDto>
             {
@@ -100,15 +98,16 @@ namespace Sistem.Application.Business
             var SistemParametre = SistemParametreDto.Adapt<SistemParametre>();
             await _repository.AddAsync(SistemParametre);
             return SistemParametreDto;
+        }
         public async Task<HashSet<SistemParametreDto>> CreateManyAsync(HashSet<SistemParametreDto> dtoList)
         {
-            var entityList = _mapper.Map<List<SistemParametre>>(dtoList);
+            var entityList = dtoList.Adapt<List<SistemParametre>>();
             var resultSet = new HashSet<SistemParametreDto>();
 
             foreach (var entity in entityList)
             {
                 var addedEntity = await _repository.AddAsync(entity);
-                resultSet.Add(_mapper.Map<SistemParametreDto>(addedEntity));
+                resultSet.Add(addedEntity.Adapt<SistemParametreDto>());
             }
 
             return resultSet;
@@ -128,10 +127,10 @@ namespace Sistem.Application.Business
                 };
             }
 
-            _mapper.Map(dto, entity);
+            dto.Adapt(entity);
             await _repository.UpdateAsync(entity);
 
-            var updatedDto = _mapper.Map<SistemParametreDto>(entity);
+            var updatedDto = entity.Adapt<SistemParametreDto>();
             return new BaseResponseDto<SistemParametreDto>
             {
                 ObjectValue = new[] { updatedDto },
@@ -148,9 +147,9 @@ namespace Sistem.Application.Business
                 var entity = await _repository.GetByIdAsync(dto.Id);
                 if (entity != null)
                 {
-                    _mapper.Map(dto, entity);
+                    dto.Adapt(entity);
                     await _repository.UpdateAsync(entity);
-                    resultSet.Add(_mapper.Map<SistemParametreDto>(entity));
+                    resultSet.Add(entity.Adapt<SistemParametreDto>());
                 }
             }
 
