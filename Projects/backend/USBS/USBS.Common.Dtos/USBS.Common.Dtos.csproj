@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Frameworks\KonFw\KonFw.BaseEssentials\KonFwBaseModels\KonFwBaseModels.csproj" />
+  </ItemGroup>
+
 </Project>

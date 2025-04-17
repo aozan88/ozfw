@@ -12,16 +12,15 @@ namespace KonFw.ApiBase
         // Get Operations
         Task<ActionResult<DtoType>> GetByIdAsync(Guid uid);
         Task<ActionResult<BaseResponseDto<ResponseDtoType>>> GetByFilterAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
-        Task<ActionResult<BaseResponseDto<List<ResponseDtoType>>>> GetAllAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
         Task<ActionResult<List<DtoType>>> GetAllAsync();
 
         // Create Operations
         Task<ActionResult<BaseResponseDto<ResponseDtoType>>> CreateAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
-        Task<ActionResult<HashSet<DtoType>>> CreateAsync(HashSet<DtoType> dtoList);
+        Task<ActionResult<HashSet<DtoType>>> CreateManyAsync(HashSet<DtoType> dtoList);
 
         // Update Operations
         Task<ActionResult<BaseResponseDto<ResponseDtoType>>> UpdateAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
-        Task<ActionResult<HashSet<DtoType>>> UpdateAsync(HashSet<DtoType> dtoList);
+        Task<ActionResult<HashSet<DtoType>>> UpdateManyAsync(HashSet<DtoType> dtoList);
 
         // Delete Operations
         Task<ActionResult> DeleteAsync(Guid uid);

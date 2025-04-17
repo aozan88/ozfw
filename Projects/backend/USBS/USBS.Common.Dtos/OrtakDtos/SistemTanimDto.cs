@@ -1,4 +1,4 @@
-﻿using USBS.Common.Dtos.BaseDtos;
+﻿using KonFwBaseModels;
 
 namespace USBS.Common.Dtos.OrtakDtos
 {

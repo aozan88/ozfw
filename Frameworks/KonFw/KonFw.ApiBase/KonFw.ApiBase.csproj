@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KonFw.BaseEssentials\KonFwBaseModels\KonFwBaseModels.csproj" />
+    <ProjectReference Include="..\KonFw.ServiceBase\KonFw.ServiceBase\KonFw.ServiceBase.csproj" />
   </ItemGroup>
 
 </Project>
