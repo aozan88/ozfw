@@ -25,4 +25,8 @@
     <ProjectReference Include="..\USBS.Sistem.Data\USBS.Sistem.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappings\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Sistem.Application.Contract;
 using Sistem.Application.DtoModels;
-using AutoMapper;
+using Mapster;
 using USBS.Common.Domain;
 using KonFwBaseModels;
 using USBS.Common.Dtos.OrtakDtos;
@@ -10,16 +10,16 @@ namespace Sistem.Application.Business
     public class SistemParametreServis : ISistemParametreServis
     {
         private readonly ISistemParametreRepository _repository;
-        private readonly IMapper _mapper;
 
-        public SistemParametreServis(ISistemParametreRepository repository, IMapper mapper)
+        public SistemParametreServis(ISistemParametreRepository repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public async Task<SistemParametreDto> GetByIdAsync(Guid id)
         {
+            var SistemParametres = await _repository.GetActiveSistemParametresAsync();
+            return SistemParametres.Adapt<IEnumerable<SistemParametreDto>>();
             var SistemParametre = await _repository.GetByIdAsync(id);
             var SistemParametreDto = _mapper.Map<SistemParametreDto>(SistemParametre);
 
@@ -95,6 +95,11 @@ namespace Sistem.Application.Business
             };
         }
 
+        public async Task<SistemParametreDto> AddSistemParametreAsync(SistemParametreDto SistemParametreDto)
+        {
+            var SistemParametre = SistemParametreDto.Adapt<SistemParametre>();
+            await _repository.AddAsync(SistemParametre);
+            return SistemParametreDto;
         public async Task<HashSet<SistemParametreDto>> CreateManyAsync(HashSet<SistemParametreDto> dtoList)
         {
             var entityList = _mapper.Map<List<SistemParametre>>(dtoList);
