@@ -1,5 +1,6 @@
 ﻿using Ortak.Data.Persistence;
 using Ortak.Data.Registration;
+using Serilog;
 using USBS.ServiceDefaults;
 
 namespace Ortak.API
@@ -8,10 +9,20 @@ namespace Ortak.API
     {
         public static void ConfigureOrtakApi(WebApplicationBuilder builder)
         {
-            builder.Services.AddHttpContextAccessor();
+            //builder.Services.AddHttpContextAccessor();
+            if (builder.Configuration.GetValue<string>("RunningProfile") != "AppHost")
+            {
+                LoggingServiceExtensions.AddLoggingDefaults(builder);
+            }
 
             // Add in-memory cache as the distributed cache
             builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             // Register Swagger only for Ortak.API
             builder.Services.AddEndpointsApiExplorer();
@@ -26,10 +37,8 @@ namespace Ortak.API
 
             });
 
+            builder.Services.AddOpenApi();
             builder.Services.AddControllers();
-
-            // Register Scalar Service (or other services)
-            //builder.Services.AddSingleton<ScalarService>();
 
             // Register Database Defaults
             builder.Services.AddDatabaseDefaults(builder.Configuration);
@@ -38,10 +47,27 @@ namespace Ortak.API
             var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddInfrastructureServices<OrtakDbContext>(defaultConnectionString);
         }
-    }
 
-    public class ScalarService
-    {
-        public string Process() => "Ortak Scalar Processed!";
+        public static void ConfigureOrtakApiMiddleware(WebApplication app)
+        {
+            // Add middleware specific to Ortak.API
+            app.UseSerilogRequestLogging();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ortak API v1");
+                    c.RoutePrefix = string.Empty;
+                });
+            }
+
+            app.UseHttpsRedirection();
+            app.UseSession();
+            app.UseAuthorization();
+            app.MapControllers();
+        }
     }
 }

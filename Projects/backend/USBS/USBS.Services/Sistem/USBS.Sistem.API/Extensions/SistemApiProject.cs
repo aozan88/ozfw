@@ -1,4 +1,5 @@
-﻿using Sistem.Data.Persistence;
+﻿using Serilog;
+using Sistem.Data.Persistence;
 using Sistem.Data.Registration;
 using USBS.ServiceDefaults;
 
@@ -8,13 +9,12 @@ namespace Sistem.API
     {
         public static void ConfigureSistemApi(WebApplicationBuilder builder)
         {
-            builder.Services.AddHttpContextAccessor();
-
             // Add in-memory cache as the distributed cache
+            if (builder.Configuration.GetValue<string>("RunningProfile") != "AppHost")
+            {
+                LoggingServiceExtensions.AddLoggingDefaults(builder);
+            }
             builder.Services.AddDistributedMemoryCache();
-
-            // Register Swagger only for Ortak.API
-            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -25,10 +25,20 @@ namespace Sistem.API
                 });
             });
 
-            builder.Services.AddControllers();
+            // Register Swagger only for Ortak.API
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Sistem API",
+                    Version = "v1",
+                    Description = "API for Sistem data and configurations"
+                });
+            });
 
-            // Register Scalar Service (or other services)
-            //builder.Services.AddSingleton<SistemScalarService>();
+            builder.Services.AddOpenApi();
+            builder.Services.AddControllers();
 
             // Register Database Defaults
             builder.Services.AddDatabaseDefaults(builder.Configuration);
@@ -37,10 +47,28 @@ namespace Sistem.API
             var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddInfrastructureServices<SistemDbContext>(defaultConnectionString);
         }
-    }
 
-    public class SistemScalarService
-    {
-        public string Process() => "Sistem Scalar Processed!";
+
+        public static void ConfigureSistemApiMiddleware(WebApplication app)
+        {
+            // Add middleware specific to Ortak.API
+            app.UseSerilogRequestLogging();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sistem API v1");
+                    c.RoutePrefix = string.Empty;
+                });
+            }
+
+            app.UseHttpsRedirection();
+            app.UseSession();
+            app.UseAuthorization();
+            app.MapControllers();
+        }
     }
 }

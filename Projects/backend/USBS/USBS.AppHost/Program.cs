@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Ortak.API;
 using Sistem.API;
 using USBS.AppHost.Extensions;
@@ -6,47 +8,40 @@ using USBS.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.AddProject<Projects.USBS_ServiceDefaults>("servicedefaults");
-// builder.Services.AddKafkaEventBusDefaults(builder.Configuration);
+// Determine running profile (e.g., AppHost or individual API)
+var runningProfile = builder.Configuration.GetValue<string>("RunningProfile") ?? "AppHost";
 
+// Configure service defaults
 ServiceDefaultsProject.ConfigureServiceDefaults(builder);
-
-// Add database configuration
-// var kafka = builder.Services.AddKafkaEventBusDefaults(kafkaConfigSection);
-// var rabbit = builder.Services.AddRabbitMqEventBusDefaults(rabbitConfigSection);
-// var redis = builder.Services.AddRedisCacheDefaults(redisConfigSection);
-// var postgre = builder.Services.AddDatabaseDefaults(redisConfigSection);
-
-//var apiService = builder.AddProject<Projects.USBS_ApiService>("apiservice");
-//var serviceDefaults = builder.AddProject<Projects.USBS_ServiceDefaults>("apiservice");
-/*
-builder.AddProject<Projects.USBS_Web>("webfrontend")
-    .WithExternalHttpEndpoints()
-    .WithReference(cache)
-    .WaitFor(cache)
-    .WithReference(apiService)
-    .WaitFor(apiService);
-*/
-
-// Add Ortak.API project
-// builder.AddProject("ServiceDefaults", ServiceDefaultsProject.ConfigureServiceDefaults);
 
 builder.Services.AddDatabaseDefaults(builder.Configuration);
 
-// Add Ortak.API project
-builder.AddProject("Ortak.API", OrtakApiProject.ConfigureOrtakApi);
+if (runningProfile == "AppHost")
+{
+    LoggingServiceExtensions.AddLoggingDefaults(builder);
+}
 
-// Add Sistem.API project
-builder.AddProject("Sistem.API", SistemApiProject.ConfigureSistemApi);
+// Add specific API project configurations
+if (runningProfile == "AppHost" || runningProfile == "Ortak.API")
+{
+    builder.AddProject("Ortak.API", OrtakApiProject.ConfigureOrtakApi);
+}
 
+if (runningProfile == "AppHost" || runningProfile == "Sistem.API")
+{
+    builder.AddProject("Sistem.API", SistemApiProject.ConfigureSistemApi);
+}
+
+// Build application
 var app = builder.Build();
 
-// Use Scalar middleware instead of GraphQL
+// Configure middleware
 app.UseRouting();
-app.UseMiddleware<ScalarMiddleware>(); // Example of Scalar Middleware addition
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers(); // API controllers mapping if necessary
-});
+// Example: Add Scalar Middleware (optional)
+// app.UseMiddleware<ScalarMiddleware>(); 
 
+// Map API controllers
+app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+// Run application
 app.Run();

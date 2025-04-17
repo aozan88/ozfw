@@ -4,7 +4,7 @@ namespace KonFwGraylog
 {
     public class GraylogConfiguration : LoggingConfiguration
     {
-        public string Host { get; set; } = "localhost";
+        public string Host { get; set; } = "https://graylog.konumsal.com.tr";
         public int Port { get; set; } = 12201;
         public string Facility { get; set; } = "KonFw";
         public bool UseUdp { get; set; } = true;

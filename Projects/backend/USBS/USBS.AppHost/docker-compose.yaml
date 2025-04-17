@@ -1,0 +1,19 @@
+services:
+  ortakapi:
+    container_name: USBS.OrtakAPI
+    build:
+      context: .
+      dockerfile: Ortak.API/Dockerfile
+    ports:
+      - "32001:32000"
+    depends_on:
+      - apphost
+  sistemapi:
+    container_name: USBS.SistemAPI
+    build:
+      context: .
+      dockerfile: Sistem.API/Dockerfile
+    ports:
+      - "32002:32000"
+    depends_on:
+      - apphost

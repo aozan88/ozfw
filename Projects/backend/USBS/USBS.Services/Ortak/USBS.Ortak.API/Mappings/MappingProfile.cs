@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using USBS.Common.Dtos.OrtakDtos;
 using Ortak.API.ViewModels;
-using KonFwBaseModels;
 using USBS.Common.Domain;
 
 namespace Ortak.API.Mappings

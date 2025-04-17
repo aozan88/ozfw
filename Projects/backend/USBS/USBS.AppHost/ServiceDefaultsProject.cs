@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using USBS.ServiceDefaults;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Common.Logging;
+using Serilog;
+using USBS.Components.Logging;
 
 public static class ServiceDefaultsProject
 {
@@ -8,6 +12,10 @@ public static class ServiceDefaultsProject
     {
         try
         {
+            builder.Services.AddHttpContextAccessor();
+
+            // Configure base logging (Serilog configuration)
+            ConfigureBaseLogging(builder);
 
             var kafkaConfigSection = builder.Configuration.GetSection("KafkaEventBus");
             var rabbitConfigSection = builder.Configuration.GetSection("RabbitMqEventBus");
@@ -26,5 +34,16 @@ public static class ServiceDefaultsProject
         {
             Console.WriteLine("Exception while registering ServiceDefaults");
         }
+    }
+
+    private static void ConfigureBaseLogging(WebApplicationBuilder builder)
+    {
+        // Setup Serilog base configuration
+        builder.Host.UseSerilog(SeriLogger.Configure);
+
+        // Add LoggingDelegatingHandler for HTTP request logging
+        builder.Services.AddTransient<LoggingDelegatingHandler>();
+        builder.Services.AddHttpClient("DefaultClient")
+            .AddHttpMessageHandler<LoggingDelegatingHandler>();
     }
 }

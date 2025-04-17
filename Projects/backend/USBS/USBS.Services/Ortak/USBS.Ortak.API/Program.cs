@@ -1,105 +1,49 @@
 using Ortak.API.Validations;
 using Ortak.Application.Business;
-using Ortak.Data.Persistence;
-using Ortak.Data.Registration;
-using USBS.Components.Logging;
-using USBS.ServiceDefaults;
 using USBS.Workers.SampleWorker;
 using FluentValidation;
 using Ortak.Application.Mappings;
 using Ortak.API.Mappings;
-using Common.Logging;
-using Serilog;
+using Ortak.API;
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseSerilog(SeriLogger.Configure);
 
-builder.AddServiceDefaults();
+#region Logging Registration
+//LoggingServiceExtensions.AddLoggingDefaults(builder);
+#endregion
 
-builder.Services.AddDistributedMemoryCache();
+// ConfigureOrtakApi - Exclude
+// builder.AddServiceDefaults();
 
-// Add services to the container.
-/*
-builder.Services.AddDatabaseDefaults(builder.Configuration);
-var defaultDbConfig = builder.Services.BuildServiceProvider().GetRequiredService<IDefaultDbContextConfiguration>();
-builder.Services.AddInfrastructureServices(defaultDbConfig.ConnectionString);
-// builder.Services.AddInfrastructureServices(builder.Configuration.GetConnectionString("DefaultConnection"));
-*/
-// Register Swagger only for Ortak.API
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-    {
-        Title = "Ortak API",
-        Version = "v1",
-        Description = "API for Ortak data and configurations"
-    });
-});
+OrtakApiProject.ConfigureOrtakApi(builder);
 
-
-builder.Services.AddControllers();
-
+#region Servis Registration
 builder.Services.AddScoped<ISistemTanimServis, SistemTanimServis>();
 builder.Services.AddScoped<ISistemTanimTipiServis, SistemTanimTipiServis>();
+#endregion
 
+#region Validations Registration
 builder.Services.AddValidatorsFromAssembly(typeof(SistemTanimValidation).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(SistemTanimTipiValidation).Assembly);
+#endregion
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
-builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddSession();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAutoMapper(typeof(DtoMappingProfile));
 
-// Register Database Defaults
-builder.Services.AddDatabaseDefaults(builder.Configuration);
-
-// Retrieve connection string and register Infrastructure services
-var defaultConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
-builder.Services.AddInfrastructureServices<OrtakDbContext>(defaultConnectionString);
+// builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
+/*
+builder.Services.AddGraylogLogging(builder.Configuration);
 builder.Services.AddTransient<LoggingDelegatingHandler>();
-// builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
-
-builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
-
-
-
-builder.Services.AddLogging();
-
+builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
+*/
 var app = builder.Build();
 
+OrtakApiProject.ConfigureOrtakApiMiddleware(app);
 
-
-// app.MapDefaultEndpoints();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ortak API v1");
-    });
-}
-
-app.UseHttpsRedirection();
-
-app.UseSession();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-await app.UseEventBusSubscriptions();
-
-app.Run();
 
 //adding worker
 IHost host = Host.CreateDefaultBuilder(args)
@@ -114,4 +58,5 @@ IHost host = Host.CreateDefaultBuilder(args)
     })
     .Build();
 
-await host.RunAsync();
+app.Run();
+//await host.RunAsync();
