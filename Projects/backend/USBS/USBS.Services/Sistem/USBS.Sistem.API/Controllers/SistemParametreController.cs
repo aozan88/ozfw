@@ -4,8 +4,6 @@ using Sistem.Application.DtoModels;
 using FluentValidation;
 using USBS.Common.Dtos.OrtakDtos;
 using KonFw.ApiBase;
-using Ortak.Application.Business;
-using AutoMapper;
 using Sistem.API.ViewModels;
 
 namespace Sistem.API.Controllers
@@ -15,17 +13,14 @@ namespace Sistem.API.Controllers
     {
         private readonly ISistemParametreServis _SistemParametreService;
         private readonly IValidator<SistemParametreVM> _SistemParametreValidator;
-        private readonly IMapper _mapper;
 
         public SistemParametreController(
             ISistemParametreServis SistemParametreService, 
-            IValidator<SistemParametreVM> SistemParametreValidator,
-            IMapper mapper
+            IValidator<SistemParametreVM> SistemParametreValidator
             ) : base(SistemParametreService)
         {
             _SistemParametreService = SistemParametreService;
             _SistemParametreValidator = SistemParametreValidator;
-            _mapper = mapper;
 
         }
     }

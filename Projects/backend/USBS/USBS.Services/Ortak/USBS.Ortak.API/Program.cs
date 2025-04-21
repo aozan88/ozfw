@@ -2,9 +2,10 @@ using Ortak.API.Validations;
 using Ortak.Application.Business;
 using USBS.Workers.SampleWorker;
 using FluentValidation;
-using Ortak.Application.Mappings;
-using Ortak.API.Mappings;
 using Ortak.API;
+using USBS.Ortak.Application.Mappings;
+using USBS.ServiceDefaults;
+using Ortak.API.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,19 +28,14 @@ builder.Services.AddScoped<ISistemTanimTipiServis, SistemTanimTipiServis>();
 builder.Services.AddValidatorsFromAssembly(typeof(SistemTanimValidation).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(SistemTanimTipiValidation).Assembly);
 #endregion
-
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-
-builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddAutoMapper(typeof(DtoMappingProfile));
-
+MapsterConfig.RegisterMappings();
 // builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
 /*
 builder.Services.AddGraylogLogging(builder.Configuration);
 builder.Services.AddTransient<LoggingDelegatingHandler>();
 builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
 */
+
 var app = builder.Build();
 
 OrtakApiProject.ConfigureOrtakApiMiddleware(app);

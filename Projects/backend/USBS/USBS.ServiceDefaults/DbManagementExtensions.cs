@@ -11,7 +11,7 @@ namespace USBS.ServiceDefaults
             var defaultConnectionString = configuration.GetConnectionString("DefaultConnection");
 
             // Register the configuration service
-            services.AddScoped<IDefaultDbContextConfiguration>(provider =>
+            services.AddTransient<IDefaultDbContextConfiguration>(provider =>
                 new DefaultDbContextConfiguration(defaultConnectionString));
 
             return services;

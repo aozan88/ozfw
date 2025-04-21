@@ -1,10 +1,9 @@
 using Sistem.API.Validations;
 using Sistem.Application.Business;
 using FluentValidation;
-using Sistem.Application.Mappings;
-using Sistem.API.Mappings;
 using Sistem.API;
 using USBS.ServiceDefaults;
+using USBS.Sistem.Application.Mappings;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +25,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(SistemParametreValidation).Ass
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 #region Mapping Registration
-builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-builder.Services.AddAutoMapper(typeof(DtoMappingProfile));
+MapsterConfig.RegisterMappings();
 #endregion
 
 // builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
