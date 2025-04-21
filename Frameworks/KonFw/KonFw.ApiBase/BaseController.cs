@@ -40,10 +40,7 @@ namespace KonFw.ApiBase
             catch (Exception ex)
             {
                 var errorResponse = Activator.CreateInstance<TDto>();
-                if (errorResponse is BaseDto baseDto)
-                {
-                   
-                }
+               
                 return await CreateResponseAsync(errorResponse, 500);
             }
         }
@@ -63,6 +60,7 @@ namespace KonFw.ApiBase
                 {
                     IsSuccess = false,
                     Mesaj = ex.Message
+
                 }, 500);
             }
         }
@@ -77,11 +75,7 @@ namespace KonFw.ApiBase
             }
             catch (Exception ex)
             {
-                return await CreateResponseAsync(new List<TDto>
-                {
-                    
-                    
-                }, 500);
+                return await CreateResponseAsync(new List<TDto>{}, 500);
             }
         }
 
@@ -101,6 +95,7 @@ namespace KonFw.ApiBase
                 {
                     IsSuccess = false,
                     Mesaj = ex.Message
+
                 }, 500);
             }
         }
@@ -115,11 +110,7 @@ namespace KonFw.ApiBase
             }
             catch (Exception ex)
             {
-                return await CreateResponseAsync(new HashSet<TDto>
-                {
-
-
-                }, 500);
+                return await CreateResponseAsync(new HashSet<TDto>{}, 500);
             }
         }
 
@@ -131,7 +122,7 @@ namespace KonFw.ApiBase
             try
             {
                 var result = await _service.UpdateAsync(baseRequestDto);
-                return Ok(result);
+                return StatusCode(201, result);
             }
             catch (Exception ex)
             {
@@ -149,15 +140,11 @@ namespace KonFw.ApiBase
             try
             {
                 var result = await _service.UpdateManyAsync(dtoList);
-                return Ok(result);
+                return StatusCode(201, result);
             }
             catch (Exception ex)
             {
-                return await CreateResponseAsync(new HashSet<TDto>
-                {
-
-
-                }, 500);
+                return await CreateResponseAsync(new HashSet<TDto>{}, 500);
             }
         }
 
@@ -165,10 +152,15 @@ namespace KonFw.ApiBase
         [HttpDelete("{id:guid}")]
         public  async Task<ActionResult> DeleteAsync(Guid id)
         {
-            await _service.DeleteAsync(id);
-
+            try
+            {
+                await _service.DeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
             return NoContent();
-
         }
 
         [HttpPost("delete")]
@@ -178,7 +170,7 @@ namespace KonFw.ApiBase
             try
             {
                 var result = await _service.DeleteByFilterAsync(baseRequestDto);
-                return Ok(result);
+                return StatusCode(201, result);
             }
             catch (Exception ex)
             {
@@ -190,5 +182,4 @@ namespace KonFw.ApiBase
             }
         }
     }
-
 }
