@@ -14,11 +14,11 @@ namespace Ortak.API.Mappings
 
             CreateMap<SistemTanimTipiVM, SistemTanimTipiDto>().ReverseMap();
             CreateMap<SistemTanimTipiDto, SistemTanimTipi>().ReverseMap();
-
+            
+            /*
             CreateMap<BaseRequestDto<SistemTanimVM>, BaseRequestDto<SistemTanimDto>>().ReverseMap();
             CreateMap<BaseRequestDto<SistemTanimTipiVM>, BaseRequestDto<SistemTanimTipiDto>>().ReverseMap();
-
-
+            */
 
         }
     }
