@@ -38,12 +38,12 @@ public static class LoggingServiceExtensions
                 builder.Services.AddGraylogLogging(builder.Configuration);
                 break;
         }
-
+      
         // Add LoggingDelegatingHandler with custom named client
         builder.Services.AddTransient<LoggingDelegatingHandler>();
         builder.Services.AddHttpClient("LoggingClient")
             .AddHttpMessageHandler<LoggingDelegatingHandler>();
-
+       
         return builder.Services;
     }
 

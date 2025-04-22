@@ -39,12 +39,18 @@ namespace Ortak.API
 
             builder.Services.AddOpenApi();
             builder.Services.AddControllers();
+            builder.Services.AddHttpContextAccessor();
+
+            //Register rabbitmq and kafka
+            builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
+            builder.Services.AddKafkaEventBusDefaults(builder.Configuration);
+
 
             // Register Database Defaults
             builder.Services.AddDatabaseDefaults(builder.Configuration);
 
             // Retrieve connection string and register Infrastructure services
-            var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            var defaultConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
             builder.Services.AddInfrastructureServices<OrtakDbContext>(defaultConnectionString);
         }
 
