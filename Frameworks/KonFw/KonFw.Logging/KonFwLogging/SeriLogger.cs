@@ -32,7 +32,7 @@ namespace Common.Logging
                     .WriteTo.Elasticsearch(
                         new ElasticsearchSinkOptions(new Uri(elasticUri))
                         {
-                            IndexFormat = "logs", // + context.HostingEnvironment.ApplicationName?.ToLower().Replace(".", "-") + "-" + context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-") + "-" + DateTime.UtcNow.Date.ToString("dd-MM-yyyy"),
+                            IndexFormat = "cyslogs", // + context.HostingEnvironment.ApplicationName?.ToLower().Replace(".", "-") + "-" + context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-") + "-" + DateTime.UtcNow.Date.ToString("dd-MM-yyyy"),
                             AutoRegisterTemplate = true,
                             NumberOfShards = 2,
                             NumberOfReplicas = 1,

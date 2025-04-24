@@ -54,7 +54,7 @@ public static class LoggingServiceExtensions
     {
         // Bind configuration
         var graylogConfig = new GraylogConfiguration();
-        configuration.GetSection("ElasticConfiguration").Bind(graylogConfig);
+        configuration.GetSection("GraylogConfiguration").Bind(graylogConfig);
 
         // Register the configuration
         services.AddSingleton(graylogConfig);
