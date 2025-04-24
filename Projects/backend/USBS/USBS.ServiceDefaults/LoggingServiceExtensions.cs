@@ -40,7 +40,7 @@ public static class LoggingServiceExtensions
         }
       
         // Add LoggingDelegatingHandler with custom named client
-        builder.Services.AddTransient<LoggingDelegatingHandler>();
+        builder.Services.AddSingleton<LoggingDelegatingHandler>();
         builder.Services.AddHttpClient("LoggingClient")
             .AddHttpMessageHandler<LoggingDelegatingHandler>();
        

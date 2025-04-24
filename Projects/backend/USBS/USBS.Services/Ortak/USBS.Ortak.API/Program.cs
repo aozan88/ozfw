@@ -4,12 +4,10 @@ using USBS.Workers.SampleWorker;
 using FluentValidation;
 using Ortak.API;
 using USBS.Ortak.Application.Mappings;
-using USBS.ServiceDefaults;
-using Ortak.API.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+bool useDocker = Environment.GetEnvironmentVariable("USE_DOCKER")?.ToLower() == "true";
 #region Logging Registration
 //LoggingServiceExtensions.AddLoggingDefaults(builder);
 #endregion
@@ -28,6 +26,7 @@ builder.Services.AddScoped<ISistemTanimTipiServis, SistemTanimTipiServis>();
 builder.Services.AddValidatorsFromAssembly(typeof(SistemTanimValidation).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(SistemTanimTipiValidation).Assembly);
 #endregion
+
 MapsterConfig.RegisterMappings();
 // builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
 /*

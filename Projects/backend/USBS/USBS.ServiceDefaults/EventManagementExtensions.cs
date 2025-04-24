@@ -41,11 +41,11 @@ public static class EventManagementExtensions
             rabbitMqConfigSection.Bind(config);
         });
 
-       
+        /*
         services.AddScoped<IEventHandler<SistemTanimTipiSilindiEvent>, SistemTanimTipiSilindiEventHandler>();
-        services.AddScoped<ISistemTanimRepository, SistemTanimRepository>();
         services.AddScoped<SistemTanimTipiSilindiEventHandler>();
-
+        services.AddScoped<ISistemTanimRepository, SistemTanimRepository>();
+        */
         return services;
     }
 

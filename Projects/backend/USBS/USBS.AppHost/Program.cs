@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Ortak.API;
 using Sistem.API;
 using USBS.AppHost.Extensions;
 using USBS.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
+bool useDocker = Environment.GetEnvironmentVariable("USE_DOCKER")?.ToLower() == "true";
 
 // Determine running profile (e.g., AppHost or individual API)
 var runningProfile = builder.Configuration.GetValue<string>("RunningProfile") ?? "AppHost";
@@ -35,6 +35,8 @@ if (runningProfile == "AppHost" || runningProfile == "Sistem.API")
 // Build application
 var app = builder.Build();
 
+OrtakApiProject.ConfigureOrtakApiMiddleware(app);
+/*
 // Configure middleware
 app.UseRouting();
 // Example: Add Scalar Middleware (optional)
@@ -42,6 +44,6 @@ app.UseRouting();
 
 // Map API controllers
 app.UseEndpoints(endpoints => endpoints.MapControllers());
-
+*/
 // Run application
 app.Run();

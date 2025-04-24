@@ -2,16 +2,14 @@ using Sistem.API.Validations;
 using Sistem.Application.Business;
 using FluentValidation;
 using Sistem.API;
-using USBS.ServiceDefaults;
 using USBS.Sistem.Application.Mappings;
 
 
 var builder = WebApplication.CreateBuilder(args);
+bool useDocker = Environment.GetEnvironmentVariable("USE_DOCKER")?.ToLower() == "true";
 //builder.Host.UseSerilog(SeriLogger.Configure);
 
-// ConfigureSistemApi - Exclude
-// builder.AddServiceDefaults();
-//LoggingServiceExtensions.AddLoggingDefaults(builder);
+var runningProfile = builder.Configuration.GetValue<string>("RunningProfile") ?? "AppHost";
 
 SistemApiProject.ConfigureSistemApi(builder);
 

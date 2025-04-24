@@ -15,18 +15,14 @@ namespace Sistem.API
                 LoggingServiceExtensions.AddLoggingDefaults(builder);
             }
             builder.Services.AddDistributedMemoryCache();
-            builder.Services.AddSwaggerGen(options =>
+            builder.Services.AddSession(options =>
             {
-                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-                {
-                    Title = "Ortak API",
-                    Version = "v1",
-                    Description = "API for Ortak data and configurations"
-                });
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
-
-            // Register Swagger only for Ortak.API
             builder.Services.AddEndpointsApiExplorer();
+            // Register Swagger only for Ortak.API
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -39,6 +35,12 @@ namespace Sistem.API
 
             builder.Services.AddOpenApi();
             builder.Services.AddControllers();
+            builder.Services.AddHttpContextAccessor();
+
+
+            //Register rabbitmq and kafka
+            builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
+            builder.Services.AddKafkaEventBusDefaults(builder.Configuration);
 
             // Register Database Defaults
             builder.Services.AddDatabaseDefaults(builder.Configuration);
@@ -61,7 +63,7 @@ namespace Sistem.API
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sistem API v1");
-                    c.RoutePrefix = string.Empty;
+                    c.RoutePrefix = "swagger";
                 });
             }
 

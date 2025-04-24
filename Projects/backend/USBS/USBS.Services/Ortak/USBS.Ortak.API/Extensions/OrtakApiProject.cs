@@ -1,6 +1,8 @@
-﻿using Ortak.Data.Persistence;
+﻿using KonFwEventBus;
+using Ortak.Data.Persistence;
 using Ortak.Data.Registration;
 using Serilog;
+using USBS.Ortak.API.Consumers;
 using USBS.ServiceDefaults;
 
 namespace Ortak.API
@@ -52,6 +54,9 @@ namespace Ortak.API
             // Retrieve connection string and register Infrastructure services
             var defaultConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
             builder.Services.AddInfrastructureServices<OrtakDbContext>(defaultConnectionString);
+
+            builder.Services.AddScoped<IEventHandler<SistemTanimTipiSilindiEvent>, SistemTanimTipiSilindiEventHandler>();
+            builder.Services.AddScoped<SistemTanimTipiSilindiEventHandler>();
         }
 
         public static void ConfigureOrtakApiMiddleware(WebApplication app)
@@ -66,8 +71,9 @@ namespace Ortak.API
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ortak API v1");
-                    c.RoutePrefix = string.Empty;
+                    c.RoutePrefix = "swagger";
                 });
+                
             }
 
             app.UseHttpsRedirection();
