@@ -29,16 +29,6 @@ namespace Common.Logging
                     //.WriteTo.File(@"C:\IkysFiles\logs\log-{Date}.log", rollingInterval: RollingInterval.Day)
                     //.WriteTo.MariaDB(connectionString,autoCreateTable:true)
                     //.WriteTo.File("D:\\sil\\log.txt")
-                    .WriteTo.Elasticsearch(
-                        new ElasticsearchSinkOptions(new Uri(elasticUri))
-                        {
-                            IndexFormat = "cyslogs", // + context.HostingEnvironment.ApplicationName?.ToLower().Replace(".", "-") + "-" + context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-") + "-" + DateTime.UtcNow.Date.ToString("dd-MM-yyyy"),
-                            AutoRegisterTemplate = true,
-                            NumberOfShards = 2,
-                            NumberOfReplicas = 1,
-                            ModifyConnectionSettings = conn => conn.BasicAuthentication(username, password),
-                        })
-
                     .Enrich.WithClientIp()
                     //.Enrich.WithRequestUserId()
                     .Enrich.WithUserName()
@@ -46,6 +36,24 @@ namespace Common.Logging
                     .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
                     //.Enrich.WithUTC3()
                     .ReadFrom.Configuration(context.Configuration);
+
+               // ElasticConfiguration:Uri tanımlı değilse (ELK kullanılmıyorsa) Elasticsearch sink'i eklenmez
+               if (Uri.TryCreate(elasticUri, UriKind.Absolute, out var elasticNodeUri))
+               {
+                   configuration.WriteTo.Elasticsearch(
+                        new ElasticsearchSinkOptions(elasticNodeUri)
+                        {
+                            IndexFormat = "cyslogs", // + context.HostingEnvironment.ApplicationName?.ToLower().Replace(".", "-") + "-" + context.HostingEnvironment.EnvironmentName?.ToLower().Replace(".", "-") + "-" + DateTime.UtcNow.Date.ToString("dd-MM-yyyy"),
+                            AutoRegisterTemplate = true,
+                            NumberOfShards = 2,
+                            NumberOfReplicas = 1,
+                            ModifyConnectionSettings = conn => conn.BasicAuthentication(username, password),
+                        });
+               }
+               else
+               {
+                   Console.WriteLine("[SeriLogger] ElasticConfiguration:Uri tanımlı değil, Elasticsearch sink'i devre dışı.");
+               }
            };
     }
 
