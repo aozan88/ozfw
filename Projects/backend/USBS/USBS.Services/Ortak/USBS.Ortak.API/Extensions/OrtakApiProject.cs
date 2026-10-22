@@ -52,7 +52,7 @@ namespace Ortak.API
             builder.Services.AddDatabaseDefaults(builder.Configuration);
 
             // Retrieve connection string and register Infrastructure services
-            var defaultConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
+            var defaultConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddInfrastructureServices<OrtakDbContext>(defaultConnectionString);
 
             builder.Services.AddScoped<IEventHandler<SistemTanimTipiSilindiEvent>, SistemTanimTipiSilindiEventHandler>();
