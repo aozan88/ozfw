@@ -1,7 +1,7 @@
 ﻿using Sistem.Application.Contract;
 using Sistem.Application.DtoModels;
 using USBS.Common.Domain;
-using KonFw.ServiceBase;
+using OzFw.ServiceBase;
 
 namespace Sistem.Application.Business
 {

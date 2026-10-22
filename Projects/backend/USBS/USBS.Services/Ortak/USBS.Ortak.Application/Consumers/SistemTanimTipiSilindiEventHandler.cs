@@ -1,4 +1,4 @@
-﻿using KonFwEventBus;
+﻿using OzFwEventBus;
 using Ortak.Application.Contract;
 
 namespace USBS.Ortak.API.Consumers

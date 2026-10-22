@@ -1,5 +1,5 @@
-﻿using KonFw.BaseInfrastructure;
-using KonFwBaseModels.Enums;
+﻿using OzFw.BaseInfrastructure;
+using OzFwBaseModels.Enums;
 
 namespace USBS.Common.Domain
 {

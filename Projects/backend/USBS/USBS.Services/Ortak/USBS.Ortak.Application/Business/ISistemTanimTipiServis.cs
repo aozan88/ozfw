@@ -1,5 +1,5 @@
-﻿using KonFw.ServiceBase;
-using KonFwBaseModels;
+﻿using OzFw.ServiceBase;
+using OzFwBaseModels;
 using USBS.Common.Dtos.OrtakDtos;
 
 namespace Ortak.Application.Business

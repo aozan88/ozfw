@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Frameworks\KonFw\KonFw.BaseEssentials\KonFwBaseModels\KonFwBaseModels.csproj" />
+    <ProjectReference Include="..\..\..\..\Frameworks\OzFw\OzFw.BaseEssentials\OzFwBaseModels\OzFwBaseModels.csproj" />
   </ItemGroup>
 
 </Project>

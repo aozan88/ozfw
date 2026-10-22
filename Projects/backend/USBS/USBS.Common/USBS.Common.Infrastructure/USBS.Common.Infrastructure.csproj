@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Frameworks\KonFw\KonFw.BaseInfrastructure\KonFwBaseInfrastructure\KonFwBaseInfrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Frameworks\OzFw\OzFw.BaseInfrastructure\OzFwBaseInfrastructure\OzFwBaseInfrastructure.csproj" />
     <ProjectReference Include="..\USBS.Common.Domain\USBS.Common.Domain.csproj" />
   </ItemGroup>
 

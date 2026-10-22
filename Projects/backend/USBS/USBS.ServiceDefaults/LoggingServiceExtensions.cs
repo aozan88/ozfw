@@ -1,6 +1,6 @@
 using Common.Logging;
-using KonFwELK;
-using KonFwGraylog;
+using OzFwELK;
+using OzFwGraylog;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +12,7 @@ namespace USBS.ServiceDefaults;
 // Adds common .NET Aspire services: service discovery, resilience, health checks, and OpenTelemetry.
 // This project should be referenced by each service project in your solution.
 // To learn more about using this project, see https://aka.ms/dotnet/aspire/service-defaults
-using KonFwLogging; // Make sure this namespace is included
+using OzFwLogging; // Make sure this namespace is included
 
 public static class LoggingServiceExtensions
 {

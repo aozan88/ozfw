@@ -1,9 +1,9 @@
 using System.Text.Json;
 using FluentValidation;
-using KonFw.ServiceBase;
-using KonFwBaseHelpers;
-using KonFwBaseModels;
-using KonFwBaseModels.Enums;
+using OzFw.ServiceBase;
+using OzFwBaseHelpers;
+using OzFwBaseModels;
+using OzFwBaseModels.Enums;
 
 namespace USBS.Tests.Framework;
 

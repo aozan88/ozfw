@@ -1,5 +1,5 @@
-﻿using KonFwCaching;
-using KonFwRedisCaching;
+﻿using OzFwCaching;
+using OzFwRedisCaching;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace USBS.Components.Caching

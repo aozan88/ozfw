@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.BaseEssentials\KonFwBaseModels\KonFwBaseModels.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.EventManagement\KonFwEventBus\KonFwEventBus.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.ServiceBase\KonFw.ServiceBase\KonFw.ServiceBase.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.BaseEssentials\OzFwBaseModels\OzFwBaseModels.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.EventManagement\OzFwEventBus\OzFwEventBus.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.ServiceBase\OzFw.ServiceBase\OzFw.ServiceBase.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common.Dtos\USBS.Common.Dtos.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common\USBS.Common.Domain\USBS.Common.Domain.csproj" />
   </ItemGroup>

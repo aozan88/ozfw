@@ -1,5 +1,5 @@
-﻿using KonFwGraylog;
-using KonFwLogging;
+﻿using OzFwGraylog;
+using OzFwLogging;
 using Microsoft.Extensions.Logging;
 
 namespace USBS.Components.Logging

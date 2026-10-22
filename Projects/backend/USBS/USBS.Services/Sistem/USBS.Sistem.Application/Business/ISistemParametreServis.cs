@@ -1,6 +1,6 @@
 ﻿using Sistem.Application.DtoModels;
 using USBS.Common.Dtos.OrtakDtos;
-using KonFw.ServiceBase;
+using OzFw.ServiceBase;
 
 namespace Sistem.Application.Business
 {

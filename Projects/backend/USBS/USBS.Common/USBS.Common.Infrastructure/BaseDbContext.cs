@@ -1,10 +1,10 @@
-﻿using KonFw.BaseInfrastructure;
+﻿using OzFw.BaseInfrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace USBS.Common.Infrastructure
 {
     public class BaseDbContext {}
-    //public class BaseDbContext : KonFwDbContext
+    //public class BaseDbContext : OzFwDbContext
     //{
     //    public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options)
     //    {

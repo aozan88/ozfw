@@ -1,4 +1,4 @@
-﻿using KonFwEventBus;
+﻿using OzFwEventBus;
 
 namespace USBS.Ortak.API.Consumers
 {
@@ -8,7 +8,7 @@ namespace USBS.Ortak.API.Consumers
         DateTime IEvent.CreationDate => DateTime.Now;
 
         public Guid SistemTanimTipiId { get; set; }
-        public KonFwBaseModels.Enums.DurumEnum YeniDurum { get; set; }
+        public OzFwBaseModels.Enums.DurumEnum YeniDurum { get; set; }
 
     }
 }

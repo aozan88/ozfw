@@ -1,4 +1,4 @@
-using KonFwRedisCaching;
+using OzFwRedisCaching;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using USBS.Components.Caching;

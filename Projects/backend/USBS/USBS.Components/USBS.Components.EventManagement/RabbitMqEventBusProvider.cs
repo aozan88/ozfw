@@ -1,4 +1,4 @@
-﻿using KonFwRabbitMq;
+﻿using OzFwRabbitMq;
 
 namespace USBS.Components.EventManagement
 {

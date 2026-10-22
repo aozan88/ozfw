@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Frameworks\KonFw\KonFw.Caching\KonFwRedisCaching\KonFwRedisCaching.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Frameworks\OzFw\OzFw.Caching\OzFwRedisCaching\OzFwRedisCaching.csproj" />
   </ItemGroup>
 
 </Project>

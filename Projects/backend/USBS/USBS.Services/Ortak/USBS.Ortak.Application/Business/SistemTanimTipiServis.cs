@@ -1,11 +1,11 @@
 ﻿using Ortak.Application.Contract;
 using USBS.Common.Domain;
 using USBS.Common.Dtos.OrtakDtos;
-using KonFwBaseModels;
-using KonFwBaseModels.Enums;
-using KonFw.ServiceBase;
+using OzFwBaseModels;
+using OzFwBaseModels.Enums;
+using OzFw.ServiceBase;
 using USBS.Ortak.API.Consumers;
-using KonFwEventBus;
+using OzFwEventBus;
 
 namespace Ortak.Application.Business
 {

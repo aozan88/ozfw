@@ -1,4 +1,4 @@
-﻿using KonFwLogging;
+﻿using OzFwLogging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -7,7 +7,7 @@ using System.Net.Sockets;
 
 namespace USBS.Components.Logging
 {
-    using KonFwLogging; // Make sure this namespace is included
+    using OzFwLogging; // Make sure this namespace is included
 
     public class LoggingDelegatingHandler : DelegatingHandler
     {

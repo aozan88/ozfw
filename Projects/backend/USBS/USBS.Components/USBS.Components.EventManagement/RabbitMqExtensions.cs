@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using KonFwEventBus;
-using KonFwRabbitMq;
+using OzFwEventBus;
+using OzFwRabbitMq;
 using Microsoft.Extensions.Configuration;
 using USBS.Components.EventManagement;
 namespace USBS.Components.Caching

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.ApiBase\KonFw.ApiBase.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.ApiBase\OzFw.ApiBase.csproj" />
     <ProjectReference Include="..\..\..\USBS.Components\USBS.Components.Caching\USBS.Components.Caching.csproj" />
     <ProjectReference Include="..\..\..\USBS.ServiceDefaults\USBS.ServiceDefaults.csproj" />
     <ProjectReference Include="..\USBS.Sistem.Application\USBS.Sistem.Application.csproj" />

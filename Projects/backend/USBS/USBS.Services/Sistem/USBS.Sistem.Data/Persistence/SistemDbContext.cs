@@ -1,11 +1,11 @@
-﻿using KonFw.BaseInfrastructure;
+﻿using OzFw.BaseInfrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using USBS.Common.Domain;
 
 namespace Sistem.Data.Persistence
 {
-    public class SistemDbContext : KonFwDbContext
+    public class SistemDbContext : OzFwDbContext
     {
         private readonly IHttpContextAccessor _context;
         public SistemDbContext(DbContextOptions<SistemDbContext> options, IHttpContextAccessor context) : base(options, context)

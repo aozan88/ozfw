@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Frameworks\KonFw\KonFw.BaseInfrastructure\KonFwBaseInfrastructure\KonFwBaseInfrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Frameworks\OzFw\OzFw.BaseInfrastructure\OzFwBaseInfrastructure\OzFwBaseInfrastructure.csproj" />
   </ItemGroup>
 
 </Project>

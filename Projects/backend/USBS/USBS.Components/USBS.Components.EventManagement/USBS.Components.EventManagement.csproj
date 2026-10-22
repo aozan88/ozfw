@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Frameworks\KonFw\KonFw.EventManagement\KonFwKafka\KonFwKafka.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Frameworks\KonFw\KonFw.EventManagement\KonFwRabbitMq\KonFwRabbitMq.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Frameworks\OzFw\OzFw.EventManagement\OzFwKafka\OzFwKafka.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Frameworks\OzFw\OzFw.EventManagement\OzFwRabbitMq\OzFwRabbitMq.csproj" />
   </ItemGroup>
 
 </Project>

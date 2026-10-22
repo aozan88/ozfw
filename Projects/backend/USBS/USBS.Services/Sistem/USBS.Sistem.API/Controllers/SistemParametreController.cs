@@ -3,7 +3,7 @@ using Sistem.Application.Business;
 using Sistem.Application.DtoModels;
 using FluentValidation;
 using USBS.Common.Dtos.OrtakDtos;
-using KonFw.ApiBase;
+using OzFw.ApiBase;
 using Sistem.API.ViewModels;
 
 namespace Sistem.API.Controllers

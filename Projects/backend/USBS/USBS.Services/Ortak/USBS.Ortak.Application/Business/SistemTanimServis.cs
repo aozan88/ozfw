@@ -1,7 +1,7 @@
 ﻿using Ortak.Application.Contract;
 using USBS.Common.Domain;
 using USBS.Common.Dtos.OrtakDtos;
-using KonFw.ServiceBase;
+using OzFw.ServiceBase;
 
 namespace Ortak.Application.Business
 {

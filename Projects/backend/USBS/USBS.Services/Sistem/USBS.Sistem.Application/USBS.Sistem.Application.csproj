@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.BaseInfrastructure\KonFwBaseInfrastructure\KonFwBaseInfrastructure.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.ServiceBase\KonFw.ServiceBase\KonFw.ServiceBase.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.BaseInfrastructure\OzFwBaseInfrastructure\OzFwBaseInfrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.ServiceBase\OzFw.ServiceBase\OzFw.ServiceBase.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common.Dtos\USBS.Common.Dtos.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common\USBS.Common.Domain\USBS.Common.Domain.csproj" />
   </ItemGroup>

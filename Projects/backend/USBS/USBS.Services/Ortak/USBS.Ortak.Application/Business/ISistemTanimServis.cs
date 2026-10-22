@@ -1,5 +1,5 @@
-﻿using KonFw.ServiceBase;
-using KonFwBaseModels;
+﻿using OzFw.ServiceBase;
+using OzFwBaseModels;
 using USBS.Common.Domain;
 using USBS.Common.Dtos.OrtakDtos;
 

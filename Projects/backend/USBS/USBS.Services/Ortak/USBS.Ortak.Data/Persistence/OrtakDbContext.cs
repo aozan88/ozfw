@@ -1,11 +1,11 @@
-﻿using KonFw.BaseInfrastructure;
+﻿using OzFw.BaseInfrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using USBS.Common.Domain;
 
 namespace Ortak.Data.Persistence
 {
-    public class OrtakDbContext : KonFwDbContext
+    public class OrtakDbContext : OzFwDbContext
     {
         private readonly IHttpContextAccessor _context;
         public OrtakDbContext(DbContextOptions<OrtakDbContext> options, IHttpContextAccessor context) : base(options, context) 

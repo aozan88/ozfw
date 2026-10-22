@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.ApiBase\KonFw.ApiBase.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.BaseEssentials\KonFwBaseModels\KonFwBaseModels.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.ApiBase\OzFw.ApiBase.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.BaseEssentials\OzFwBaseModels\OzFwBaseModels.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common.Dtos\USBS.Common.Dtos.csproj" />
     <ProjectReference Include="..\..\..\USBS.Components\USBS.Components.Caching\USBS.Components.Caching.csproj" />
     <ProjectReference Include="..\..\..\USBS.Components\USBS.Components.Logging\USBS.Components.Logging.csproj" />

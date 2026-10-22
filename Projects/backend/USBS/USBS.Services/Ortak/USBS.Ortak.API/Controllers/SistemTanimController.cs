@@ -4,8 +4,8 @@ using USBS.Common.Dtos.OrtakDtos;
 using FluentValidation;
 using Mapster;
 using Ortak.API.ViewModels;
-using KonFwBaseModels;
-using KonFw.ApiBase;
+using OzFwBaseModels;
+using OzFw.ApiBase;
 
 namespace Ortak.API.Controllers
 {

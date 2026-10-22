@@ -1,4 +1,4 @@
-﻿using KonFwBaseModels;
+﻿using OzFwBaseModels;
 
 namespace Sistem.Application.DtoModels
 {

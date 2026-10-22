@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using KonFwKafka;
-using KonFwEventBus;
+using OzFwKafka;
+using OzFwEventBus;
 namespace USBS.Components.EventManagement
 {
 

@@ -1,4 +1,4 @@
-﻿using KonFw.BaseInfrastructure;
+﻿using OzFw.BaseInfrastructure;
 using USBS.Common.Domain;
 
 namespace Sistem.Application.Contract

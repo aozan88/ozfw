@@ -1,4 +1,4 @@
-﻿using KonFw.ApiBase;
+﻿using OzFw.ApiBase;
 using Serilog;
 using Sistem.Data.Persistence;
 using Sistem.Data.Registration;
@@ -35,7 +35,7 @@ namespace Sistem.API
             });
 
             builder.Services.AddOpenApi();
-            builder.Services.AddKonFwControllers();
+            builder.Services.AddOzFwControllers();
             builder.Services.AddHttpContextAccessor();
 
 

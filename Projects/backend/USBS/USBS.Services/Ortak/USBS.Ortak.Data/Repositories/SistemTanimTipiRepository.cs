@@ -1,6 +1,6 @@
-﻿using KonFwBaseModels.Enums;
+﻿using OzFwBaseModels.Enums;
 using Microsoft.EntityFrameworkCore;
-using KonFw.BaseInfrastructure;
+using OzFw.BaseInfrastructure;
 using USBS.Common.Domain;
 using Ortak.Application.Contract;
 using Ortak.Data.Persistence;

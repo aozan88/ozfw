@@ -1,5 +1,5 @@
-﻿using KonFwELK;
-using KonFwLogging;
+﻿using OzFwELK;
+using OzFwLogging;
 using Microsoft.Extensions.Logging;
 
 namespace USBS.Components.Logging

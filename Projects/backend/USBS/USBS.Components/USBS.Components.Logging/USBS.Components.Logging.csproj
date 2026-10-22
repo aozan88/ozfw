@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Frameworks\KonFw\KonFw.Logging\KonFwELK\KonFwELK.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Frameworks\KonFw\KonFw.Logging\KonFwGraylog\KonFwGraylog.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Frameworks\OzFw\OzFw.Logging\OzFwELK\OzFwELK.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Frameworks\OzFw\OzFw.Logging\OzFwGraylog\OzFwGraylog.csproj" />
   </ItemGroup>
 
 </Project>

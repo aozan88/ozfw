@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Frameworks\KonFw\KonFw.BaseEssentials\KonFwBaseHelpers\KonFwBaseHelpers.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.BaseEssentials\OzFwBaseHelpers\OzFwBaseHelpers.csproj" />
     <ProjectReference Include="..\..\..\USBS.Common\USBS.Common.Domain\USBS.Common.Domain.csproj" />
     <ProjectReference Include="..\USBS.Ortak.Application\USBS.Ortak.Application.csproj" />
   </ItemGroup>

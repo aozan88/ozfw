@@ -361,4 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Frameworks/KonFw/KonFw.CodeGenerator/KonFw.ScribanCodeGen/Properties/launchSettings.json
+/Frameworks/OzFw/OzFw.CodeGenerator/OzFw.ScribanCodeGen/Properties/launchSettings.json
