@@ -25,6 +25,8 @@ builder.Services.AddScoped<ISistemTanimTipiServis, SistemTanimTipiServis>();
 #region Validations Registration
 builder.Services.AddValidatorsFromAssembly(typeof(SistemTanimValidation).Assembly);
 builder.Services.AddValidatorsFromAssembly(typeof(SistemTanimTipiValidation).Assembly);
+// Application katmanındaki DTO validator'ları (BaseController Payload doğrulamasında kullanır)
+builder.Services.AddValidatorsFromAssembly(typeof(Ortak.Application.Validations.SistemTanimDtoValidation).Assembly);
 #endregion
 
 MapsterConfig.RegisterMappings();

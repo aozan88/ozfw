@@ -15,7 +15,7 @@ namespace Ortak.Application.Validations
                 .NotEmpty();
 
             RuleFor(k => k.Durum)
-                .InclusiveBetween(0, 1);
+                .IsInEnum();
         }
     }
 }

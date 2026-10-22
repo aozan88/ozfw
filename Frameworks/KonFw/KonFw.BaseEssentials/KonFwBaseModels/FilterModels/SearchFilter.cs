@@ -1,11 +1,17 @@
 ﻿namespace KonFwBaseModels
 {
+    /// <summary>
+    /// Filtre ağacı düğümü.
+    /// Yaprak düğüm: Field + Operator + Value (eq, neq, lt, lte, gt, gte, contains, doesnotcontain,
+    /// startswith, endswith, in, between, isnull, isnotnull).
+    /// Grup düğümü: Logic ("and" | "or") + Filters.
+    /// </summary>
     public class SearchFilter
     {
-        public required string Field { get; set; }
-        public required string Operator { get; set; }
-        public required object Value { get; set; }
-        public required string Logic { get; set; }
-        public required List<SearchFilter> Filters { get; set; }
+        public string? Field { get; set; }
+        public string? Operator { get; set; }
+        public object? Value { get; set; }
+        public string? Logic { get; set; }
+        public List<SearchFilter>? Filters { get; set; }
     }
 }

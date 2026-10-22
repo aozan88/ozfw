@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using KonFwBaseModels.Enums;
+using Microsoft.EntityFrameworkCore;
 using KonFw.BaseInfrastructure;
 using USBS.Common.Domain;
 using Sistem.Application.Contract;
@@ -17,7 +18,7 @@ namespace Sistem.Data.Repositories
 
         public async Task<IEnumerable<SistemParametre>> GetActiveSistemParametresAsync()
         {
-            return await _context.SistemParametres.Where(k => k.Durum == 1).ToListAsync();
+            return await _context.SistemParametres.Where(k => k.Durum == DurumEnum.Aktif).ToListAsync();
         }
     }
 }

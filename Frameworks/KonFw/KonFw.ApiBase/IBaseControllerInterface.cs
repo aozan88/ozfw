@@ -10,20 +10,19 @@ namespace KonFw.ApiBase
         Task<ActionResult<T>> CreateResponseAsync<T>(T responseObject, int status);
 
         // Get Operations
-        Task<ActionResult<DtoType>> GetByIdAsync(Guid uid);
-        Task<ActionResult<BaseResponseDto<ResponseDtoType>>> GetByFilterAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
-        Task<ActionResult<List<DtoType>>> GetAllAsync();
+        Task<ActionResult<BaseResponseDto<ResponseDtoType>>> GetByIdAsync(BaseGetByIdDto baseGetByIdDto);
+        Task<ActionResult<BaseResponseDto<ResponseDtoType>>> GetAllAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
 
         // Create Operations
         Task<ActionResult<BaseResponseDto<ResponseDtoType>>> CreateAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
-        Task<ActionResult<HashSet<DtoType>>> CreateManyAsync(HashSet<DtoType> dtoList);
+        Task<ActionResult<BaseResponseDto<ResponseDtoType>>> CreateManyAsync(List<DtoType> dtoList);
 
         // Update Operations
         Task<ActionResult<BaseResponseDto<ResponseDtoType>>> UpdateAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
-        Task<ActionResult<HashSet<DtoType>>> UpdateManyAsync(HashSet<DtoType> dtoList);
+        Task<ActionResult<BaseResponseDto<ResponseDtoType>>> UpdateManyAsync(List<DtoType> dtoList);
 
         // Delete Operations
-        Task<ActionResult> DeleteAsync(Guid uid);
+        Task<ActionResult<BaseResponseDto<ResponseDtoType>>> DeleteAsync(BaseGetByIdDto baseGetByIdDto);
         Task<ActionResult<BaseResponseDto<ResponseDtoType>>> DeleteByFilterAsync(BaseRequestDto<RequestDtoType> baseRequestDto);
     }
 }

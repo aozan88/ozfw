@@ -8,7 +8,7 @@ namespace USBS.Ortak.API.Consumers
         DateTime IEvent.CreationDate => DateTime.Now;
 
         public Guid SistemTanimTipiId { get; set; }
-        public int YeniDurum { get; set; }
+        public KonFwBaseModels.Enums.DurumEnum YeniDurum { get; set; }
 
     }
 }

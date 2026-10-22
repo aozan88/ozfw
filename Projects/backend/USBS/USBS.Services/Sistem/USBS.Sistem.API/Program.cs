@@ -19,6 +19,8 @@ builder.Services.AddScoped<ISistemParametreServis, SistemParametreServis>();
 
 #region Validations Registration
 builder.Services.AddValidatorsFromAssembly(typeof(SistemParametreValidation).Assembly);
+// Application katmanındaki DTO validator'ları (BaseController Payload doğrulamasında kullanır)
+builder.Services.AddValidatorsFromAssembly(typeof(Sistem.Application.Validations.SistemParametreDtoValidation).Assembly);
 #endregion
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

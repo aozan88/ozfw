@@ -1,4 +1,5 @@
-﻿using KonFwEventBus;
+﻿using KonFw.ApiBase;
+using KonFwEventBus;
 using Ortak.Data.Persistence;
 using Ortak.Data.Registration;
 using Serilog;
@@ -40,7 +41,7 @@ namespace Ortak.API
             });
 
             builder.Services.AddOpenApi();
-            builder.Services.AddControllers();
+            builder.Services.AddKonFwControllers();
             builder.Services.AddHttpContextAccessor();
 
             //Register rabbitmq and kafka

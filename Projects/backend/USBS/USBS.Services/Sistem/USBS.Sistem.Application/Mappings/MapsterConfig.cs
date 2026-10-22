@@ -1,21 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Mapster;
+using Sistem.Application.DtoModels;
+using USBS.Common.Domain;
 
 namespace USBS.Sistem.Application.Mappings
 {
     public static class MapsterConfig
     {
+        /// <summary>
+        /// Aynı isimli alanlar Mapster tarafından otomatik eşlenir; burada yalnızca adı farklı olanlar tanımlanır.
+        /// Filtre/sıralama tarafı için aynı eşleme DTO üzerindeki [EntityField] ile verilir.
+        /// </summary>
         public static void RegisterMappings()
         {
+            TypeAdapterConfig<SistemParametre, SistemParametreDto>.NewConfig()
+                .Map(dest => dest.SistemParametreAdi, src => src.ParametreAdi)
+                .Map(dest => dest.SistemParametreTipiId, src => src.ParametreTipiId)
+                .Map(dest => dest.UstSistemParametreId, src => src.UstParametreId);
 
-            //TypeAdapterConfig<User, UserDto>.NewConfig()
-            //    .Map(dest => dest.Name, src => src.FullName);
-
-            //TypeAdapterConfig<UserDto, User>.NewConfig()
-            //    .Map(dest => dest.FullName, src => src.Name);
+            TypeAdapterConfig<SistemParametreDto, SistemParametre>.NewConfig()
+                .Map(dest => dest.ParametreAdi, src => src.SistemParametreAdi)
+                .Map(dest => dest.ParametreTipiId, src => src.SistemParametreTipiId)
+                .Map(dest => dest.UstParametreId, src => src.UstSistemParametreId ?? Guid.Empty);
         }
     }
 }

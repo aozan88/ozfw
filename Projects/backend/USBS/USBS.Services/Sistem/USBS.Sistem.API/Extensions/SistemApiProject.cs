@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using KonFw.ApiBase;
+using Serilog;
 using Sistem.Data.Persistence;
 using Sistem.Data.Registration;
 using USBS.ServiceDefaults;
@@ -34,7 +35,7 @@ namespace Sistem.API
             });
 
             builder.Services.AddOpenApi();
-            builder.Services.AddControllers();
+            builder.Services.AddKonFwControllers();
             builder.Services.AddHttpContextAccessor();
 
 

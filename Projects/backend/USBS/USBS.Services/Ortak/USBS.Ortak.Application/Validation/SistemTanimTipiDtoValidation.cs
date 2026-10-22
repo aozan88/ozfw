@@ -12,7 +12,7 @@ namespace Ortak.Application.Validations
                 .Length(3, 100);
 
             RuleFor(k => k.Durum)
-                .InclusiveBetween(0, 1);
+                .IsInEnum();
         }
     }
 }

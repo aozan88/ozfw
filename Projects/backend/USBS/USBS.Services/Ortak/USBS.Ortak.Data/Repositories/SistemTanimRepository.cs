@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using KonFwBaseModels.Enums;
+using Microsoft.EntityFrameworkCore;
 using KonFw.BaseInfrastructure;
 using USBS.Common.Domain;
 using Ortak.Application.Contract;
@@ -18,12 +19,12 @@ namespace Ortak.Data.Repositories
 
         public async Task<IEnumerable<SistemTanim>> GetAktifTanimListAsync()
         {
-            return await _context.SistemTanims.Where(t => t.Durum == 1).ToListAsync();
+            return await _context.SistemTanims.Where(t => t.Durum == DurumEnum.Aktif).ToListAsync();
         }
 
         public async Task<IEnumerable<SistemTanim>> GetAktifTanimByTanimTipiIdAsync(Guid tanimTipiId)
         {
-            return await _context.SistemTanims.Where(t => t.Durum == 1 && t.TanimTipiId == tanimTipiId).ToListAsync();
+            return await _context.SistemTanims.Where(t => t.Durum == DurumEnum.Aktif && t.TanimTipiId == tanimTipiId).ToListAsync();
         }
     }
 }
