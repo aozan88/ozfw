@@ -1,0 +1,27 @@
+using FluentValidation;
+using {{ m.DtosNs }};
+
+namespace {{ m.ValidationsNs }}
+{
+    /// <summary>Modelden türetilen kurallar. Ek kurallar için ayrı bir partial dosyada EkKurallar() metodunu uygulayın.</summary>
+    public partial class {{ e.Name }}DtoValidation : AbstractValidator<{{ e.Name }}Dto>
+    {
+        public {{ e.Name }}DtoValidation()
+        {
+{{~ for f in e.Fields ~}}
+{{~ if f.IsString && !f.Nullable ~}}
+            RuleFor(x => x.{{ f.DtoPropertyName }}).NotEmpty(){{ if f.MaxLength }}.MaximumLength({{ f.MaxLength }}){{ end }};
+{{~ else if f.IsString && f.MaxLength ~}}
+            RuleFor(x => x.{{ f.DtoPropertyName }}).MaximumLength({{ f.MaxLength }});
+{{~ else if f.IsGuid && !f.Nullable ~}}
+            RuleFor(x => x.{{ f.DtoPropertyName }}).NotEmpty();
+{{~ else if f.IsDecimal && f.Precision ~}}
+            RuleFor(x => x.{{ f.DtoPropertyName }}).PrecisionScale({{ f.Precision }}, {{ f.Scale }}, true);
+{{~ end ~}}
+{{~ end ~}}
+            EkKurallar();
+        }
+
+        partial void EkKurallar();
+    }
+}

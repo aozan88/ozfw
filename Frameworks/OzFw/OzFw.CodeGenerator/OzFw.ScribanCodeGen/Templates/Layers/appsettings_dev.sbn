@@ -1,0 +1,12 @@
+{
+  "RunningProfile": "{{ m.Name }}.API",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=usbs_dev;Username=postgres;Password="
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}

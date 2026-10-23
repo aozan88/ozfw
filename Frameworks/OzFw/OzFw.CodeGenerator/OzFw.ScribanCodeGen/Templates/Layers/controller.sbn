@@ -1,0 +1,14 @@
+using OzFw.ApiBase;
+using {{ m.BusinessNs }};
+using {{ m.DtosNs }};
+
+namespace {{ m.ControllersNs }}
+{
+    /// <summary>POST api/{{ e.Name }}/getById, getAll, create, manyCreate, update, manyUpdate, deleteByFilter, delete</summary>
+    public partial class {{ e.Name }}Controller : BaseController<{{ e.Name }}Dto, {{ e.Name }}Dto, {{ e.Name }}Dto>
+    {
+        public {{ e.Name }}Controller(I{{ e.Name }}Servis servis) : base(servis)
+        {
+        }
+    }
+}

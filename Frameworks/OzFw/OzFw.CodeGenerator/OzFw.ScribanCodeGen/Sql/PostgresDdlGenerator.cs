@@ -4,7 +4,11 @@ using OzFw.ScribanCodeGen.Model;
 
 namespace OzFw.ScribanCodeGen.Sql
 {
-    public sealed record GeneratedFile(string RelativePath, string Content);
+    /// <param name="Scaffold">
+    /// true: yalnızca dosya yoksa oluşturulur, sonra geliştiriciye aittir (csproj, Program.cs, partial iskeletler).
+    /// false: her çalıştırmada yeniden üretilir (auto-generated).
+    /// </param>
+    public sealed record GeneratedFile(string RelativePath, string Content, bool Scaffold = false);
 
     /// <summary>
     /// Normalize edilmiş modelden PostgreSQL DDL üretir (migration yok; script review edilip elle uygulanır).

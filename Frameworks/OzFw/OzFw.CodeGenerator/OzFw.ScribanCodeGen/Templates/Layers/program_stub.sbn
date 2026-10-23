@@ -1,0 +1,12 @@
+using {{ m.ApiNs }};
+
+// Bu dosya generator tarafından bir kez oluşturuldu ve artık size ait; yeniden üretimde değiştirilmez.
+var builder = WebApplication.CreateBuilder(args);
+
+{{ m.Name }}ApiProject.Configure{{ m.Name }}Api(builder);
+
+var app = builder.Build();
+
+{{ m.Name }}ApiProject.Configure{{ m.Name }}ApiMiddleware(app);
+
+app.Run();

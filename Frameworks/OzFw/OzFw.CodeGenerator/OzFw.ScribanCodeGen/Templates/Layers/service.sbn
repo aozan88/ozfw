@@ -1,0 +1,13 @@
+using OzFw.ServiceBase;
+using {{ m.DomainNs }};
+using {{ m.DtosNs }};
+
+namespace {{ m.BusinessNs }}
+{
+    /// <summary>
+    /// CRUD işlemleri BaseService'ten gelir. Constructor ve özel iş kuralları (override) {{ e.Name }}Servis.cs dosyasındadır.
+    /// </summary>
+    public partial class {{ e.Name }}Servis : BaseService<{{ e.Name }}, {{ e.Name }}Dto>, I{{ e.Name }}Servis
+    {
+    }
+}

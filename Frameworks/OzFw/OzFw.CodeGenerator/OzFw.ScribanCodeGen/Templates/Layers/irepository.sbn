@@ -1,0 +1,10 @@
+using OzFw.BaseInfrastructure;
+using {{ m.DomainNs }};
+
+namespace {{ m.ContractNs }}
+{
+    /// <summary>Özel sorgular için bu arayüzü ayrı bir partial dosyada genişletin.</summary>
+    public partial interface I{{ e.Name }}Repository : IRepository<{{ e.Name }}>
+    {
+    }
+}

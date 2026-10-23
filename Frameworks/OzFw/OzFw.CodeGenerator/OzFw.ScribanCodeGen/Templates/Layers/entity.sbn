@@ -1,0 +1,25 @@
+using OzFwBaseModels;
+
+namespace {{ m.DomainNs }}
+{
+{{~ if e.Description ~}}
+    /// <summary>{{ e.Description }}</summary>
+{{~ end ~}}
+    public partial class {{ e.Name }} : BaseEntity
+    {
+{{~ for f in e.Fields ~}}
+{{~ if f.Description ~}}
+        /// <summary>{{ f.Description }}</summary>
+{{~ end ~}}
+{{~ if f.DtoName ~}}
+        [DtoField("{{ f.DtoName }}")]
+{{~ end ~}}
+        public {{ f.EntityType }} {{ f.Name }} { get; set; }{{ f.Initializer }}
+
+{{~ end ~}}
+{{~ for r in e.Relations ~}}
+        public virtual {{ r.Target }}{{ if !r.Required }}?{{ end }} {{ r.Name }} { get; set; }{{ if r.Required }} = null!;{{ end }}
+
+{{~ end ~}}
+    }
+}

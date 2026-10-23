@@ -1,0 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using {{ m.DomainNs }};
+
+namespace {{ m.PersistenceNs }}
+{
+    public partial class {{ m.Name }}DbContext
+    {
+{{~ for x in m.Entities ~}}
+        public DbSet<{{ x.Name }}> {{ x.DbSetName }} { get; set; } = null!;
+{{~ end ~}}
+    }
+}

@@ -1,0 +1,9 @@
+using OzFw.ServiceBase;
+using {{ m.DtosNs }};
+
+namespace {{ m.BusinessNs }}
+{
+    public partial interface I{{ e.Name }}Servis : IBaseServiceInterface<{{ e.Name }}Dto, {{ e.Name }}Dto, {{ e.Name }}Dto>
+    {
+    }
+}

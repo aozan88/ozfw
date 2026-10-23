@@ -1,0 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using {{ m.DomainNs }};
+
+namespace {{ m.ConfigurationsNs }}
+{
+    /// <summary>BaseEntity kolonlarının eşlemesi (SQL DDL ile aynı adlar ve tipler).</summary>
+    internal static class BaseEntityColumns
+    {
+        public static void Map<T>(EntityTypeBuilder<T> builder, string primaryKeyName) where T : BaseEntity
+        {
+            builder.HasKey(x => x.Id).HasName(primaryKeyName);
+{{~ for c in m.BaseColumns ~}}
+            builder.Property(x => x.{{ c.Name }}).HasColumnName("{{ c.Column }}").HasColumnType("{{ c.ColumnType }}").IsRequired({{ if c.Nullable }}false{{ else }}true{{ end }});
+{{~ end ~}}
+            builder.Property(x => x.Id).ValueGeneratedNever();
+        }
+    }
+}

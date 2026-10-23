@@ -110,6 +110,10 @@ namespace OzFw.ScribanCodeGen.Model
                     errors.Add($"'{fieldWhere}': scale 0 ile precision arasında olmalı.");
                 if (field.Scale.HasValue && !field.Precision.HasValue)
                     errors.Add($"'{fieldWhere}': scale verildiyse precision da verilmeli.");
+                if (field.Precision.HasValue)
+                    field.Scale ??= 0;
+                if (field.DtoName != null && !Naming.IsIdentifier(field.DtoName.Trim()))
+                    errors.Add($"'{fieldWhere}': dtoName geçersiz '{field.DtoName}'.");
 
                 field.Column = string.IsNullOrWhiteSpace(field.Column) ? Naming.ToSnake(field.Name) : field.Column.Trim();
                 field.DtoName = string.IsNullOrWhiteSpace(field.DtoName) ? null : field.DtoName.Trim();

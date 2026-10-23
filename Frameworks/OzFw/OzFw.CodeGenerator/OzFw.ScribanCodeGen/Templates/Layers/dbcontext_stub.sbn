@@ -1,0 +1,27 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using OzFw.BaseInfrastructure;
+
+namespace {{ m.PersistenceNs }}
+{
+    // Bu dosya generator tarafından bir kez oluşturuldu ve artık size ait; yeniden üretimde değiştirilmez.
+    // DbSet'ler {{ m.Name }}DbContext.g.cs, tablo eşlemeleri Configurations/*.g.cs dosyalarındadır.
+    public partial class {{ m.Name }}DbContext : OzFwDbContext
+    {
+        static {{ m.Name }}DbContext()
+        {
+            // DateTime kolonları "timestamp" (time zone'suz); diğer modüllerle aynı davranış
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
+
+        public {{ m.Name }}DbContext(DbContextOptions<{{ m.Name }}DbContext> options, IHttpContextAccessor context) : base(options, context)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof({{ m.Name }}DbContext).Assembly);
+        }
+    }
+}

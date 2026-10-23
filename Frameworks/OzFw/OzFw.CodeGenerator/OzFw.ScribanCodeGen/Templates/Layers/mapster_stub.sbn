@@ -1,0 +1,15 @@
+namespace {{ m.MappingsNs }}
+{
+    // Bu dosya generator tarafından bir kez oluşturuldu ve artık size ait; yeniden üretimde değiştirilmez.
+    public static class MapsterConfig
+    {
+        /// <summary>
+        /// DTO ve entity'de aynı adlı alanlar Mapster tarafından otomatik eşlenir. Modelde dtoName verilen alanlar
+        /// GeneratedMappings'te; bunların dışındaki özel eşlemeleri buraya ekleyin.
+        /// </summary>
+        public static void RegisterMappings()
+        {
+            GeneratedMappings.Register();
+        }
+    }
+}

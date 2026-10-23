@@ -1,0 +1,18 @@
+using OzFwBaseModels;
+
+namespace {{ m.DtosNs }}
+{
+{{~ if e.Description ~}}
+    /// <summary>{{ e.Description }}</summary>
+{{~ end ~}}
+    public partial class {{ e.Name }}Dto : BaseDto
+    {
+{{~ for f in e.Fields ~}}
+{{~ if f.Description ~}}
+        /// <summary>{{ f.Description }}</summary>
+{{~ end ~}}
+        public {{ f.DtoType }} {{ f.DtoPropertyName }} { get; set; }{{ f.Initializer }}
+
+{{~ end ~}}
+    }
+}

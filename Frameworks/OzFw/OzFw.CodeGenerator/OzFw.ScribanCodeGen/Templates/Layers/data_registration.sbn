@@ -1,0 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using {{ m.ContractNs }};
+using {{ m.PersistenceNs }};
+using {{ m.RepositoriesNs }};
+
+namespace {{ m.DataRegistrationNs }}
+{
+    public static class {{ m.Name }}DataRegistration
+    {
+        /// <summary>{{ m.Name }}DbContext ve repository kayıtları.</summary>
+        public static IServiceCollection Add{{ m.Name }}Data(this IServiceCollection services, string connectionString)
+        {
+            services.AddDbContext<{{ m.Name }}DbContext>(options => options.UseNpgsql(connectionString));
+{{~ for x in m.Entities ~}}
+            services.AddScoped<I{{ x.Name }}Repository, {{ x.Name }}Repository>();
+{{~ end ~}}
+            return services;
+        }
+    }
+}

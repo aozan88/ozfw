@@ -1,0 +1,54 @@
+using OzFw.ApiBase;
+using Serilog;
+using {{ m.NamespaceRoot }}.ServiceDefaults;
+using {{ m.AppRegistrationNs }};
+using {{ m.DataRegistrationNs }};
+using {{ m.MappingsNs }};
+
+namespace {{ m.ApiNs }}
+{
+    // Bu dosya generator tarafından bir kez oluşturuldu ve artık size ait; yeniden üretimde değiştirilmez.
+    public static class {{ m.Name }}ApiProject
+    {
+        public static void Configure{{ m.Name }}Api(WebApplicationBuilder builder)
+        {
+            if (builder.Configuration.GetValue<string>("RunningProfile") != "AppHost")
+            {
+                LoggingServiceExtensions.AddLoggingDefaults(builder);
+            }
+
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "{{ m.Name }} API", Version = "v1" });
+            });
+            builder.Services.AddOpenApi();
+            builder.Services.AddOzFwControllers();
+            builder.Services.AddHttpContextAccessor();
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("ConnectionStrings:DefaultConnection tanımlı değil.");
+            builder.Services.Add{{ m.Name }}Data(connectionString);
+            builder.Services.Add{{ m.Name }}Application();
+            MapsterConfig.RegisterMappings();
+
+            // Olay altyapısı gerekiyorsa (bkz. Ortak.API):
+            // builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
+        }
+
+        public static void Configure{{ m.Name }}ApiMiddleware(WebApplication app)
+        {
+            app.UseSerilogRequestLogging();
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "{{ m.Name }} API v1"));
+            }
+
+            app.UseHttpsRedirection();
+            app.UseAuthorization();
+            app.MapControllers();
+        }
+    }
+}

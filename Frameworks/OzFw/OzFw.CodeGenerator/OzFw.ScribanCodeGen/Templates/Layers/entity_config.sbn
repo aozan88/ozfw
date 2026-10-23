@@ -1,0 +1,35 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using {{ m.DomainNs }};
+
+namespace {{ m.ConfigurationsNs }}
+{
+    /// <summary>Tablo/kolon adları ve tipleri sql/ altındaki DDL ile aynı kaynaktan (model) üretilir.</summary>
+    public partial class {{ e.Name }}Configuration : IEntityTypeConfiguration<{{ e.Name }}>
+    {
+        public void Configure(EntityTypeBuilder<{{ e.Name }}> builder)
+        {
+            builder.ToTable("{{ e.Table }}", "{{ m.DbSchema }}");
+            BaseEntityColumns.Map(builder, "{{ e.PkName }}");
+
+{{~ for f in e.Fields ~}}
+            builder.Property(x => x.{{ f.Name }}).HasColumnName("{{ f.Column }}").HasColumnType("{{ f.ColumnType }}").IsRequired({{ if f.Nullable }}false{{ else }}true{{ end }}){{ if f.MaxLength }}.HasMaxLength({{ f.MaxLength }}){{ end }}{{ if f.Precision }}.HasPrecision({{ f.Precision }}, {{ f.Scale }}){{ end }};
+{{~ end ~}}
+{{~ for r in e.Relations ~}}
+
+            builder.HasOne(x => x.{{ r.Name }})
+                .WithMany()
+                .HasForeignKey(x => x.{{ r.FkField }})
+                .IsRequired({{ if r.Required }}true{{ else }}false{{ end }})
+                .OnDelete(DeleteBehavior.{{ r.DeleteBehavior }})
+                .HasConstraintName("{{ r.ConstraintName }}");
+            builder.HasIndex(x => x.{{ r.FkField }}).HasDatabaseName("{{ r.IndexName }}");
+{{~ end ~}}
+
+            ConfigurePartial(builder);
+        }
+
+        /// <summary>Ek eşlemeler (index, ters navigation ...) için ayrı bir partial dosyada uygulayın.</summary>
+        partial void ConfigurePartial(EntityTypeBuilder<{{ e.Name }}> builder);
+    }
+}

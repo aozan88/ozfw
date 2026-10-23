@@ -1,0 +1,28 @@
+using Mapster;
+using {{ m.DomainNs }};
+using {{ m.DtosNs }};
+
+namespace {{ m.MappingsNs }}
+{
+    /// <summary>Modelde dtoName verilen (DTO'da adı farklı) alanların Mapster eşlemesi; diğer alanlar ada göre eşlenir.</summary>
+    internal static class GeneratedMappings
+    {
+        public static void Register()
+        {
+{{~ for x in m.Entities ~}}
+{{~ if x.HasDtoNames ~}}
+            TypeAdapterConfig<{{ x.Name }}, {{ x.Name }}Dto>.NewConfig()
+{{~ for f in x.DtoNamedFields ~}}
+                .Map(dest => dest.{{ f.DtoPropertyName }}, src => src.{{ f.Name }})
+{{~ end ~}}
+                ;
+            TypeAdapterConfig<{{ x.Name }}Dto, {{ x.Name }}>.NewConfig()
+{{~ for f in x.DtoNamedFields ~}}
+                .Map(dest => dest.{{ f.Name }}, src => src.{{ f.DtoPropertyName }})
+{{~ end ~}}
+                ;
+{{~ end ~}}
+{{~ end ~}}
+        }
+    }
+}

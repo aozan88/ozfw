@@ -1,0 +1,16 @@
+using {{ m.ContractNs }};
+
+namespace {{ m.BusinessNs }}
+{
+    // Bu dosya generator tarafından bir kez oluşturuldu ve artık size ait; yeniden üretimde değiştirilmez.
+    // Ek bağımlılıkları constructor'a ekleyin, iş kurallarını BaseService metotlarını override ederek yazın.
+    public partial class {{ e.Name }}Servis
+    {
+        private readonly I{{ e.Name }}Repository _repository;
+
+        public {{ e.Name }}Servis(I{{ e.Name }}Repository repository) : base(repository)
+        {
+            _repository = repository;
+        }
+    }
+}

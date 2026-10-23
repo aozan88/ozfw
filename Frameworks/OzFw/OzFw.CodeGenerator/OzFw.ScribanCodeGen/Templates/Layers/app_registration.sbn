@@ -1,0 +1,21 @@
+using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+using {{ m.BusinessNs }};
+using {{ m.DtosNs }};
+using {{ m.ValidationsNs }};
+
+namespace {{ m.AppRegistrationNs }}
+{
+    public static class {{ m.Name }}ApplicationRegistration
+    {
+        /// <summary>Servis ve DTO validator kayıtları (BaseController Payload'u bu validator'larla doğrular).</summary>
+        public static IServiceCollection Add{{ m.Name }}Application(this IServiceCollection services)
+        {
+{{~ for x in m.Entities ~}}
+            services.AddScoped<I{{ x.Name }}Servis, {{ x.Name }}Servis>();
+            services.AddScoped<IValidator<{{ x.Name }}Dto>, {{ x.Name }}DtoValidation>();
+{{~ end ~}}
+            return services;
+        }
+    }
+}

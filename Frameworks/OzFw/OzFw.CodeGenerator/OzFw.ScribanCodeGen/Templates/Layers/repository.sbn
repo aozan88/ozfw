@@ -1,0 +1,18 @@
+using OzFw.BaseInfrastructure;
+using {{ m.DomainNs }};
+using {{ m.ContractNs }};
+using {{ m.PersistenceNs }};
+
+namespace {{ m.RepositoriesNs }}
+{
+    /// <summary>Özel sorgular ayrı bir partial dosyada; silinmişleri dışlamak için Query() ile başlayın.</summary>
+    public partial class {{ e.Name }}Repository : GenericRepository<{{ e.Name }}>, I{{ e.Name }}Repository
+    {
+        protected readonly {{ m.Name }}DbContext Db;
+
+        public {{ e.Name }}Repository({{ m.Name }}DbContext context) : base(context)
+        {
+            Db = context;
+        }
+    }
+}
