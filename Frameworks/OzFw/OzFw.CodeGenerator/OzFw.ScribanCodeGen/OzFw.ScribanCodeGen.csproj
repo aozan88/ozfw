@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -8,6 +9,11 @@
 
   <ItemGroup>
     <Folder Include="Generated\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Şablonlar çalışma dizininden bağımsız bulunabilsin -->
+    <None Include="Templates\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

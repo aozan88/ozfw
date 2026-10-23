@@ -1,0 +1,12 @@
+# module: Ornek
+# dbSchema: ornek
+entity,field,type,nullable,length,precision,scale,fk_target,description
+Kategori,Ad,string,false,100,,,,Kategori adı
+Kategori,Sira,int,false,,,,,
+Kategori,UstKategoriId,Guid,true,,,,Kategori,
+Urun,Ad,string,false,150,,,,Ürün adı
+Urun,Barkod,string,true,50,,,,
+Urun,Fiyat,decimal,false,,18,2,,KDV hariç birim fiyat
+Urun,Stok,int,true,,,,,Stok adedi
+Urun,GecerlilikTarihi,DateOnly,true,,,,,
+Urun,KategoriId,Guid,false,,,,Kategori,

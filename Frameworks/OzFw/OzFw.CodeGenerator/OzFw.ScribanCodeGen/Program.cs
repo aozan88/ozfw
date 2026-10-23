@@ -7,6 +7,13 @@ class Program
 {
     static async Task Main(string[] args)
     {
+        // Argümanla çalıştırılırsa model tabanlı üretim (bkz. Cli/CodeGenCli.cs); argümansız eski akış devam eder
+        if (args.Length > 0)
+        {
+            Environment.ExitCode = OzFw.ScribanCodeGen.Cli.CodeGenCli.Run(args);
+            return;
+        }
+
         // Hangi şablonlar çalıştırılacak
         var templates = new[]
         {
@@ -27,7 +34,10 @@ class Program
         {
             foreach (var (templateFile, outputFolder, outputNameTemplate) in templates)
             {
+                // Önce çalışma dizinindeki Templates, yoksa çıktı klasörüne kopyalanan Templates
                 var templatePath = Path.Combine("Templates", templateFile);
+                if (!File.Exists(templatePath))
+                    templatePath = Path.Combine(AppContext.BaseDirectory, "Templates", templateFile);
                 var templateText = await File.ReadAllTextAsync(templatePath);
                 var template = Template.Parse(templateText);
 

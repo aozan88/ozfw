@@ -1,0 +1,24 @@
+%% module: Ornek
+%% dbSchema: ornek
+%% Alanlar varsayılan olarak zorunludur; yorumda "nullable" ile isteğe bağlı yapılır.
+%% FK'nin zorunluluğu kardinaliteden gelir: "||" zorunlu, "|o" isteğe bağlı. İlişki etiketi FK kolonudur.
+erDiagram
+    KATEGORI ||--o{ URUN : "kategori_id"
+    KATEGORI |o--o{ KATEGORI : "ust_kategori_id"
+
+    KATEGORI {
+        uuid id PK
+        varchar(100) ad "Kategori adı"
+        int sira
+        uuid ust_kategori_id FK
+    }
+
+    URUN {
+        uuid id PK
+        varchar(150) ad "Ürün adı"
+        varchar(50) barkod "nullable"
+        decimal fiyat "precision: 18,2; KDV hariç birim fiyat"
+        int stok "nullable; Stok adedi"
+        date gecerlilik_tarihi "nullable"
+        uuid kategori_id FK
+    }

@@ -1,0 +1,30 @@
+// module: Ornek
+// dbdiagram.io'da açılabilir. BaseEntity kolonları (id, olusturulma_tarihi ...) yazılabilir; generator onları atlar.
+
+Project ornek {
+  database_type: 'PostgreSQL'
+}
+
+Table ornek.kategori {
+  id uuid [pk]
+  ad varchar(100) [not null, note: 'Kategori adı']
+  sira int [not null]
+  ust_kategori_id uuid [ref: > ornek.kategori.id]
+}
+
+Table ornek.urun {
+  id uuid [pk]
+  ad varchar(150) [not null, note: 'Ürün adı']
+  barkod varchar(50)
+  fiyat decimal(18,2) [not null, note: 'KDV hariç birim fiyat']
+  stok int [note: 'Stok adedi']
+  gecerlilik_tarihi date
+  kategori_id uuid [not null]
+  olusturulma_tarihi timestamp [not null]
+
+  indexes {
+    barkod [unique]
+  }
+}
+
+Ref: ornek.urun.kategori_id > ornek.kategori.id [delete: restrict]

@@ -1,0 +1,32 @@
+{
+  "$schema": "../../docs/codegen-model.schema.json",
+  "module": "Ornek",
+  "dbSchema": "ornek",
+  "entities": [
+    {
+      "name": "Kategori",
+      "fields": [
+        { "name": "Ad", "type": "string", "maxLength": 100, "description": "Kategori adı" },
+        { "name": "Sira", "type": "int" },
+        { "name": "UstKategoriId", "type": "Guid", "nullable": true }
+      ],
+      "relations": [
+        { "target": "Kategori", "fkField": "UstKategoriId" }
+      ]
+    },
+    {
+      "name": "Urun",
+      "fields": [
+        { "name": "Ad", "type": "string", "maxLength": 150, "description": "Ürün adı" },
+        { "name": "Barkod", "type": "string", "maxLength": 50, "nullable": true },
+        { "name": "Fiyat", "type": "decimal", "precision": 18, "scale": 2, "description": "KDV hariç birim fiyat" },
+        { "name": "Stok", "type": "int", "nullable": true, "description": "Stok adedi" },
+        { "name": "GecerlilikTarihi", "type": "DateOnly", "nullable": true },
+        { "name": "KategoriId", "type": "Guid" }
+      ],
+      "relations": [
+        { "target": "Kategori", "fkField": "KategoriId", "onDelete": "restrict" }
+      ]
+    }
+  ]
+}
