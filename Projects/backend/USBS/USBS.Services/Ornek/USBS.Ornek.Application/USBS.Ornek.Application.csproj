@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.12.0" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.BaseInfrastructure\OzFwBaseInfrastructure\OzFwBaseInfrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.ServiceBase\OzFw.ServiceBase\OzFw.ServiceBase.csproj" />
+    <ProjectReference Include="..\..\..\USBS.Common.Dtos\USBS.Common.Dtos.csproj" />
+    <ProjectReference Include="..\..\..\USBS.Common\USBS.Common.Domain\USBS.Common.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Ornek.API-Development": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "USE_DOCKER": "false"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:24300;http://localhost:24301"
+    }
+  }
+}

@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\USBS.AppHost\USBS.AppHost.csproj" />
     <ProjectReference Include="..\..\..\..\Frameworks\OzFw\OzFw.CodeGenerator\OzFw.ScribanCodeGen\OzFw.ScribanCodeGen.csproj" />
+    <ProjectReference Include="..\USBS.Services\Ornek\USBS.Ornek.Data\USBS.Ornek.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

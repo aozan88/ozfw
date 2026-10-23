@@ -135,7 +135,8 @@ namespace OzFw.ScribanCodeGen.Cli
                     status = "yeni";
                 else if (file.Scaffold)
                     status = "korundu";
-                else if (existing == file.Content)
+                // git autocrlf checkout'ta satır sonlarını CRLF yapabilir; yalnızca içerik farkı sayılır
+                else if (existing.Replace("\r\n", "\n") == file.Content.Replace("\r\n", "\n"))
                     status = "değişmedi";
                 else if (!force && !IsGenerated(existing))
                 {

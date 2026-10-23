@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.21" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Frameworks\OzFw\OzFw.ApiBase\OzFw.ApiBase.csproj" />
+    <ProjectReference Include="..\..\..\USBS.ServiceDefaults\USBS.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\USBS.Ornek.Application\USBS.Ornek.Application.csproj" />
+    <ProjectReference Include="..\USBS.Ornek.Data\USBS.Ornek.Data.csproj" />
+  </ItemGroup>
+
+</Project>
