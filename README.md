@@ -202,11 +202,14 @@ işlemleri soft-delete'tir (`durum = -1`) ve silinmiş kayıtlar sorgulara gelme
 
 | Konu | Nasıl seçilir |
 |---|---|
-| Loglama | `Logging:Provider` = `graylog` (varsayılan) / `elk`. `ElasticConfiguration:Uri` boşsa Elasticsearch'e yazılmaz |
-| Olay altyapısı | `AddRabbitMqEventBusDefaults` / `AddKafkaEventBusDefaults`; ayarlar `RabbitMqEventBus` / `KafkaEventBus` bölümlerinde |
-| Önbellek | `Redis:ConnectionString` (varsayılan `localhost:6379`) |
+| Olay altyapısı | `EventBus:Provider` = `inmemory` (varsayılan, broker gerektirmez) / `rabbitmq` / `kafka` / `none`. Ayarlar `RabbitMqEventBus` / `KafkaEventBus` bölümlerinde. Servisler yalnızca `IEventBus`'a bağlıdır (`AddOzFwEventBus`) |
+| Önbellek | `Cache:Provider` = `memory` (varsayılan) / `redis` (`Redis:ConnectionString`). Servisler `IKonCache`'e bağlıdır (`AddOzFwCache`) |
+| Loglama | `Logging:Provider` = `graylog` (varsayılan) / `elk` / `none`. `ElasticConfiguration:Uri` boşsa Elasticsearch'e yazılmaz |
 | Veritabanı | `ConnectionStrings:DefaultConnection` (PostgreSQL, Npgsql) |
-| Gözlemlenebilirlik | `USBS.ServiceDefaults` içindeki `AddServiceDefaults()` (OpenTelemetry, health check, service discovery, resilience) hazır; `OTEL_EXPORTER_OTLP_ENDPOINT` verilirse dışa aktarır. API'lerde henüz çağrılmıyor (AppHost çalışmasıyla bağlanacak) |
+| Gözlemlenebilirlik | Her API `AddServiceDefaults()` çağırır: OpenTelemetry (trace/metric/log), health check, service discovery, HTTP resilience. `OTEL_EXPORTER_OTLP_ENDPOINT` verilirse OTLP'ye aktarır. Development'ta `/health` ve `/alive` uçları açıktır |
+
+> Kafka ve Redis uygulamaları şu an iskelet düzeyindedir (gerçek istemci bağlantısı yok); RabbitMQ gerçek istemcidir.
+> Ayrıntı ve yol haritası: [docs/apphost-analiz.md](docs/apphost-analiz.md).
 
 ---
 
