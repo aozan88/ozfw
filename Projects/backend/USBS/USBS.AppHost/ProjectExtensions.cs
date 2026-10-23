@@ -6,7 +6,7 @@ namespace USBS.AppHost.Extensions
     {
         public static WebApplicationBuilder AddProject(this WebApplicationBuilder builder, string projectName, Action<WebApplicationBuilder> configureProject)
         {
-            Console.WriteLine($"Initializing project: USBS.Components.Caching");
+            Console.WriteLine($"Initializing project: {projectName}");
             configureProject(builder);
             return builder;
         }

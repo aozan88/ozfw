@@ -32,8 +32,8 @@ namespace {{ m.ApiNs }}
             builder.Services.Add{{ m.Name }}Application();
             MapsterConfig.RegisterMappings();
 
-            // Olay altyapısı gerekiyorsa (bkz. Ortak.API):
-            // builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
+            // Olay altyapısı gerekiyorsa: EventBus:Provider = inmemory | rabbitmq | kafka | none
+            // builder.Services.AddOzFwEventBus(builder.Configuration);
         }
 
         public static void Configure{{ m.Name }}ApiMiddleware(WebApplication app)

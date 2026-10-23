@@ -6,6 +6,8 @@ using USBS.Sistem.Application.Mappings;
 
 
 var builder = WebApplication.CreateBuilder(args);
+// OpenTelemetry, health check, service discovery, resilience (USBS.ServiceDefaults)
+builder.AddServiceDefaults();
 bool useDocker = Environment.GetEnvironmentVariable("USE_DOCKER")?.ToLower() == "true";
 //builder.Host.UseSerilog(SeriLogger.Configure);
 
@@ -35,6 +37,7 @@ builder.Services.AddTransient<LoggingDelegatingHandler>();
 builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegatingHandler>();
 */
 var app = builder.Build();
+app.MapDefaultEndpoints();
 
 SistemApiProject.ConfigureSistemApiMiddleware(app);
 

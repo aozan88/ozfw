@@ -45,8 +45,8 @@ namespace Ortak.API
             builder.Services.AddHttpContextAccessor();
 
             //Register rabbitmq and kafka
-            builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
-            builder.Services.AddKafkaEventBusDefaults(builder.Configuration);
+            // EventBus:Provider = inmemory (varsayılan) | rabbitmq | kafka | none
+            builder.Services.AddOzFwEventBus(builder.Configuration);
 
 
             // Register Database Defaults
@@ -58,6 +58,21 @@ namespace Ortak.API
 
             builder.Services.AddScoped<IEventHandler<SistemTanimTipiSilindiEvent>, SistemTanimTipiSilindiEventHandler>();
             builder.Services.AddScoped<SistemTanimTipiSilindiEventHandler>();
+        }
+
+        /// <summary>Ortak modülünün olay abonelikleri (önceden USBS.ServiceDefaults içindeydi).</summary>
+        public static void UseOrtakEventSubscriptions(WebApplication app)
+        {
+            var eventBus = app.Services.GetRequiredService<IEventBus>();
+            try
+            {
+                eventBus.SubscribeAsync<SistemTanimTipiSilindiEvent, SistemTanimTipiSilindiEventHandler>().GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                // Broker erişilemezse API yine de ayağa kalksın; olaylar işlenmez
+                app.Logger.LogError(ex, "Olay aboneliği başarısız ({EventBus})", eventBus.GetType().Name);
+            }
         }
 
         public static void ConfigureOrtakApiMiddleware(WebApplication app)
@@ -81,6 +96,8 @@ namespace Ortak.API
             app.UseSession();
             app.UseAuthorization();
             app.MapControllers();
+
+            UseOrtakEventSubscriptions(app);
         }
     }
 }

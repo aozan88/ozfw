@@ -1,17 +1,12 @@
-﻿using OzFwCaching;
-using OzFwRedisCaching;
+﻿using OzFwRedisCaching;
+
 namespace USBS.Components.Caching
 {
-
+    /// <summary>Uygulamaya özgü Redis önbellek; framework'teki RedisCache'i genişletme noktası.</summary>
     public class RedisCacheProvider : RedisCache
     {
-        private readonly IKonCache _cache;
-        private readonly RedisCacheConfiguration _config;
         public RedisCacheProvider(RedisCacheConfiguration config) : base(config)
         {
-            _config = config;
         }
-
-        public IKonCache GetCache() => _cache;
     }
 }

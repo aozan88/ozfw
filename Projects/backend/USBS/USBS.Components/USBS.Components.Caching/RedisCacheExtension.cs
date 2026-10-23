@@ -13,6 +13,7 @@ namespace USBS.Components.Caching
 
             services.AddSingleton(config);
             services.AddSingleton(sp => new RedisCacheProvider(config));
+            services.AddSingleton<IKonCache>(sp => sp.GetRequiredService<RedisCacheProvider>());
 
             return services;
         }

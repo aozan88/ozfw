@@ -13,7 +13,7 @@ bool useDocker = Environment.GetEnvironmentVariable("USE_DOCKER")?.ToLower() == 
 #endregion
 
 // ConfigureOrtakApi - Exclude
-// builder.AddServiceDefaults();
+builder.AddServiceDefaults();
 
 OrtakApiProject.ConfigureOrtakApi(builder);
 
@@ -38,6 +38,7 @@ builder.Services.AddHttpClient("MyClient").AddHttpMessageHandler<LoggingDelegati
 */
 
 var app = builder.Build();
+app.MapDefaultEndpoints();
 
 OrtakApiProject.ConfigureOrtakApiMiddleware(app);
 

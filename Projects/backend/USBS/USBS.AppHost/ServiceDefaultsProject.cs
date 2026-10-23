@@ -23,11 +23,11 @@ public static class ServiceDefaultsProject
             var postgreConfigSection = builder.Configuration.GetSection("ConnectionStrings");
             var dbConnectionString = builder.Configuration.GetConnectionString("OrtakConnectionString");
             // builder.Services.AddKafkaEventBusDefaults(config => kafkaConfigSection.Bind(config));
-            var kafka = builder.Services.AddKafkaEventBusDefaults(builder.Configuration);
-            var rabbit = builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
-            var redis = builder.Services.AddRedisCacheDefaults(builder.Configuration);
+            // Altyapı yapılandırmadan seçilir: EventBus:Provider, Cache:Provider
+            builder.Services.AddOzFwEventBus(builder.Configuration);
+            builder.Services.AddOzFwCache(builder.Configuration);
             //var postgre = builder.Services.AddDatabaseDefaults(postgreConfigSection);
-            Console.WriteLine("[ServiceDefaults] Kafka Event Bus configured.");
+            Console.WriteLine($"[ServiceDefaults] EventBus: {builder.Configuration[EventManagementExtensions.ProviderKey] ?? "inmemory"}, Cache: {builder.Configuration[CachingServiceExtensions.ProviderKey] ?? "memory"}");
 
         }
         catch (Exception ex)

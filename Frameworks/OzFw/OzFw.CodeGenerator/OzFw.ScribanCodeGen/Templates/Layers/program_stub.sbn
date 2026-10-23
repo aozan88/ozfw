@@ -2,10 +2,13 @@ using {{ m.ApiNs }};
 
 // Bu dosya generator tarafından bir kez oluşturuldu ve artık size ait; yeniden üretimde değiştirilmez.
 var builder = WebApplication.CreateBuilder(args);
+// OpenTelemetry, health check, service discovery, resilience ({{ m.NamespaceRoot }}.ServiceDefaults)
+builder.AddServiceDefaults();
 
 {{ m.Name }}ApiProject.Configure{{ m.Name }}Api(builder);
 
 var app = builder.Build();
+app.MapDefaultEndpoints();
 
 {{ m.Name }}ApiProject.Configure{{ m.Name }}ApiMiddleware(app);
 

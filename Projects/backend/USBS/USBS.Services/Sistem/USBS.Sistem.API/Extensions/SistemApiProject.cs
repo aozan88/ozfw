@@ -40,8 +40,8 @@ namespace Sistem.API
 
 
             //Register rabbitmq and kafka
-            builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
-            builder.Services.AddKafkaEventBusDefaults(builder.Configuration);
+            // EventBus:Provider = inmemory (varsayılan) | rabbitmq | kafka | none
+            builder.Services.AddOzFwEventBus(builder.Configuration);
 
             // Register Database Defaults
             builder.Services.AddDatabaseDefaults(builder.Configuration);

@@ -28,10 +28,14 @@ public static class LoggingServiceExtensions
         var loggingProvider = builder.Configuration.GetValue<string>("Logging:Provider") ?? "Graylog";
 
         // Configure the provider based on configuration
+        // Logging:Provider = graylog (varsayılan) | elk | none (yalnızca Serilog sink'leri; IKonLogger kaydedilmez)
         switch (loggingProvider.ToLowerInvariant())
         {
             case "elk":
                 builder.Services.AddELKLogging(builder.Configuration);
+                break;
+            case "none":
+            case "console":
                 break;
             case "graylog":
             default:

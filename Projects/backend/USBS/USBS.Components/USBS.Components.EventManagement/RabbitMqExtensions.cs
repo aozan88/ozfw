@@ -13,9 +13,8 @@ namespace USBS.Components.Caching
             configure(config);
            
             services.AddSingleton(config);
-            services.AddSingleton<IEventBus, RabbitMqEventBus>();
-
-           
+            // Uygulamaya özgü genişletme noktası (Kafka tarafıyla aynı desen)
+            services.AddSingleton<IEventBus, RabbitMqEventBusProvider>();
 
             return services;
         }

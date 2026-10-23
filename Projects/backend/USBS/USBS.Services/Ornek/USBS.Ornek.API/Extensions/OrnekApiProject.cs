@@ -32,8 +32,8 @@ namespace Ornek.API
             builder.Services.AddOrnekApplication();
             MapsterConfig.RegisterMappings();
 
-            // Olay altyapısı gerekiyorsa (bkz. Ortak.API):
-            // builder.Services.AddRabbitMqEventBusDefaults(builder.Configuration);
+            // Olay altyapısı gerekiyorsa: EventBus:Provider = inmemory | rabbitmq | kafka | none
+            // builder.Services.AddOzFwEventBus(builder.Configuration);
         }
 
         public static void ConfigureOrnekApiMiddleware(WebApplication app)

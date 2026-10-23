@@ -1,20 +1,45 @@
 using OzFwEventBus;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Ortak.Application.Contract;
-using Ortak.Data.Repositories;
 using USBS.Components.Caching;
 using USBS.Components.EventManagement;
-using USBS.Ortak.API.Consumers;
 
 namespace USBS.ServiceDefaults;
 
-// Adds common .NET Aspire services: service discovery, resilience, health checks, and OpenTelemetry.
-// This project should be referenced by each service project in your solution.
-// To learn more about using this project, see https://aka.ms/dotnet/aspire/service-defaults
+/// <summary>
+/// Olay altyapısı kaydı. Servisler yalnızca IEventBus'a bağlıdır; hangi altyapının kullanılacağı yapılandırmadan seçilir.
+/// Modüle özgü abonelikler (handler'lar) ilgili modülün kendi kayıtlarında yapılır.
+/// </summary>
 public static class EventManagementExtensions
 {
+    public const string ProviderKey = "EventBus:Provider";
+
+    public static class Providers
+    {
+        public const string InMemory = "inmemory";
+        public const string RabbitMq = "rabbitmq";
+        public const string Kafka = "kafka";
+        public const string None = "none";
+    }
+
+    /// <summary>
+    /// EventBus:Provider = inmemory (varsayılan) | rabbitmq | kafka | none.
+    /// rabbitmq → "RabbitMqEventBus", kafka → "KafkaEventBus" bölümünden ayar okur.
+    /// </summary>
+    public static IServiceCollection AddOzFwEventBus(this IServiceCollection services, IConfiguration configuration)
+    {
+        var provider = (configuration[ProviderKey] ?? Providers.InMemory).Trim().ToLowerInvariant();
+        return provider switch
+        {
+            Providers.InMemory => services.AddSingleton<IEventBus, InMemoryEventBus>(),
+            Providers.RabbitMq => services.AddRabbitMqEventBusDefaults(configuration),
+            Providers.Kafka => services.AddKafkaEventBusDefaults(configuration),
+            Providers.None => services.AddSingleton<IEventBus, NullEventBus>(),
+            _ => throw new InvalidOperationException(
+                $"Bilinmeyen {ProviderKey} değeri: '{provider}'. Geçerli değerler: inmemory, rabbitmq, kafka, none.")
+        };
+    }
+
     public static IServiceCollection AddKafkaEventBusDefaults(this IServiceCollection services, IConfiguration configuration)
     {
         var kafkaConfigSection = configuration.GetSection("KafkaEventBus");
@@ -29,35 +54,12 @@ public static class EventManagementExtensions
 
     public static IServiceCollection AddRabbitMqEventBusDefaults(this IServiceCollection services, IConfiguration configuration)
     {
-        /*
-        var rabbitMqConfigSection = configuration.GetSection("RabbitMqEventBus");
-        services.AddRabbitMqEventBusDefaults(rabbitMqConfigSection);
-        return services;
-        */
-
         var rabbitMqConfigSection = configuration.GetSection("RabbitMqEventBus");
         services.AddRabbitMqEventBusProvider(config =>
         {
             rabbitMqConfigSection.Bind(config);
         });
 
-        /*
-        services.AddScoped<IEventHandler<SistemTanimTipiSilindiEvent>, SistemTanimTipiSilindiEventHandler>();
-        services.AddScoped<SistemTanimTipiSilindiEventHandler>();
-        services.AddScoped<ISistemTanimRepository, SistemTanimRepository>();
-        */
         return services;
-    }
-
-    public static async Task UseEventBusSubscriptions(this IApplicationBuilder app)
-    {
-        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
-        await eventBus.SubscribeAsync<SistemTanimTipiSilindiEvent, SistemTanimTipiSilindiEventHandler>();
-
-        //using (var scope = app.ApplicationServices.CreateScope())
-        //{
-        //    var eventBusStarter = scope.ServiceProvider.GetRequiredService<RabbitMqEventBusStarter>();
-        //    await eventBusStarter.StartAsync();
-        //}
     }
 }
